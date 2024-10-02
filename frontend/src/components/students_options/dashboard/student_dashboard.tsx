@@ -153,6 +153,7 @@ const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
         {/* TableDashboard ==========================================*/}
         <TableDashboard lang={lang} />
         <div className="bg-gray-200 h-1 my-6" />
+
         <div
           className={` ${
             lang === "en"

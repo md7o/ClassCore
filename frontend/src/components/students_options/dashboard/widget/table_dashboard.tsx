@@ -1,15 +1,16 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import bin from "../../../../assets/images/trash.png";
 import pencil from "../../../../assets/images/pen.png";
 import "react-datepicker/dist/react-datepicker.css";
+import useFetch from "../../../../hooks/useFetch"; // Adjust the import path
 import { useTranslation } from "react-i18next";
+import axios from "axios";
 
 interface Student {
-  studentName: string;
-  dob: string;
-  gender: string;
+  name: string;
+  birth: string;
   country: string;
-  collegeMajor: string;
+  college: string;
   phone: string;
 }
 
@@ -26,36 +27,35 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
   const { t, i18n } = useTranslation();
 
   const tableHeaders: TableHeader[] = [
-    { label: t("Student_Name"), key: "studentName" },
-    { label: t("Date_of_Birth"), key: "dob" },
-    { label: t("Gender"), key: "gender" },
+    { label: t("Student_Name"), key: "name" },
+    { label: t("Date_of_Birth"), key: "birth" },
     { label: t("Country"), key: "country" },
-    { label: t("College Major"), key: "collegeMajor" },
+    { label: t("College Major"), key: "college" },
     { label: t("Phone"), key: "phone" },
     { label: t("Actions"), key: "actions" }, // Actions for edit/delete
   ];
 
   // Table rows as dynamic data
-  const tableRows = [
-    {
-      studentName: "Mohammed Ayman",
-      dob: "2004/04/10",
-      gender: "Male",
-      country: "Syria",
-      collegeMajor: "Computer Science",
-      phone: "0551227021",
-    },
-    {
-      studentName: "Jane Doe",
-      dob: "1995/12/01",
-      gender: "Female",
-      country: "USA",
-      collegeMajor: "Mathematics",
-      phone: "9876543210",
-    },
-  ];
+  // const tableRows = [
+  //   {
+  //     studentName: "Mohammed Ayman",
+  //     dob: "2004/04/10",
+  //     gender: "Male",
+  //     country: "Syria",
+  //     collegeMajor: "Computer Science",
+  //     phone: "0551227021",
+  //   },
+  //   {
+  //     studentName: "Jane Doe",
+  //     dob: "1995/12/01",
+  //     gender: "Female",
+  //     country: "USA",
+  //     collegeMajor: "Mathematics",
+  //     phone: "9876543210",
+  //   },
+  // ];
 
-  // const [data, setData] = useState<Student[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
   // const [isSearch, setIsSearch] = useState<string>("");
   // const [showModal, setShowModal] = useState(false);
   // const [studentDataToEdit, setStudentDataToEdit] = useState<Student | null>(
@@ -119,6 +119,23 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
   //   setShowDeleteModal(true);
   // };
 
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/users");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
   return (
     <div>
       <div className="lg:block hidden ">
@@ -139,22 +156,19 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
           </thead>
 
           <tbody className="bg-white divide-y divide-gray-200 text-md">
-            {tableRows.map((row, index) => (
+            {users.map((row, index) => (
               <tr key={index}>
                 <td className="px-6 py-3 whitespace-nowrap text-gray-900">
-                  {row.studentName}
+                  {row.name}
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap text-gray-900">
-                  {row.dob}
-                </td>
-                <td className="px-6 py-3 whitespace-nowrap text-gray-900">
-                  {row.gender}
+                  {row.birth}
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap text-gray-900">
                   {row.country}
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap text-gray-900">
-                  {row.collegeMajor}
+                  {row.college}
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap text-gray-900">
                   {row.phone}
@@ -176,7 +190,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
       </div>
 
       <div className="lg:hidden block">
-        {tableRows.map((row, rowIndex) => (
+        {users.map((row, rowIndex) => (
           <div key={rowIndex}>
             <div className=" rounded-lg shadow-md md:px-14 px-0">
               <div className="space-y-2">
@@ -207,7 +221,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
                 ))}
               </div>
             </div>
-            {rowIndex < tableRows.length - 1 && (
+            {rowIndex < users.length - 1 && (
               <hr className="my-4 border-gray-500" />
             )}
           </div>
