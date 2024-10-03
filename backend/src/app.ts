@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import mongoose from "mongoose";
-import cors from "cors"; // Import cors
+import cors from "cors";
+import moment from "moment";
 import User from "./models/user";
 
 const app = express();
@@ -23,8 +24,13 @@ mongoose
 app.get("/users", async (req: Request, res: Response) => {
   try {
     const users = await User.find();
+
+    const formattedUsers = users.map((user) => ({
+      ...user.toObject(), // Convert mongoose document to plain object
+      birth: moment(user.birth).format("MM/DD/YYYY"), // Format birth date
+    }));
     console.log("Fetched Users:", users); // Log the users retrieved from DB
-    res.status(200).json(users);
+    res.status(200).json(formattedUsers);
   } catch (error) {
     res.status(500).json({ message: "Error retrieving users", error });
   }
@@ -50,9 +56,12 @@ app.get("/users/:id", async (req: Request, res: Response) => {
 app.post("/users", async (req: Request, res: Response) => {
   try {
     const { name, birth, college, country, phone } = req.body; // Get data from request body
+
+    const formattedBirth = moment(birth).format("MM/DD/YYYY");
+
     const newUser = new User({
       name,
-      birth: new Date(birth), // Ensure proper date formatting
+      birth: formattedBirth,
       college,
       country,
       phone,
@@ -69,11 +78,6 @@ app.post("/users", async (req: Request, res: Response) => {
 app.delete("/users/:id", async (req: Request, res: Response) => {
   try {
     const deletedUser = await User.findByIdAndDelete(req.params.id);
-
-    // if (!deletedUser) {
-    //   return res.status(404).json({ message: "User not found" });
-    // }
-
     res
       .status(200)
       .json({ message: `User with ID ${req.params.id} deleted successfully.` });

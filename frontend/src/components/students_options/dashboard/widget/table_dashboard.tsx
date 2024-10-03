@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import bin from "../../../../assets/images/trash.png";
 import pencil from "../../../../assets/images/pen.png";
 import "react-datepicker/dist/react-datepicker.css";
-import useFetch from "../../../../hooks/useFetch"; // Adjust the import path
+import DeleteModal from "../../../modal/delete_modal";
+import AddStudents from "./add_students";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 
 interface Student {
+  _id: string;
   name: string;
   birth: string;
   country: string;
@@ -25,6 +27,105 @@ interface StudentsTableDataProps {
 
 const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
   const { t, i18n } = useTranslation();
+  const [users, setUsers] = useState<any[]>([]);
+  const [studentIdToDelete, setStudentIdToDelete] = useState<string | null>(
+    null
+  );
+  // =========DELTE MODAL==========
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handleDeleteClick = (id: string) => {
+    setStudentIdToDelete(id);
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+    setShowModal(false);
+    setStudentDataToEdit(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/users/${studentIdToDelete}`
+      );
+
+      if (response.status === 200) {
+        console.log("Delete successful:", response.data.message);
+
+        setUsers((prevUsers) =>
+          prevUsers.filter((user) => user._id !== studentIdToDelete)
+        );
+        setIsModalVisible(false);
+        setStudentIdToDelete(null);
+      } else {
+        console.error("Failed to delete user:", response.status, response.data);
+      }
+    } catch (error) {
+      console.error("Error deleting the user:", error);
+    }
+  };
+
+  // =========EDIT MODAL==========
+  const [showModal, setShowModal] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [studentDataToEdit, setStudentDataToEdit] = useState<Student | null>(
+    null
+  );
+
+  const handleOpenModal = () => {
+    setIsEditMode(false); // Set to false if adding a new student
+    setShowModal(true);
+    setStudentDataToEdit(null); // Ensure no data is set when adding a new student
+  };
+
+  const handleEditStudent = (id: string) => {
+    const studentToEdit = users.find((user) => user._id === id);
+
+    if (studentToEdit) {
+      setStudentDataToEdit(studentToEdit); // Pass the entire student object
+      setIsEditMode(true); // Enable edit mode
+      setShowModal(true); // Open the modal
+    } else {
+      console.error("Student not found");
+    }
+  };
+
+  const handleEditUser = async (updateData: Partial<Student>) => {
+    if (!studentDataToEdit) {
+      console.error("No student data to edit.");
+      return;
+    }
+
+    try {
+      const response = await axios.patch(
+        `http://localhost:3000/users/${studentDataToEdit._id}`, // Use the correct ID
+        updateData
+      );
+
+      if (response.status === 200) {
+        console.log("Update successful:", response.data.message);
+
+        // Update the users list with the updated data
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user._id === studentDataToEdit._id
+              ? { ...user, ...updateData }
+              : user
+          )
+        );
+
+        setShowModal(false); // Close the modal after editing
+        setStudentDataToEdit(null); // Reset the student data
+      } else {
+        console.error("Failed to update user:", response.status, response.data);
+      }
+    } catch (error) {
+      console.error("Error updating the user:", error);
+    }
+  };
 
   const tableHeaders: TableHeader[] = [
     { label: t("Student_Name"), key: "name" },
@@ -32,93 +133,10 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
     { label: t("Country"), key: "country" },
     { label: t("College Major"), key: "college" },
     { label: t("Phone"), key: "phone" },
-    { label: t("Actions"), key: "actions" }, // Actions for edit/delete
+    { label: t("Actions"), key: "actions" },
   ];
 
-  // Table rows as dynamic data
-  // const tableRows = [
-  //   {
-  //     studentName: "Mohammed Ayman",
-  //     dob: "2004/04/10",
-  //     gender: "Male",
-  //     country: "Syria",
-  //     collegeMajor: "Computer Science",
-  //     phone: "0551227021",
-  //   },
-  //   {
-  //     studentName: "Jane Doe",
-  //     dob: "1995/12/01",
-  //     gender: "Female",
-  //     country: "USA",
-  //     collegeMajor: "Mathematics",
-  //     phone: "9876543210",
-  //   },
-  // ];
-
-  const [users, setUsers] = useState<any[]>([]);
-  // const [isSearch, setIsSearch] = useState<string>("");
-  // const [showModal, setShowModal] = useState(false);
-  // const [studentDataToEdit, setStudentDataToEdit] = useState<Student | null>(
-  //   null
-  // );
-  // const [showDeleteModal, setShowDeleteModal] = useState(false);
-  // const [studentIdToDelete, setStudentIdToDelete] = useState<string | null>(
-  //   null
-  // );
-  // const [rowsPerPage, setRowsPerPage] = useState<number>(25);
-  // const [currentPage, setCurrentPage] = useState<number>(1);
-  // const [birthDateFilter, setBirthDateFilter] = useState<Date | null>(null);
-  // const [dateComparison, setDateComparison] = useState<string>("Equal_to");
-
-  // const filteredData = data.filter((item) => {
-  //   const itemDate = new Date(item.birthDate);
-  //   const filterDate = birthDateFilter ? new Date(birthDateFilter) : null;
-
-  //   const matchesName =
-  //     item.firstName.toLowerCase().includes(isSearch.toLowerCase()) ||
-  //     item.lastName.toLowerCase().includes(isSearch.toLowerCase());
-
-  //   const matchesBirthDate = birthDateFilter
-  //     ? filterDate &&
-  //       {
-  //         Equal_to: itemDate.toDateString() === filterDate.toDateString(),
-  //         Greater_than: itemDate > filterDate,
-  //         Less_than: itemDate < filterDate,
-  //       }[dateComparison] // dateComparison should be the value of your select dropdown
-  //     : true;
-
-  //   return matchesName && matchesBirthDate;
-  // });
-
-  // const handleNextPage = () => {
-  //   if (currentPage < Math.ceil(data.length / rowsPerPage)) {
-  //     setCurrentPage(currentPage + 1);
-  //   }
-  // };
-
-  // const handlePreviousPage = () => {
-  //   if (currentPage > 1) {
-  //     setCurrentPage(currentPage - 1);
-  //   }
-  // };
-
-  //   const indexOfLastStudent = currentPage * rowsPerPage;
-  //   const indexOfFirstStudent = indexOfLastStudent - rowsPerPage;
-  //   const currentStudents = filteredData.slice(
-  //     indexOfFirstStudent,
-  //     indexOfLastStudent
-  //   );
-
-  // const handleOpenModalForEdit = (studentData: Student) => {
-  //   setStudentDataToEdit(studentData);
-  //   setShowModal(true);
-  // };
-
-  // const handleDeleteClick = (id: string) => {
-  //   setStudentIdToDelete(id);
-  //   setShowDeleteModal(true);
-  // };
-
+  // ====FETCH USERS====
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -138,6 +156,25 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
 
   return (
     <div>
+      {/* ====EDIT MODAL==== */}
+      <AddStudents
+        showModal={showModal}
+        handleCloseModal={handleCloseModal}
+        onEditStudent={handleEditUser}
+        isEditMode={isEditMode}
+        studentDataToEdit={studentDataToEdit}
+      />
+      {/* ====DELETE MODAL==== */}
+      <DeleteModal
+        show={isModalVisible}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        title="Delete Confirmation"
+        message="Are you sure you want to delete this item?"
+        warningMessage="This action is irreversible."
+      />
+
+      {/* ====DESKTOP RESPONSE==== */}
       <div className="lg:block hidden ">
         <table className="w-full rounded-lg overflow-hidden ">
           <thead>
@@ -175,11 +212,18 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap text-gray-900">
                   <div className="flex gap-3 w-16">
-                    <button className="text-blue-500 hover:text-blue-700 hover:scale-95 hover:brightness-75 duration-300">
-                      <img src={bin} alt="delete" className="" />
-                    </button>
-                    <button className="text-blue-500 hover:text-blue-700 hover:scale-95 hover:brightness-75 duration-300">
+                    <button
+                      className="text-blue-500 hover:text-blue-700 hover:scale-95 hover:brightness-75 duration-300"
+                      onClick={() => handleEditStudent(row._id)}
+                    >
                       <img src={pencil} alt="edit" />
+                    </button>
+
+                    <button
+                      className="text-red-500 hover:text-red-700 hover:scale-95 hover:brightness-75 duration-300"
+                      onClick={() => handleDeleteClick(row._id)}
+                    >
+                      <img src={bin} alt="delete" />
                     </button>
                   </div>
                 </td>
@@ -189,6 +233,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
         </table>
       </div>
 
+      {/* ====MOBILE RESPONSE==== */}
       <div className="lg:hidden block">
         {users.map((row, rowIndex) => (
           <div key={rowIndex}>
@@ -206,10 +251,16 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
                     <p className="text-white font-light md:text-lg">
                       {header.key === "actions" ? (
                         <div className="flex gap-3">
-                          <button className="text-blue-500 hover:text-blue-700 hover:scale-95 hover:brightness-75 duration-300">
+                          <button
+                            className="text-blue-500 hover:text-blue-700 hover:scale-95 hover:brightness-75 duration-300"
+                            onClick={() => handleEditStudent(row._id)}
+                          >
                             <img src={pencil} alt="edit" className="w-5 h-5" />
                           </button>
-                          <button className="text-red-500 hover:text-red-700 hover:scale-95 hover:brightness-75 duration-300">
+                          <button
+                            className="text-red-500 hover:text-red-700 hover:scale-95 hover:brightness-75 duration-300"
+                            onClick={() => handleDeleteClick(row._id)}
+                          >
                             <img src={bin} alt="delete" className="w-5 h-5" />
                           </button>
                         </div>
@@ -232,3 +283,66 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
 };
 
 export default TableDashboard;
+
+// const [isSearch, setIsSearch] = useState<string>("");
+// const [showModal, setShowModal] = useState(false);
+// const [studentDataToEdit, setStudentDataToEdit] = useState<Student | null>(
+//   null
+// );
+// const [showDeleteModal, setShowDeleteModal] = useState(false);
+// const [studentIdToDelete, setStudentIdToDelete] = useState<string | null>(
+//   null
+// );
+// const [rowsPerPage, setRowsPerPage] = useState<number>(25);
+// const [currentPage, setCurrentPage] = useState<number>(1);
+// const [birthDateFilter, setBirthDateFilter] = useState<Date | null>(null);
+// const [dateComparison, setDateComparison] = useState<string>("Equal_to");
+
+// const filteredData = data.filter((item) => {
+//   const itemDate = new Date(item.birthDate);
+//   const filterDate = birthDateFilter ? new Date(birthDateFilter) : null;
+
+//   const matchesName =
+//     item.firstName.toLowerCase().includes(isSearch.toLowerCase()) ||
+//     item.lastName.toLowerCase().includes(isSearch.toLowerCase());
+
+//   const matchesBirthDate = birthDateFilter
+//     ? filterDate &&
+//       {
+//         Equal_to: itemDate.toDateString() === filterDate.toDateString(),
+//         Greater_than: itemDate > filterDate,
+//         Less_than: itemDate < filterDate,
+//       }[dateComparison] // dateComparison should be the value of your select dropdown
+//     : true;
+
+//   return matchesName && matchesBirthDate;
+// });
+
+// const handleNextPage = () => {
+//   if (currentPage < Math.ceil(data.length / rowsPerPage)) {
+//     setCurrentPage(currentPage + 1);
+//   }
+// };
+
+// const handlePreviousPage = () => {
+//   if (currentPage > 1) {
+//     setCurrentPage(currentPage - 1);
+//   }
+// };
+
+//   const indexOfLastStudent = currentPage * rowsPerPage;
+//   const indexOfFirstStudent = indexOfLastStudent - rowsPerPage;
+//   const currentStudents = filteredData.slice(
+//     indexOfFirstStudent,
+//     indexOfLastStudent
+//   );
+
+// const handleOpenModalForEdit = (studentData: Student) => {
+//   setStudentDataToEdit(studentData);
+//   setShowModal(true);
+// };
+
+// const handleDeleteClick = (id: string) => {
+//   setStudentIdToDelete(id);
+//   setShowDeleteModal(true);
+// };

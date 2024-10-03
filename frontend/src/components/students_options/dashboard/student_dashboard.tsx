@@ -6,15 +6,13 @@ import InfoFlowChart from "./widget/info_flowchart";
 import spin from "../../../assets/images/loading.png";
 import "react-datepicker/dist/react-datepicker.css";
 import LogoutModal from "../../modal/logout_modal";
-
-// import { getCookie } from "../../../utils/cookieUtils";
 import { useTranslation } from "react-i18next";
 
 interface Student {
   firstName: string;
   lastName: string;
   birthDate: string;
-  [key: string]: any; // In case there are other properties you're not listing here
+  [key: string]: any;
 }
 
 interface StudentsDataProps {
@@ -35,7 +33,14 @@ const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
   const [dateComparison, setDateComparison] = useState<string>("Equal_to");
 
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  // const [closeSideBar, setCloseSideBar] = useState(true);
+
+  // MODAL STATE
+  const [showModal, setShowModal] = useState(false);
+
+  const handleAddStudent = (studentData: any) => {
+    console.log("Student Added:", studentData);
+    setShowModal(false); // Close the modal after confirming
+  };
 
   const handleLogout = () => {
     console.log("User has logged out");
@@ -75,8 +80,6 @@ const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // const token = getCookie("authToken");
-
       try {
         const response = await axios.get(
           "https://taxiapp.easybooks.me:8283/Student/GetAll",
@@ -88,11 +91,9 @@ const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
           }
         );
         setData(response.data);
-        // setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
         setError("Failed to fetch data");
-        // setLoading(false);
       }
     };
 
@@ -101,14 +102,6 @@ const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
     }
     fetchData();
   }, [lang, i18n]);
-
-  // if (loading)
-  //   return (
-  //     <div className="flex items-center justify-center mx-auto">
-  //       <img src={spin} alt={spin} className="w-14 h-14 animate-spin" />
-  //     </div>
-  //   );
-  // if (error) return <p>{error}</p>;
 
   const handleRowsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setRowsPerPage(Number(e.target.value));
@@ -145,12 +138,15 @@ const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
 
   return (
     <div className="w-full ">
-      <InfoFlowChart />
+      {/* Modal Button */}
+
+      {/* Rest of your dashboard */}
+      {/* <InfoFlowChart /> */}
       <div className="bg-darkColor  rounded-xl xl:mx-8 p-20 xl:px-32 px-5 drop-shadow-md">
-        {/* UpperDashboard ==========================================*/}
+        {/* UpperDashboard */}
         <UpperDashboard lang={lang} />
         <div className="bg-gray-200 h-0.5 rounded-full mb-6" />
-        {/* TableDashboard ==========================================*/}
+        {/* TableDashboard */}
         <TableDashboard lang={lang} />
         <div className="bg-gray-200 h-1 my-6" />
 
@@ -218,6 +214,8 @@ const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
             </button>
           </div>
         </div>
+
+        {/* Logout Modal */}
         {showLogoutModal && (
           <LogoutModal
             show={showLogoutModal}

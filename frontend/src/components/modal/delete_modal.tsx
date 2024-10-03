@@ -22,7 +22,7 @@ const DeleteModal: React.FC<AddDeleteModalProps> = ({
   if (!show) return null;
 
   return (
-    <div className="absolute inset-0 flex justify-center items-start pt-96 bg-black bg-opacity-50 z-50">
+    <div className="absolute inset-0 flex justify-center items-start pt-80 bg-black bg-opacity-50 z-50">
       <div className="bg-white rounded-lg overflow-hidden w-full max-w-2xl min-h-1/4">
         <div className="bg-red-500 p-4 flex justify-center rounded-b-lg h-52">
           <img src={warning} alt="Warning" className="p-10" />
