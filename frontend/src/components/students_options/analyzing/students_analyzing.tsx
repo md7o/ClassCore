@@ -1,5 +1,6 @@
 import CollegeStudentsMajors from "./widget/college_students_majors";
 import StudentsCountries from "./widget/students_countries";
+import TotalStudents from "./widget/total_students";
 
 interface analyzingLanguage {
   lang: string;
@@ -14,7 +15,7 @@ const StudentsAnalyzing: React.FC<analyzingLanguage> = ({ lang }) => {
       <div className="flex justify-center items-center gap-3 py-3 w-full px-24">
         <StudentsCountries />
         <StudentsCountries />
-        <StudentsCountries />
+        <TotalStudents />
       </div>
     </div>
   );

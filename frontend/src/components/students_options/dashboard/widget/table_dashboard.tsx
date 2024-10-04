@@ -32,6 +32,8 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
   const [studentIdToDelete, setStudentIdToDelete] = useState<string | null>(
     null
   );
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   // =========DELTE MODAL==========
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -145,12 +147,23 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
         setUsers(data);
       } catch (error) {
         console.error("Error fetching users:", error);
+        setError("Error fetching users: " + (error as Error).message);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchUsers();
   }, []);
 
+  if (loading)
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
+        <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin"></div>
+      </div>
+    );
+  if (error)
+    return <div className=" text-white text-3xl text-center">{error}</div>;
   return (
     <div>
       {/* ====EDIT MODAL==== */}

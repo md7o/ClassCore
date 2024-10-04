@@ -227,7 +227,8 @@ const GeneralCourses: React.FC<CoursesLanguage> = ({ lang }) => {
         <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin"></div>
       </div>
     );
-  if (error) return <div>{error}</div>;
+  if (error)
+    return <div className=" text-white text-3xl text-center">{error}</div>;
 
   return (
     <div
