@@ -1,10 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import AddModal from "../../../modal/add_modal";
 import axios from "axios";
-import spin from "../../../assets/images/loading.png";
-
-// import university from "../../../assets/images/school.png";
-// import StudentsData from "../student_dashboard";
 
 interface Student {
   _id?: string;
@@ -12,6 +8,7 @@ interface Student {
   birth: string;
   college: string;
   country: string;
+  status: string;
   phone: string;
 }
 
@@ -29,6 +26,7 @@ const initialFormData: Student = {
   birth: "",
   college: "",
   country: "",
+  status: "",
   phone: "",
 };
 
@@ -40,7 +38,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
   onEditStudent,
   studentDataToEdit,
 }) => {
-  const [countries, setCountries] = useState<any[]>([]); // To store countries
+  const [countries, setCountries] = useState<any[]>([]);
   const [formData, setFormData] = useState<Student>(initialFormData);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -71,6 +69,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
         birth: studentDataToEdit.birth,
         college: studentDataToEdit.college,
         country: studentDataToEdit.country,
+        status: studentDataToEdit.status,
         phone: studentDataToEdit.phone,
       });
     } else {
@@ -89,7 +88,14 @@ const AddStudents: React.FC<AddStudentsProps> = ({
   };
 
   const validateForm = () => {
-    const requiredFields = ["name", "birth", "college", "country", "phone"];
+    const requiredFields = [
+      "name",
+      "birth",
+      "college",
+      "country",
+      "status",
+      "phone",
+    ];
     const newErrors = requiredFields.reduce((acc, field) => {
       if (!formData[field as keyof Student]) {
         acc[field] = "This field is required";
@@ -114,6 +120,25 @@ const AddStudents: React.FC<AddStudentsProps> = ({
 
   if (!showModal) return null;
 
+  const educationMajors = [
+    { name: "Computer Science" },
+    { name: "Mechanical Engineering" },
+    { name: "Business Administration" },
+    { name: "Electrical Engineering" },
+    { name: "Psychology" },
+    { name: "English" },
+    { name: "Environmental Science" },
+    { name: "Fine Arts" },
+  ];
+  const studentStatus = [
+    { name: "Year 1" },
+    { name: "Year 2" },
+    { name: "Year 3" },
+    { name: "Year 4" },
+    { name: "Year 5" },
+    { name: "Graduate" },
+  ];
+
   return (
     <AddModal show={showModal} onClose={handleCloseModal}>
       <h2 className="text-3xl text-center my-10 text-white">
@@ -125,8 +150,9 @@ const AddStudents: React.FC<AddStudentsProps> = ({
       >
         {renderInput("Name", "name")}
         {renderInput("Date of Birth", "birth", "date")}
-        {renderInput("College Major", "college")}
+        {renderInput("College Major", "college", "select", educationMajors)}
         {renderInput("Country", "country", "select", countries)}
+        {renderInput("Status", "status", "select", studentStatus)}
         {renderInput("Phone", "phone")}
         <div className="col-span-2 flex justify-end">
           <button
@@ -140,18 +166,25 @@ const AddStudents: React.FC<AddStudentsProps> = ({
     </AddModal>
   );
 
-  // Render input fields
   function renderInput(
     label: string,
     name: keyof Student,
     type: string = "text",
     options?: any[]
   ) {
+    const handleWrapperClick = (e: React.MouseEvent<HTMLDivElement>) => {
+      const input = e.currentTarget.querySelector("input") as HTMLInputElement;
+      if (input && type === "date") {
+        input.showPicker();
+      }
+    };
+
     return (
-      <div>
+      <div onClick={handleWrapperClick}>
         <label className="block text-gray-400 font-medium text-sm py-2 tracking-[1.5px]">
           {label}
         </label>
+
         {type === "select" ? (
           <select
             name={name}
@@ -164,8 +197,16 @@ const AddStudents: React.FC<AddStudentsProps> = ({
             <option value="">Select {label.toLowerCase()}</option>
             {options?.map((option) => (
               <option
-                key={option.code}
-                value={option.code}
+                key={
+                  name === "country"
+                    ? ` ${option.flag} ${option.name}`
+                    : `${option.name}`
+                }
+                value={
+                  name === "country"
+                    ? ` ${option.flag} ${option.name}`
+                    : `${option.name}`
+                }
                 className="flex items-center"
               >
                 <span>{option.flag}</span>

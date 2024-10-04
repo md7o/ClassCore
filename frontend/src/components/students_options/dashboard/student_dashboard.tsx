@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import UpperDashboard from "./widget/upper_dashboard";
 import TableDashboard from "./widget/table_dashboard";
-import InfoFlowChart from "./widget/info_flowchart";
-import spin from "../../../assets/images/loading.png";
 import "react-datepicker/dist/react-datepicker.css";
 import LogoutModal from "../../modal/logout_modal";
 import { useTranslation } from "react-i18next";

@@ -4,6 +4,7 @@ import LoginPage from "./pages/login_page";
 import DashboardPage from "./pages/dashboard_page";
 import EventsPage from "./pages/events_page";
 import CoursesPage from "./pages/courses_page";
+import AnalyzingPage from "./pages/analyzing_page";
 import SubjectsCourse from "./components/students_options/courses/course_subjects";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/events" element={<EventsPage />} />
         <Route path="/courses" element={<CoursesPage />} />
+        <Route path="/analyzing" element={<AnalyzingPage />} />
         <Route path="/students/subjects_course" element={<SubjectsCourse />} />
         {/* <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<Navigate to="/login" replace />} /> */}

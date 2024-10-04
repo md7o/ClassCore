@@ -4,6 +4,7 @@ import dashboardIcon from "../../assets/images/dashboard.png";
 import event from "../../assets/images/event.png";
 import openBook from "../../assets/images/open-book.png";
 import metro from "../../assets/images/metro.jpg";
+import presentation from "../../assets/images/presentation.png";
 import logout from "../../assets/images/logout.png";
 import LogoutModal from "../modal/logout_modal";
 import "../../App.css";
@@ -46,6 +47,11 @@ const SideBar: React.FC<SideBarProps> = ({
       icon: openBook,
       name: language === "en" ? "Courses" : "الدورات",
       route: "/courses",
+    },
+    {
+      icon: presentation,
+      name: language === "en" ? "Students Analyzing" : "تحليل الطلاب",
+      route: "/analyzing",
     },
   ];
 

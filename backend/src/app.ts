@@ -55,7 +55,7 @@ app.get("/users/:id", async (req: Request, res: Response) => {
 // ====POST USER ENDPOINT====
 app.post("/users", async (req: Request, res: Response) => {
   try {
-    const { name, birth, college, country, phone } = req.body; // Get data from request body
+    const { name, birth, college, country, status, phone } = req.body; // Get data from request body
 
     const formattedBirth = moment(birth).format("MM/DD/YYYY");
 
@@ -64,6 +64,7 @@ app.post("/users", async (req: Request, res: Response) => {
       birth: formattedBirth,
       college,
       country,
+      status,
       phone,
     });
 

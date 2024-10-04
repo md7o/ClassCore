@@ -13,6 +13,7 @@ interface Student {
   birth: string;
   country: string;
   college: string;
+  status: string;
   phone: string;
 }
 
@@ -75,12 +76,6 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
     null
   );
 
-  const handleOpenModal = () => {
-    setIsEditMode(false); // Set to false if adding a new student
-    setShowModal(true);
-    setStudentDataToEdit(null); // Ensure no data is set when adding a new student
-  };
-
   const handleEditStudent = (id: string) => {
     const studentToEdit = users.find((user) => user._id === id);
 
@@ -117,6 +112,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
           )
         );
 
+        window.location.reload();
         setShowModal(false); // Close the modal after editing
         setStudentDataToEdit(null); // Reset the student data
       } else {
@@ -132,6 +128,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
     { label: t("Date_of_Birth"), key: "birth" },
     { label: t("Country"), key: "country" },
     { label: t("College Major"), key: "college" },
+    { label: t("Status"), key: "status" },
     { label: t("Phone"), key: "phone" },
     { label: t("Actions"), key: "actions" },
   ];
@@ -206,6 +203,9 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap text-gray-900">
                   {row.college}
+                </td>
+                <td className="px-6 py-3 whitespace-nowrap text-gray-900">
+                  {row.status}
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap text-gray-900">
                   {row.phone}

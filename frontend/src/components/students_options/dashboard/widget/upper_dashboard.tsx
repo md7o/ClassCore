@@ -14,6 +14,7 @@ interface Student {
   birth: string;
   college: string;
   country: string;
+  status: string;
   phone: string;
 }
 

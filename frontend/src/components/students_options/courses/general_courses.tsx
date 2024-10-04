@@ -1,4 +1,5 @@
-import { useNavigate, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import university from "../../../assets/images/school.png";
 import desktop from "../../../assets/images/desktop.png";
 import engineering from "../../../assets/images/engineering.png";
@@ -19,23 +20,20 @@ type Major = {
   name: string;
   imageUrl: string;
   subjects: Subject[];
+  studentsCount: number;
 };
 
-interface coursesLanguage {
+interface User {
+  college: string;
+}
+
+interface CoursesLanguage {
   lang: string;
 }
 
-const totalStudents = 200; // Total number of students
-const studentsPerSpecialty = [65, 5, 50, 15, 15, 20, 10, 20]; // Number of students in each specialty
-
-const GeneralCourses: React.FC<coursesLanguage> = ({ lang }) => {
-  const navigate = useNavigate();
-
-  const handleNavigateClick = (major: Major) => {
-    navigate("/students/subjects_course", { state: { major } });
-  };
-
-  const majors: Major[] = [
+const GeneralCourses: React.FC<CoursesLanguage> = ({ lang }) => {
+  const [users, setUsers] = useState<User[]>([]);
+  const [majors, setMajors] = useState<Major[]>([
     {
       name: lang === "en" ? "Computer Science" : "علوم الحاسب",
       imageUrl: desktop,
@@ -53,6 +51,7 @@ const GeneralCourses: React.FC<coursesLanguage> = ({ lang }) => {
         { name: "Web Development", hours: 3, doctor: "Doctor G" },
         { name: "Cybersecurity", hours: 4, doctor: "Doctor H" },
       ],
+      studentsCount: 0,
     },
     {
       name: lang === "en" ? "Mechanical Engineering" : "هندسة ميكانيكية",
@@ -67,6 +66,7 @@ const GeneralCourses: React.FC<coursesLanguage> = ({ lang }) => {
         { name: "Engineering Materials", hours: 8, doctor: "Doctor G" },
         { name: "Manufacturing Processes", hours: 3, doctor: "Doctor H" },
       ],
+      studentsCount: 0,
     },
     {
       name: lang === "en" ? "Business Administration" : "إدارة أعمال",
@@ -81,6 +81,7 @@ const GeneralCourses: React.FC<coursesLanguage> = ({ lang }) => {
         { name: "Strategic Management", hours: 8, doctor: "Doctor G" },
         { name: "Entrepreneurship", hours: 3, doctor: "Doctor H" },
       ],
+      studentsCount: 0,
     },
     {
       name: lang === "en" ? "Electrical Engineering" : "الهندسة الكهربائية",
@@ -95,6 +96,7 @@ const GeneralCourses: React.FC<coursesLanguage> = ({ lang }) => {
         { name: "Analog Electronics", hours: 4, doctor: "Doctor G" },
         { name: "Renewable Energy Systems", hours: 3, doctor: "Doctor H" },
       ],
+      studentsCount: 0,
     },
     {
       name: lang === "en" ? "Psychology" : "علم النفس",
@@ -117,6 +119,7 @@ const GeneralCourses: React.FC<coursesLanguage> = ({ lang }) => {
           doctor: "Doctor H",
         },
       ],
+      studentsCount: 0,
     },
     {
       name: lang === "en" ? "English" : "لغة انجليزية",
@@ -135,6 +138,7 @@ const GeneralCourses: React.FC<coursesLanguage> = ({ lang }) => {
         },
         { name: "Modern Poetry", hours: 3, doctor: "Doctor H" },
       ],
+      studentsCount: 0,
     },
     {
       name: lang === "en" ? "Environmental Science" : "العلوم البيئية",
@@ -157,6 +161,7 @@ const GeneralCourses: React.FC<coursesLanguage> = ({ lang }) => {
         },
         { name: "Natural Resource Management", hours: 3, doctor: "Doctor H" },
       ],
+      studentsCount: 0,
     },
     {
       name: lang === "en" ? "Fine Arts" : "الفنون الجميلة",
@@ -171,8 +176,58 @@ const GeneralCourses: React.FC<coursesLanguage> = ({ lang }) => {
         { name: "Ceramics", hours: 4, doctor: "Doctor G" },
         { name: "Contemporary Art Theory", hours: 4, doctor: "Doctor H" },
       ],
+      studentsCount: 0,
     },
-  ];
+  ]);
+
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const navigate = useNavigate();
+
+  const totalStudents = users.length;
+
+  const handleNavigateClick = (major: Major) => {
+    navigate("/students/subjects_course", { state: { major } });
+  };
+
+  useEffect(() => {
+    // Fetch the users
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/users");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data: User[] = await response.json();
+        setUsers(data);
+
+        // Calculate students per specialty
+        const updatedMajors = majors.map((major) => ({
+          ...major,
+          studentsCount: data.filter((user) => user.college === major.name)
+            .length,
+        }));
+
+        setMajors(updatedMajors);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        setError("Error fetching users: " + (error as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, [majors]); // Re-run when `lang` changes to update `majors` accordingly
+
+  if (loading)
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
+        <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin"></div>
+      </div>
+    );
+  if (error) return <div>{error}</div>;
 
   return (
     <div
@@ -180,19 +235,19 @@ const GeneralCourses: React.FC<coursesLanguage> = ({ lang }) => {
       style={{ direction: lang === "en" ? "ltr" : "rtl" }}
     >
       <div>
-        {/* Courses Card */}
+        {/* ========CoursesCard======== */}
         <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-3 sm:justify-center justify-stretch text-white rounded-xl ">
-          {majors.map((items, index) => (
+          {majors.map((major, index) => (
             <div
               key={index}
-              className={`flex flex-col justify-center items-center bg-darkColor rounded-xl py-20  space-y-5 ${
+              className={`flex flex-col justify-center items-center bg-darkColor rounded-xl py-20 space-y-5 ${
                 lang === "en" ? "2.8xl:px-12 px-5" : "2.8xl:px-16 px-5"
               }`}
             >
-              <img src={items.imageUrl} alt={university} className="w-24" />
-              <p className="sm:text-lg text-xl">{items.name}</p>
+              <img src={major.imageUrl} alt={university} className="w-24" />
+              <p className="sm:text-lg text-xl">{major.name}</p>
               <button
-                onClick={() => handleNavigateClick(items)}
+                onClick={() => handleNavigateClick(major)}
                 className="group bg-background text-xl px-10 py-1.5 rounded-lg shadowing hover:bg-primary duration-300"
               >
                 <p className="text-white opacity-60 group-hover:opacity-100 duration-200">
@@ -202,72 +257,36 @@ const GeneralCourses: React.FC<coursesLanguage> = ({ lang }) => {
             </div>
           ))}
         </div>
-        {/* Most registered  */}
-        <div className=" bg-darkColor rounded-xl mt-5 pb-5 text-white">
+
+        {/* ========MostRegistered======== */}
+        <div className="bg-darkColor rounded-xl my-5 pb-5 text-white">
           <p className="text-3xl p-5">
-            {lang === "en" ? "Most registered courses" : "أكثر الدورات المسجلة"}
+            {lang === "en" ? "Most Registered Courses" : "أكثر الدورات المسجلة"}
           </p>
-          {majors.map((items, index) => {
+          {majors.map((major, index) => {
             const percentage =
-              (studentsPerSpecialty[index] / totalStudents) * 100;
+              totalStudents > 0
+                ? (major.studentsCount / totalStudents) * 100
+                : 0;
+
             return (
               <div
                 key={index}
-                className="flex flex-row md:justify-start justify-between items-center space-x-6 py-5 px-14 "
+                className="flex flex-row md:justify-start justify-between items-center space-x-6 py-5 px-14"
               >
-                <p className="text-lg w-52">{items.name}</p>
+                <p className="text-lg w-52">{major.name}</p>
                 <div className="md:block hidden flex-1 h-6 bg-gray-300 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-primary rounded-full"
                     style={{ width: `${percentage}%` }}
                   />
                 </div>
-                <p className="md:text-base  text-xl ">
+                <p className="md:text-base text-xl">
                   {Math.round(percentage)}%
                 </p>
               </div>
             );
           })}
-        </div>
-        {/* Countries Percentage Mobile Statue */}
-        <div className="2.8xl:hidden block mx-2 w-full bg-darkColor rounded-roundedButt">
-          <p className="m-6 pt-10 text-white text-2xl">
-            {lang === "en" ? "Student nationality ratio" : "نسبة جنسيات الطلاب"}
-          </p>
-          <div className="space-y-5">
-            <div className="flex justify-between items-center mx-10">
-              <div className="flex justify-center items-center gap-5 hover:scale-95 duration-700 cursor-default ">
-                <div className="w-5 h-5 bg-red-500 rounded-full" />
-                <div>
-                  <p className="text-white opacity-50 text-xl">Events Laeder</p>
-                  <p className="text-white text-xl">10% </p>
-                </div>
-              </div>
-              <p className="text-white text-2xl">62</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* Countries Percentage */}
-      <div
-        className={`2.5xl:block hidden w-1/4 bg-darkColor rounded-roundedButt ${
-          lang === "en" ? "mr-10" : "mr-0"
-        }`}
-      >
-        <p className="m-6 text-white text-2xl">
-          {lang === "en" ? "Student nationality ratio" : "نسبة جنسيات الطلاب"}
-        </p>
-        <div className="space-y-5">
-          <div className="flex justify-between items-center mx-10">
-            <div className="flex justify-center items-center gap-5 hover:scale-95 duration-700 cursor-default ">
-              <div className="w-5 h-5 bg-red-500 rounded-full" />
-              <div>
-                <p className="text-white opacity-50 text-xl">Events Laeder</p>
-                <p className="text-white text-xl">10% </p>
-              </div>
-            </div>
-            <p className="text-white text-2xl">62</p>
-          </div>
         </div>
       </div>
     </div>

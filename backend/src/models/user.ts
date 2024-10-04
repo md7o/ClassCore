@@ -6,6 +6,7 @@ interface IUser extends Document {
   birth: Date;
   college: string;
   country: string;
+  status: string;
   phone: string; // Change to string to handle phone numbers better
 }
 
@@ -16,9 +17,10 @@ const userSchema = new Schema<IUser>(
     birth: { type: Date, required: true },
     college: { type: String, required: true },
     country: { type: String, required: true },
-    phone: { type: String, required: true }, // Change to String
+    status: { type: String, required: true },
+    phone: { type: String, required: true },
   },
-  { timestamps: true } // Automatically manage createdAt and updatedAt fields
+  { timestamps: true }
 );
 
 //====CREATE AND EXPORT THE MODEL====

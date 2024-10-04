@@ -34,9 +34,9 @@ const AppBar: React.FC<AppBarProps> = ({
   };
 
   return (
-    <div className="my-3 mb-14">
+    <div className="mb-24 relative z-50">
       <div
-        className="flex justify-between items-center"
+        className="flex justify-between items-center xl:static xl:bg-transparent bg-darkColor bg-opacity-55 fixed w-full"
         style={{ direction: language === "en" ? "ltr" : "rtl" }}
       >
         <div className="flex justify-center items-center">
@@ -44,14 +44,14 @@ const AppBar: React.FC<AppBarProps> = ({
           <p
             className={`p-4 sm:mx-2 mx-0 font-bold flex justify-between items-center ${
               language === "ar"
-                ? "xl:text-4xl pr-10 text-white"
-                : "xl:text-3xl text-white"
+                ? "xl:text-4xl  text-white text-2xl"
+                : "xl:text-4xl text-white text-2xl"
             }`}
           >
             {getPageTitle()}
           </p>
         </div>
-        <div className="sm:px-10 px-2">
+        <div className={`sm:px-10 px-2`}>
           <DropDownButton onLanguageChange={handleLanguageChange} />
         </div>
       </div>
