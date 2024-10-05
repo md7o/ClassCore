@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FaEarthAmericas } from "react-icons/fa6";
+import { FaUserGraduate } from "react-icons/fa";
 
 interface Student {
   _id?: string;
@@ -7,10 +7,11 @@ interface Student {
   birth: string;
   college: string;
   country: string;
+  status: string;
   phone: string;
 }
 
-const StudentsCountries = () => {
+const GraduateStudents = () => {
   const [users, setUsers] = useState<Student[]>([]);
 
   // ====FETCH USER====
@@ -27,35 +28,38 @@ const StudentsCountries = () => {
     fetchUser();
   });
 
-  const countryCounts = users.reduce((acc, user) => {
-    acc[user.country] = (acc[user.country] || 0) + 1;
-    return acc;
-  }, {} as { [key: string]: number });
+  const graduateStudents = users.filter((user) => user.status === "Graduate");
 
   return (
     <div className="bg-darkColor rounded-lg lg:w-2/3 w-full h-smallHplus p-5">
-      <p className="text-white text-2xl p-5 flex gap-2 items-center">
-        <FaEarthAmericas />
-        Students Countries
+      <p className="text-white text-2xl p-5 flex items-center gap-2">
+        <FaUserGraduate />
+        List of Graduates
       </p>
       {/* Scrollable section */}
-      <div className="max-h-96 overflow-y-auto">
-        {Object.entries(countryCounts).map(([country, count], index) => {
-          return (
+      <div className="max-h-96 overflow-y-auto ">
+        {graduateStudents.length > 0 ? (
+          graduateStudents.map((student, index) => (
             <div
               className="flex justify-between items-center py-3 border-b border-white border-opacity-15"
               key={index}
             >
-              <p className="text-white lg:text-2xl text-xl px-5 ">{country}</p>
-              <p className="text-white lg:text-2xl px-5 ">
-                {count === 1 ? count + " Student" : count + " Students"}
+              <p className="text-white lg:text-2xl text-lg px-5">
+                {index + 1}- {student.name}
+              </p>
+              <p className="text-white font-bold lg:text-2xl px-5">
+                {student.status}
               </p>
             </div>
-          );
-        })}
+          ))
+        ) : (
+          <p className="text-white text-2xl px-5">
+            There is no graduate student
+          </p>
+        )}
       </div>
     </div>
   );
 };
 
-export default StudentsCountries;
+export default GraduateStudents;

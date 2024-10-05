@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { IoStatsChart } from "react-icons/io5";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -58,8 +59,11 @@ const CollegeStudentsMajors = () => {
   };
 
   return (
-    <div className="bg-darkColor rounded-lg w-full p-5">
-      <p className="text-white text-2xl pb-10 pt-2">College Students Majors</p>
+    <div className="bg-darkColor rounded-lg md:w-4/5 w-full md:p-5 p-2">
+      <p className="text-white text-2xl pb-10 pt-2 flex items-center gap-2">
+        <IoStatsChart />
+        College Students Majors
+      </p>
 
       <div className="h-96">
         <Bar

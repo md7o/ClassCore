@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { RiDonutChartFill } from "react-icons/ri";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
@@ -62,8 +63,11 @@ const TotalStudents = () => {
   };
 
   return (
-    <div className="bg-darkColor rounded-lg w-2/3 h-smallHplus p-5">
-      <p className="text-white text-2xl pb-2 pt-2">College Students Majors</p>
+    <div className="bg-darkColor rounded-lg lg:w-2/3 w-full h-smallHplus p-5">
+      <p className="text-white text-2xl pb-2 pt-2 flex items-center gap-2">
+        <RiDonutChartFill />
+        Total Students
+      </p>
 
       <div className="h-96">
         <Pie
