@@ -1,5 +1,7 @@
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import bin from "../../../../assets/images/trash.png";
+import { FaList } from "react-icons/fa";
 import pencil from "../../../../assets/images/pen.png";
 import "react-datepicker/dist/react-datepicker.css";
 import DeleteModal from "../../../modal/delete_modal";
@@ -26,7 +28,10 @@ interface StudentsTableDataProps {
   lang: string;
 }
 
-const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
+const TableDashboard: React.FC<StudentsTableDataProps> = (
+  { lang },
+  { Student }
+) => {
   const { t, i18n } = useTranslation();
   const [users, setUsers] = useState<any[]>([]);
   const [studentIdToDelete, setStudentIdToDelete] = useState<string | null>(
@@ -34,6 +39,12 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
   );
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handleUserClick = (userId: string) => {
+    navigate(`/user_setting_page/${userId}`);
+  };
+
   // =========DELTE MODAL==========
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -224,16 +235,22 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
                   {row.phone}
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap text-gray-900">
-                  <div className="flex gap-3 w-16">
+                  <div className="flex gap-3 ">
                     <button
-                      className="text-blue-500 hover:text-blue-700 hover:scale-95 hover:brightness-75 duration-300"
+                      className="text-white bg-green-500 w-6 h-6 p-1 flex justify-center items-center rounded-full hover:text-gray-300 hover:scale-95 hover:brightness-75 duration-300"
+                      onClick={() => handleUserClick(row._id)}
+                    >
+                      <FaList />
+                    </button>
+                    <button
+                      className="text-blue-500 hover:text-blue-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
                       onClick={() => handleEditStudent(row._id)}
                     >
                       <img src={pencil} alt="edit" />
                     </button>
 
                     <button
-                      className="text-red-500 hover:text-red-700 hover:scale-95 hover:brightness-75 duration-300"
+                      className="text-red-500 hover:text-red-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
                       onClick={() => handleDeleteClick(row._id)}
                     >
                       <img src={bin} alt="delete" />
@@ -263,18 +280,22 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
                     </p>
                     <p className="text-white font-light md:text-lg">
                       {header.key === "actions" ? (
-                        <div className="flex gap-3">
-                          <button
-                            className="text-blue-500 hover:text-blue-700 hover:scale-95 hover:brightness-75 duration-300"
-                            onClick={() => handleEditStudent(row._id)}
-                          >
-                            <img src={pencil} alt="edit" className="w-5 h-5" />
+                        <div className="flex gap-3 ">
+                          <button className="text-white bg-green-500 w-6 h-6 p-1 flex justify-center items-center rounded-full hover:text-gray-300 hover:scale-95 hover:brightness-75 duration-300">
+                            <FaList />
                           </button>
                           <button
-                            className="text-red-500 hover:text-red-700 hover:scale-95 hover:brightness-75 duration-300"
+                            className="text-blue-500 hover:text-blue-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
+                            onClick={() => handleEditStudent(row._id)}
+                          >
+                            <img src={pencil} alt="edit" />
+                          </button>
+
+                          <button
+                            className="text-red-500 hover:text-red-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
                             onClick={() => handleDeleteClick(row._id)}
                           >
-                            <img src={bin} alt="delete" className="w-5 h-5" />
+                            <img src={bin} alt="delete" />
                           </button>
                         </div>
                       ) : (

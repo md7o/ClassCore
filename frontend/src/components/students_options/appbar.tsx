@@ -34,7 +34,7 @@ const AppBar: React.FC<AppBarProps> = ({
   };
 
   return (
-    <div className="mb-24 relative z-50">
+    <div className="mb-24 relative z-40">
       <div
         className="flex justify-between items-center xl:static xl:bg-transparent bg-darkColor bg-opacity-55 fixed w-full"
         style={{ direction: language === "en" ? "ltr" : "rtl" }}

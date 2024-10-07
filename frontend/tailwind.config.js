@@ -20,6 +20,7 @@ module.exports = {
       width: {
         widthLine: "1px",
         mediumW: "300px",
+        large: "400px",
         biggW: "500px",
         hugeW: "600px",
         superW: "800px",
