@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import bin from "../../../../assets/images/trash.png";
+import bin from "../../../../../assets/images/trash.png";
 import { FaList } from "react-icons/fa";
-import pencil from "../../../../assets/images/pen.png";
+import pencil from "../../../../../assets/images/pen.png";
 import "react-datepicker/dist/react-datepicker.css";
-import DeleteModal from "../../../modal/delete_modal";
+import DeleteModal from "../../../../modal/delete_modal";
 import AddStudents from "./add_students";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
@@ -196,7 +196,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = (
       />
 
       {/* ====DESKTOP RESPONSE==== */}
-      <div className="lg:block hidden ">
+      <div className="2.5xl:block hidden ">
         <table className="w-full rounded-lg overflow-hidden ">
           <thead>
             <tr
@@ -264,7 +264,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = (
       </div>
 
       {/* ====MOBILE RESPONSE==== */}
-      <div className="lg:hidden block">
+      <div className="2.5xl:hidden block">
         {users.map((row, rowIndex) => (
           <div key={rowIndex}>
             <div className=" rounded-lg shadow-md md:px-14 px-0">
@@ -281,7 +281,10 @@ const TableDashboard: React.FC<StudentsTableDataProps> = (
                     <p className="text-white font-light md:text-lg">
                       {header.key === "actions" ? (
                         <div className="flex gap-3 ">
-                          <button className="text-white bg-green-500 w-6 h-6 p-1 flex justify-center items-center rounded-full hover:text-gray-300 hover:scale-95 hover:brightness-75 duration-300">
+                          <button
+                            onClick={() => handleUserClick(row._id)}
+                            className="text-white bg-green-500 w-6 h-6 p-1 flex justify-center items-center rounded-full hover:text-gray-300 hover:scale-95 hover:brightness-75 duration-300"
+                          >
                             <FaList />
                           </button>
                           <button
@@ -317,66 +320,3 @@ const TableDashboard: React.FC<StudentsTableDataProps> = (
 };
 
 export default TableDashboard;
-
-// const [isSearch, setIsSearch] = useState<string>("");
-// const [showModal, setShowModal] = useState(false);
-// const [studentDataToEdit, setStudentDataToEdit] = useState<Student | null>(
-//   null
-// );
-// const [showDeleteModal, setShowDeleteModal] = useState(false);
-// const [studentIdToDelete, setStudentIdToDelete] = useState<string | null>(
-//   null
-// );
-// const [rowsPerPage, setRowsPerPage] = useState<number>(25);
-// const [currentPage, setCurrentPage] = useState<number>(1);
-// const [birthDateFilter, setBirthDateFilter] = useState<Date | null>(null);
-// const [dateComparison, setDateComparison] = useState<string>("Equal_to");
-
-// const filteredData = data.filter((item) => {
-//   const itemDate = new Date(item.birthDate);
-//   const filterDate = birthDateFilter ? new Date(birthDateFilter) : null;
-
-//   const matchesName =
-//     item.firstName.toLowerCase().includes(isSearch.toLowerCase()) ||
-//     item.lastName.toLowerCase().includes(isSearch.toLowerCase());
-
-//   const matchesBirthDate = birthDateFilter
-//     ? filterDate &&
-//       {
-//         Equal_to: itemDate.toDateString() === filterDate.toDateString(),
-//         Greater_than: itemDate > filterDate,
-//         Less_than: itemDate < filterDate,
-//       }[dateComparison] // dateComparison should be the value of your select dropdown
-//     : true;
-
-//   return matchesName && matchesBirthDate;
-// });
-
-// const handleNextPage = () => {
-//   if (currentPage < Math.ceil(data.length / rowsPerPage)) {
-//     setCurrentPage(currentPage + 1);
-//   }
-// };
-
-// const handlePreviousPage = () => {
-//   if (currentPage > 1) {
-//     setCurrentPage(currentPage - 1);
-//   }
-// };
-
-//   const indexOfLastStudent = currentPage * rowsPerPage;
-//   const indexOfFirstStudent = indexOfLastStudent - rowsPerPage;
-//   const currentStudents = filteredData.slice(
-//     indexOfFirstStudent,
-//     indexOfLastStudent
-//   );
-
-// const handleOpenModalForEdit = (studentData: Student) => {
-//   setStudentDataToEdit(studentData);
-//   setShowModal(true);
-// };
-
-// const handleDeleteClick = (id: string) => {
-//   setStudentIdToDelete(id);
-//   setShowDeleteModal(true);
-// };

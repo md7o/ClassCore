@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import UpperDashboard from "./widget/upper_dashboard";
-import TableDashboard from "./widget/table_dashboard";
+import UpperDashboard from "./widget/widget_dashboard/upper_dashboard";
+import TableDashboard from "./widget/widget_dashboard/table_dashboard";
 import "react-datepicker/dist/react-datepicker.css";
 import LogoutModal from "../../modal/logout_modal";
 import { useTranslation } from "react-i18next";
@@ -136,11 +136,7 @@ const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
 
   return (
     <div className="w-full ">
-      {/* Modal Button */}
-
-      {/* Rest of your dashboard */}
-      {/* <InfoFlowChart /> */}
-      <div className="bg-darkColor  rounded-xl xl:mx-8 p-20 xl:px-32 px-5 drop-shadow-md">
+      <div className="bg-darkColor rounded-xl xl:mx-8 p-20 xl:px-32 px-5 ">
         {/* UpperDashboard */}
         <UpperDashboard lang={lang} />
         <div className="bg-gray-200 h-0.5 rounded-full mb-6" />

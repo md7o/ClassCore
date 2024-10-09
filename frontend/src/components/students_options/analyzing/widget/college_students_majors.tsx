@@ -19,7 +19,11 @@ interface Student {
   phone: string;
 }
 
-const CollegeStudentsMajors = () => {
+interface CoursesLanguage {
+  lang: string;
+}
+
+const CollegeStudentsMajors: React.FC<CoursesLanguage> = ({ lang }) => {
   const [users, setUsers] = useState<Student[]>([]);
 
   // ====FETCH USERS====
@@ -60,9 +64,15 @@ const CollegeStudentsMajors = () => {
 
   return (
     <div className="bg-darkColor rounded-lg md:w-4/5 w-full md:p-5 p-2">
-      <p className="text-white text-2xl pb-10 pt-2 flex items-center gap-2">
+      <p
+        className={`text-white text-2xl pb-10 pt-2  ${
+          lang === "en"
+            ? "flex flex-row justify-start"
+            : "flex flex-row-reverse justify-start"
+        } items-center gap-2`}
+      >
         <IoStatsChart />
-        College Students Majors
+        {lang === "en" ? "College Students Majors" : "تخصصات طلاب الكلية"}
       </p>
 
       <div className="h-96">

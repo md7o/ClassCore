@@ -16,7 +16,11 @@ interface Student {
   phone: string;
 }
 
-const TotalStudents = () => {
+interface CoursesLanguage {
+  lang: string;
+}
+
+const TotalStudents: React.FC<CoursesLanguage> = ({ lang }) => {
   const [users, setUsers] = useState<Student[]>([]);
 
   // ====FETCH USERS====
@@ -64,9 +68,15 @@ const TotalStudents = () => {
 
   return (
     <div className="bg-darkColor rounded-lg lg:w-2/3 w-full h-smallHplus p-5">
-      <p className="text-white text-2xl pb-2 pt-2 flex items-center gap-2">
+      <p
+        className={`text-white text-2xl pb-10 pt-2  ${
+          lang === "en"
+            ? "flex flex-row justify-start"
+            : "flex flex-row-reverse justify-start"
+        } items-center gap-2`}
+      >
         <RiDonutChartFill />
-        Total Students
+        {lang === "en" ? "Total Students" : "إجمالي الطلاب"}
       </p>
 
       <div className="h-96">

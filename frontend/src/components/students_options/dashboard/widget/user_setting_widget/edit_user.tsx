@@ -1,48 +1,47 @@
 import React, { useState, useEffect } from "react";
-import AddModal from "../../../modal/add_modal";
+import AddModal from "../../../../modal/add_modal";
 import axios from "axios";
 
 interface Student {
   _id?: string;
-  name: string;
-  birth: string;
-  college: string;
-  country: string;
-  status: string;
-  phone: string;
+  name?: string;
+  birth?: string;
+  college?: string;
+  country?: string;
+  status?: string;
+  phone?: string;
 }
 
-interface AddStudentsProps {
+interface EditStudentProps {
   showModal: boolean;
   handleCloseModal: () => void;
-  onAddStudent?: (studentData: Student) => void;
-  onEditStudent?: (updateData: Partial<Student>) => void;
-  isEditMode?: boolean;
+  onEditStudent: (updateData: Partial<Student>) => void;
   studentDataToEdit?: Student | null;
+  fieldsToShow: string[];
 }
 
-const initialFormData: Student = {
-  name: "",
-  birth: "",
-  college: "",
-  country: "",
-  status: "",
-  phone: "",
-};
-
-const AddStudents: React.FC<AddStudentsProps> = ({
+const EditStudent: React.FC<EditStudentProps> = ({
   showModal,
   handleCloseModal,
-  onAddStudent,
-  isEditMode = false,
   onEditStudent,
   studentDataToEdit,
+  fieldsToShow,
 }) => {
   const [countries, setCountries] = useState<any[]>([]);
-  const [formData, setFormData] = useState<Student>(initialFormData);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [formData, setFormData] = useState<Student>(
+    studentDataToEdit || {
+      _id: "",
+      name: "",
+      birth: "",
+      country: "",
+      college: "",
+      status: "",
+      phone: "",
+    }
+  );
 
-  // Fetch countries using REST Countries API
+  // ====Fetch Countries API====
   useEffect(() => {
     const fetchCountries = async () => {
       try {
@@ -54,28 +53,17 @@ const AddStudents: React.FC<AddStudentsProps> = ({
           code: country.cca2,
           flag: country.flag,
         }));
-        setCountries(countryData); // Set countries data
-        console.log("Fetched countries:", countryData); // Log the fetched countries
+        setCountries(countryData);
       } catch (error) {
         console.error("Error fetching countries:", error);
       }
     };
     fetchCountries();
 
-    // Set form data if editing
-    if (isEditMode && studentDataToEdit) {
-      setFormData({
-        name: studentDataToEdit.name,
-        birth: studentDataToEdit.birth,
-        college: studentDataToEdit.college,
-        country: studentDataToEdit.country,
-        status: studentDataToEdit.status,
-        phone: studentDataToEdit.phone,
-      });
-    } else {
-      setFormData(initialFormData);
+    if (studentDataToEdit) {
+      setFormData(studentDataToEdit);
     }
-  }, [isEditMode, studentDataToEdit]);
+  }, [studentDataToEdit]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -109,11 +97,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      if (isEditMode && onEditStudent) {
-        onEditStudent(formData); // Pass the updated data
-      } else if (onAddStudent) {
-        onAddStudent(formData); // Pass the new student data
-      }
+      onEditStudent(formData);
       handleCloseModal();
     }
   };
@@ -130,6 +114,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
     { name: "Environmental Science" },
     { name: "Fine Arts" },
   ];
+
   const studentStatus = [
     { name: "Year 1" },
     { name: "Year 2" },
@@ -137,29 +122,34 @@ const AddStudents: React.FC<AddStudentsProps> = ({
     { name: "Year 4" },
     { name: "Year 5" },
     { name: "Graduate" },
+    { name: "Suspend" },
+    { name: "Remote" },
+    { name: "Deprived" },
   ];
 
   return (
     <AddModal show={showModal} onClose={handleCloseModal}>
-      <h2 className="text-3xl text-center my-10 text-white">
-        {isEditMode ? "Edit Student" : "Add Student"}
-      </h2>
+      <h2 className="text-3xl text-center my-10 text-white">Edit Student</h2>
       <form
         className="flex flex-col cursor-auto xl:px-20 px-5"
         onSubmit={handleSubmit}
       >
-        {renderInput("Name", "name")}
-        {renderInput("Date of Birth", "birth", "date")}
-        {renderInput("College Major", "college", "select", educationMajors)}
-        {renderInput("Country", "country", "select", countries)}
-        {renderInput("Status", "status", "select", studentStatus)}
-        {renderInput("Phone", "phone")}
+        {fieldsToShow.includes("name") && renderInput("Name", "name")}
+        {fieldsToShow.includes("birth") &&
+          renderInput("Date of Birth", "birth", "date")}
+        {fieldsToShow.includes("college") &&
+          renderInput("College Major", "college", "select", educationMajors)}
+        {fieldsToShow.includes("country") &&
+          renderInput("Country", "country", "select", countries)}
+        {fieldsToShow.includes("status") &&
+          renderInput("Status", "status", "select", studentStatus)}
+        {fieldsToShow.includes("phone") && renderInput("Phone", "phone")}
         <div className="col-span-2 flex justify-end">
           <button
             type="submit"
             className="bg-gradient-to-r duration-500 from-primary to-purple-500 shadowing text-white w-full mx-14 py-4 my-10 rounded-xl"
           >
-            {isEditMode ? "Update Student" : "Add Student"}
+            Update Student
           </button>
         </div>
       </form>
@@ -181,7 +171,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
 
     return (
       <div onClick={handleWrapperClick}>
-        <label className="block text-gray-400 font-medium text-sm py-2 tracking-[1.5px]">
+        <label className=" block text-gray-400 font-medium text-sm py-2 tracking-[1.5px]">
           {label}
         </label>
 
@@ -200,17 +190,16 @@ const AddStudents: React.FC<AddStudentsProps> = ({
                 key={
                   name === "country"
                     ? ` ${option.flag} ${option.name}`
-                    : `${option.name}`
+                    : option.name
                 }
                 value={
                   name === "country"
                     ? ` ${option.flag} ${option.name}`
-                    : `${option.name}`
+                    : option.name
                 }
-                className="flex items-center"
               >
-                <span>{option.flag}</span>
-                <span>{option.name}</span>
+                {name === "country" && `${option.flag} `}
+                {option.name}
               </option>
             ))}
           </select>
@@ -231,4 +220,4 @@ const AddStudents: React.FC<AddStudentsProps> = ({
   }
 };
 
-export default AddStudents;
+export default EditStudent;

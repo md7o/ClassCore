@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
-import AddStudents from "./add_students";
-import search from "../../../../assets/images/search.png";
-import calendar from "../../../../assets/images/calendar.png";
-import plus from "../../../../assets/images/plus.png";
-import DeleteModal from "../../../modal/delete_modal";
+import AddStudents from "../widget_dashboard/add_students";
+import search from "../../../../../assets/images/search.png";
+import calendar from "../../../../../assets/images/calendar.png";
+import plus from "../../../../../assets/images/plus.png";
+import DeleteModal from "../../../../modal/delete_modal";
 import { useTranslation } from "react-i18next";
 
 interface Student {
@@ -76,11 +76,17 @@ const UpperDashboard: React.FC<StudentsDataProps> = ({ lang }) => {
 
   return (
     <div>
+      <AddStudents
+        showModal={showModal}
+        handleCloseModal={handleCloseModal}
+        onAddStudent={addStudent}
+        studentDataToEdit={studentDataToEdit}
+      />
       <div
         className={`mb-6 ${
           lang === "en"
-            ? "sm:flex sm:flex-row sm:items-center gap-3 flex flex-col items-start"
-            : "sm:flex sm:flex-row-reverse sm:items-center gap-3 flex flex-col items-end"
+            ? "2.5xl:flex 2.5xl:flex-row 2.5xl:items-center gap-3 flex flex-col items-start"
+            : "2xl:flex 2xl:flex-row-reverse 2xl:items-center gap-3 flex flex-col items-end"
         }`}
       >
         <div
@@ -97,15 +103,7 @@ const UpperDashboard: React.FC<StudentsDataProps> = ({ lang }) => {
             <img src={plus} alt="plus" className="w-4 ml-2 mr-4" />
             {t("Add_Student")}
           </button>
-
-          <AddStudents
-            showModal={showModal}
-            handleCloseModal={handleCloseModal}
-            onAddStudent={addStudent}
-            studentDataToEdit={studentDataToEdit}
-          />
         </div>
-
         <div className="flex justify-center items-center bg-background py-2.5 px-2 rounded-xl shadowing hover:bg-primary duration-300">
           <img src={calendar} alt="Calendar icon" className="w-7 mx-3" />
           <DatePicker
@@ -120,12 +118,14 @@ const UpperDashboard: React.FC<StudentsDataProps> = ({ lang }) => {
             className="border-transparent text-lg bg-transparent text-white focus:outline-none cursor-pointer w-28"
           />
         </div>
-
+        $
         <div className="relative">
           <img
             src={search}
             alt="Search icon"
-            className="absolute top-1/2 right-3 transform -translate-y-1/2 w-6"
+            className={`absolute top-1/2 ${
+              lang === "en" ? "right-3" : "left-3"
+            } transform -translate-y-1/2 w-6`}
           />
 
           <input
@@ -133,7 +133,9 @@ const UpperDashboard: React.FC<StudentsDataProps> = ({ lang }) => {
             value={isSearch}
             onChange={searchName}
             placeholder={t("search_place_holder")}
-            className="py-2 rounded-xl px-5 text-xl"
+            className={`py-2 rounded-xl px-5 text-xl ${
+              lang === "en" ? "text-left" : "text-right"
+            }`}
           />
         </div>
       </div>

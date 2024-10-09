@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 
 interface DropDownButtonProps {
@@ -12,6 +12,15 @@ const DropDownButton: React.FC<DropDownButtonProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("English");
 
+  // Load the language from localStorage on component mount
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("selectedLanguage");
+    if (savedLanguage) {
+      setSelectedLanguage(savedLanguage);
+      onLanguageChange(savedLanguage === "English" ? "en" : "ar");
+    }
+  }, [onLanguageChange]);
+
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -20,9 +29,10 @@ const DropDownButton: React.FC<DropDownButtonProps> = ({
     setSelectedLanguage(label);
     setIsOpen(false);
     setIsLoading(true);
-    if (!isLoading) {
-      setIsLoading(true);
-    }
+
+    // Save the selected language to localStorage
+    localStorage.setItem("selectedLanguage", label);
+
     setTimeout(() => {
       onLanguageChange(language);
       setIsLoading(false);
@@ -31,7 +41,6 @@ const DropDownButton: React.FC<DropDownButtonProps> = ({
 
   return (
     <div onClick={toggleDropdown} className="relative cursor-pointer">
-      {/* ========= Show loading <3======== */}
       {isLoading && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
           <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin"></div>
@@ -40,7 +49,6 @@ const DropDownButton: React.FC<DropDownButtonProps> = ({
 
       <div className="text-white xl:text-lg text-md min-w-28 px-4 py-2 hover:scale-95 duration-300 bg-primary rounded-lg flex justify-center items-center gap-2">
         <button>{selectedLanguage}</button>
-
         <IoIosArrowDown />
       </div>
 

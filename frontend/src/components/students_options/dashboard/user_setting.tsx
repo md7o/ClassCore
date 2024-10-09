@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import EditUserSetting from "./widget/user_setting_widget/edit_user_setting";
 import EditCollegeMajor from "./widget/user_setting_widget/edit_college_major";
 import EditUserStatu from "./widget/user_setting_widget/edit_user_statu";
+import { MdArrowBackIos } from "react-icons/md";
 
 interface Student {
   _id: string;
@@ -23,6 +24,10 @@ const UserSetting: React.FC<StudentsTableDataProps> = ({ lang }) => {
   const [user, setUser] = useState<Student | null>(null); // State to hold the user data
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState<string | null>(null); // Error state
+
+  const handleBackHistoryButton = () => {
+    window.history.back();
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -54,9 +59,9 @@ const UserSetting: React.FC<StudentsTableDataProps> = ({ lang }) => {
   }
 
   return (
-    <div>
+    <div className="">
       {user ? (
-        <div className="flex 2xl:flex-row flex-col justify-center items-center gap-2">
+        <div className=" flex 2xl:flex-row flex-col justify-center items-center gap-2">
           <EditUserSetting lang={lang} />
           <EditCollegeMajor lang={lang} />
           <EditUserStatu lang={lang} />
@@ -64,6 +69,14 @@ const UserSetting: React.FC<StudentsTableDataProps> = ({ lang }) => {
       ) : (
         <div className="text-white">No user data available.</div>
       )}
+      <div className="flex justify-center my-10">
+        <button
+          onClick={handleBackHistoryButton}
+          className="bg-primary rounded-lg px-16 py-2 text-white text-3xl flex justify-center items-center shadowing duration-200"
+        >
+          Back
+        </button>
+      </div>
     </div>
   );
 };

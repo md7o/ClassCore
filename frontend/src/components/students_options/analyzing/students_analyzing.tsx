@@ -10,13 +10,13 @@ const StudentsAnalyzing: React.FC<analyzingLanguage> = ({ lang }) => {
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="flex flex-col 2.5xl:flex 2.5xl:flex-row justify-center items-center gap-3 w-full lg:px-24">
-        <CollegeStudentsMajors />
-        <StudentsCountries />
+        <CollegeStudentsMajors lang={lang} />
+        <StudentsCountries lang={lang} />
       </div>
       <div className="flex flex-col 2.5xl:flex 2.5xl:flex-row justify-center items-center gap-3 py-3 w-full lg:px-24">
-        <GraduateStudents />
-        <StudentsCountries />
-        <TotalStudents />
+        <GraduateStudents lang={lang} />
+        <StudentsCountries lang={lang} />
+        <TotalStudents lang={lang} />
       </div>
     </div>
   );

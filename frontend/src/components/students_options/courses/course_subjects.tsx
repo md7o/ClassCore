@@ -16,7 +16,7 @@ const CourseSubjects: React.FC = () => {
   const { major } = location.state || {};
 
   if (!major) {
-    return <div className="text-white">No major selected</div>; // Handle case where no major is passed
+    return <div className="text-white">No major selected</div>;
   }
 
   return (
