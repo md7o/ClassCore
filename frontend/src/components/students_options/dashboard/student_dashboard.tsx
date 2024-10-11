@@ -36,13 +36,6 @@ const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
 
-  const [showModal, setShowModal] = useState(false);
-
-  const handleAddStudent = (studentData: any) => {
-    console.log("Student Added:", studentData);
-    setShowModal(false);
-  };
-
   const handleLogout = () => {
     console.log("User has logged out");
     setShowLogoutModal(false);
@@ -53,31 +46,6 @@ const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
   const handleLogoutClick = () => {
     setShowLogoutModal(true);
   };
-
-  // const filteredData = data.filter((item: Student) => {
-  //   const itemDate = new Date(item.birthDate);
-  //   const filterDate = birthDateFilter ? new Date(birthDateFilter) : null;
-
-  //   const matchesName =
-  //     item.firstName.toLowerCase().includes(isSearch.toLowerCase()) ||
-  //     item.lastName.toLowerCase().includes(isSearch.toLowerCase());
-
-  //   const matchesBirthDate = filterDate
-  //     ? {
-  //         Equal_to: itemDate.toDateString() === filterDate.toDateString(),
-  //         Greater_than: itemDate > filterDate,
-  //         Less_than: itemDate < filterDate,
-  //       }[dateComparison]
-  //     : true;
-
-  //   return matchesName && matchesBirthDate;
-  // });
-
-  useEffect(() => {
-    if (lang) {
-      i18n.changeLanguage(lang);
-    }
-  }, [lang, i18n]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,33 +77,9 @@ const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
     setCurrentPage(1);
   };
 
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
+  const handleSetFilteredStudents = (students: Student[]) => {
+    setFilteredStudents(students);
   };
-
-  const handleNextPage = () => {
-    if (currentPage < Math.ceil(data.length / rowsPerPage)) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  // const indexOfLastStudent = currentPage * rowsPerPage;
-  // const indexOfFirstStudent = indexOfLastStudent - rowsPerPage;
-  // const currentStudents = filteredData.slice(
-  //   indexOfFirstStudent,
-  //   indexOfLastStudent
-  // );
-
-  // const pageNumbers = [];
-  // for (let i = 1; i <= Math.ceil(filteredData.length / rowsPerPage); i++) {
-  //   pageNumbers.push(i);
-  // }
 
   return (
     <div className="w-full ">
@@ -143,11 +87,12 @@ const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
         {/* UpperDashboard */}
         <UpperDashboard
           lang={lang}
-          onSetFilteredStudents={setFilteredStudents}
+          data={data}
+          onSetFilteredStudents={handleSetFilteredStudents}
         />
         <div className="bg-gray-200 h-0.5 rounded-full mb-6" />
         {/* TableDashboard */}
-        <TableDashboard lang={lang} filteredStudents={filteredStudents} />
+        <TableDashboard lang={lang} />
 
         <div
           className={` ${

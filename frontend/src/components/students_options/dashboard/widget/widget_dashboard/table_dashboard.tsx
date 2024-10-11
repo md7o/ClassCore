@@ -6,8 +6,8 @@ import axios from "axios";
 import bin from "../../../../../assets/images/trash.png";
 import pencil from "../../../../../assets/images/pen.png";
 import DeleteModal from "../../../../modal/delete_modal";
+import search from "../../../../../assets/images/search.png";
 import AddStudents from "./add_students";
-
 import "react-datepicker/dist/react-datepicker.css";
 
 interface Student {
@@ -27,12 +27,12 @@ type TableHeader = {
 
 interface StudentsTableDataProps {
   lang: string;
-  filteredStudents: Student[];
+  // filteredStudents: Student[];
 }
 
 const TableDashboard: React.FC<StudentsTableDataProps> = ({
   lang,
-  filteredStudents,
+  // filteredStudents,
 }) => {
   const { t, i18n } = useTranslation();
   const [users, setUsers] = useState<Student[]>([]);
@@ -42,6 +42,8 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const handleUserClick = (userId: string) => {
     navigate(`/user_setting_page/${userId}`);
@@ -142,7 +144,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({
     { label: t("Student_Name"), key: "name" },
     { label: t("Date_of_Birth"), key: "birth" },
     { label: t("Country"), key: "country" },
-    { label: t("College Major"), key: "college" },
+    { label: t("College_Majors"), key: "college" },
     { label: t("Status"), key: "status" },
     { label: t("Phone"), key: "phone" },
     { label: t("Actions"), key: "actions" },
@@ -178,6 +180,15 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({
     }
   };
 
+  const filteredUsers = users.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.college.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.phone.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (loading)
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
@@ -206,6 +217,26 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({
         warningMessage="This action is irreversible."
       />
 
+      <div className="relative w-72">
+        <img
+          src={search}
+          alt="Search icon"
+          className={`absolute top-1/2 pointer-events-none ${
+            lang === "en" ? "right-3" : "left-3"
+          } transform -translate-y-1/2 w-6`}
+        />
+
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder={t("search_place_holder")}
+          className={`w-full  py-2 rounded-xl px-5 text-xl ${
+            lang === "en" ? "text-left" : "text-right"
+          }`}
+        />
+      </div>
+      <div className="bg-gray-200 h-0.5 rounded-full my-6" />
       {/* ====DESKTOP RESPONSE==== */}
       <div className="2.5xl:block hidden ">
         <table className="w-full rounded-lg overflow-hidden ">
@@ -225,8 +256,8 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({
           </thead>
 
           <tbody className="bg-white divide-y divide-gray-200 text-md">
-            {filteredStudents.length > 0 ? (
-              filteredStudents.map((row, index) => (
+            {filteredUsers.length > 0 ? (
+              filteredUsers.map((row, index) => (
                 <tr key={index}>
                   <td className="px-6 py-3 whitespace-nowrap text-gray-900">
                     {row.name}
@@ -286,55 +317,68 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({
 
       {/* ====MOBILE RESPONSE==== */}
       <div className="2.5xl:hidden block">
-        {users.map((row, rowIndex) => (
-          <div key={rowIndex}>
-            <div className=" rounded-lg shadow-md  px-0">
-              <div className="space-y-2">
-                {tableHeaders.map((header, headerIndex) => (
-                  <div
-                    key={headerIndex}
-                    className="flex justify-between py-2 bg-background rounded-lg px-5"
-                    style={{ direction: lang === "en" ? "ltr" : "rtl" }}
-                  >
-                    <p className="font-medium text-white md:text-lg">
-                      {header.label}:
-                    </p>
-                    <p className="text-white font-light md:text-lg">
-                      {header.key === "actions" ? (
-                        <div className="flex gap-3 ">
-                          <button
-                            onClick={() => handleRowClick(row)}
-                            className="text-white bg-green-500 w-6 h-6 p-1 flex justify-center items-center rounded-full hover:text-gray-300 hover:scale-95 hover:brightness-75 duration-300"
-                          >
-                            <FaList />
-                          </button>
-                          <button
-                            className="text-blue-500 hover:text-blue-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
-                            onClick={() => handleRowClick(row)}
-                          >
-                            <img src={pencil} alt="edit" />
-                          </button>
+        {filteredUsers.length > 0 ? (
+          filteredUsers.map((row, rowIndex) => (
+            <div key={rowIndex}>
+              <div className=" rounded-lg shadow-md  px-0">
+                <div className="space-y-2">
+                  {tableHeaders.map((header, headerIndex) => (
+                    <div
+                      key={headerIndex}
+                      className="flex justify-between py-2 bg-white rounded-lg px-5"
+                      style={{ direction: lang === "en" ? "ltr" : "rtl" }}
+                    >
+                      <p className="font-medium text-black md:text-lg">
+                        {header.label}:
+                      </p>
+                      <p className="text-black font-light md:text-lg">
+                        {header.key === "actions" ? (
+                          <div className="flex gap-3 ">
+                            <button
+                              onClick={() => handleRowClick(row)}
+                              className="text-white bg-green-500 w-6 h-6 p-1 flex justify-center items-center rounded-full hover:text-gray-300 hover:scale-95 hover:brightness-75 duration-300"
+                            >
+                              <FaList />
+                            </button>
+                            <button
+                              className="text-blue-500 hover:text-blue-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
+                              onClick={() => handleEditStudent(row._id!)}
+                              title={t("Edit")}
+                            >
+                              <img src={pencil} alt="edit" />
+                            </button>
 
-                          <button
-                            className="text-red-500 hover:text-red-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
-                            onClick={() => handleRowClick(row)}
-                          >
-                            <img src={bin} alt="delete" />
-                          </button>
-                        </div>
-                      ) : (
-                        row[header.key]
-                      )}
-                    </p>
-                  </div>
-                ))}
+                            <button
+                              className="text-red-500 hover:text-red-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
+                              onClick={() => handleDeleteClick(row._id!)}
+                              title={t("Delete")}
+                            >
+                              <img src={bin} alt="delete" />
+                            </button>
+                          </div>
+                        ) : (
+                          row[header.key]
+                        )}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
+              {rowIndex < users.length - 1 && (
+                <hr className="my-4 border-gray-500" />
+              )}
             </div>
-            {rowIndex < users.length - 1 && (
-              <hr className="my-4 border-gray-500" />
-            )}
-          </div>
-        ))}
+          ))
+        ) : (
+          <tr>
+            <td
+              colSpan={tableHeaders.length}
+              className="text-center text-white"
+            >
+              No students found.
+            </td>
+          </tr>
+        )}
       </div>
     </div>
   );
