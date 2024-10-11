@@ -6,11 +6,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import LogoutModal from "../../modal/logout_modal";
 import { useTranslation } from "react-i18next";
 
+// interface Student {
+//   firstName: string;
+//   lastName: string;
+//   birthDate: string;
+//   [key: string]: any;
+// }
+
 interface Student {
-  firstName: string;
-  lastName: string;
-  birthDate: string;
-  [key: string]: any;
+  _id?: string;
+  name: string;
+  birth: string;
+  college: string;
+  country: string;
+  status: string;
+  phone: string;
 }
 
 interface StudentsDataProps {
@@ -20,24 +30,17 @@ interface StudentsDataProps {
 const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
   const { t, i18n } = useTranslation();
   const [data, setData] = useState<Student[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [isSearch, setIsSearch] = useState<string>("");
-
   const [rowsPerPage, setRowsPerPage] = useState<number>(25);
   const [currentPage, setCurrentPage] = useState<number>(1);
-
-  const [birthDateFilter, setBirthDateFilter] = useState<Date | null>(null);
-  const [dateComparison, setDateComparison] = useState<string>("Equal_to");
-
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
 
-  // MODAL STATE
   const [showModal, setShowModal] = useState(false);
 
   const handleAddStudent = (studentData: any) => {
     console.log("Student Added:", studentData);
-    setShowModal(false); // Close the modal after confirming
+    setShowModal(false);
   };
 
   const handleLogout = () => {
@@ -51,24 +54,24 @@ const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
     setShowLogoutModal(true);
   };
 
-  const filteredData = data.filter((item: Student) => {
-    const itemDate = new Date(item.birthDate);
-    const filterDate = birthDateFilter ? new Date(birthDateFilter) : null;
+  // const filteredData = data.filter((item: Student) => {
+  //   const itemDate = new Date(item.birthDate);
+  //   const filterDate = birthDateFilter ? new Date(birthDateFilter) : null;
 
-    const matchesName =
-      item.firstName.toLowerCase().includes(isSearch.toLowerCase()) ||
-      item.lastName.toLowerCase().includes(isSearch.toLowerCase());
+  //   const matchesName =
+  //     item.firstName.toLowerCase().includes(isSearch.toLowerCase()) ||
+  //     item.lastName.toLowerCase().includes(isSearch.toLowerCase());
 
-    const matchesBirthDate = filterDate
-      ? {
-          Equal_to: itemDate.toDateString() === filterDate.toDateString(),
-          Greater_than: itemDate > filterDate,
-          Less_than: itemDate < filterDate,
-        }[dateComparison]
-      : true;
+  //   const matchesBirthDate = filterDate
+  //     ? {
+  //         Equal_to: itemDate.toDateString() === filterDate.toDateString(),
+  //         Greater_than: itemDate > filterDate,
+  //         Less_than: itemDate < filterDate,
+  //       }[dateComparison]
+  //     : true;
 
-    return matchesName && matchesBirthDate;
-  });
+  //   return matchesName && matchesBirthDate;
+  // });
 
   useEffect(() => {
     if (lang) {
@@ -122,26 +125,29 @@ const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
     }
   };
 
-  const indexOfLastStudent = currentPage * rowsPerPage;
-  const indexOfFirstStudent = indexOfLastStudent - rowsPerPage;
-  const currentStudents = filteredData.slice(
-    indexOfFirstStudent,
-    indexOfLastStudent
-  );
+  // const indexOfLastStudent = currentPage * rowsPerPage;
+  // const indexOfFirstStudent = indexOfLastStudent - rowsPerPage;
+  // const currentStudents = filteredData.slice(
+  //   indexOfFirstStudent,
+  //   indexOfLastStudent
+  // );
 
-  const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(filteredData.length / rowsPerPage); i++) {
-    pageNumbers.push(i);
-  }
+  // const pageNumbers = [];
+  // for (let i = 1; i <= Math.ceil(filteredData.length / rowsPerPage); i++) {
+  //   pageNumbers.push(i);
+  // }
 
   return (
     <div className="w-full ">
       <div className="bg-darkColor rounded-xl xl:mx-8 p-20 xl:px-32 px-5 ">
         {/* UpperDashboard */}
-        <UpperDashboard lang={lang} />
+        <UpperDashboard
+          lang={lang}
+          onSetFilteredStudents={setFilteredStudents}
+        />
         <div className="bg-gray-200 h-0.5 rounded-full mb-6" />
         {/* TableDashboard */}
-        <TableDashboard lang={lang} />
+        <TableDashboard lang={lang} filteredStudents={filteredStudents} />
 
         <div
           className={` ${
@@ -173,38 +179,6 @@ const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
               <option value={15}>15</option>
               <option value={10}>10</option>
             </select>
-          </div>
-
-          <div className="">
-            <button
-              onClick={handlePreviousPage}
-              disabled={currentPage === 1}
-              className="px-4 py-2 mx-1 rounded-lg bg-gray-200 hover:bg-gray-300 disabled:bg-gray-300"
-            >
-              &lt;
-            </button>
-            {pageNumbers.map((number) => (
-              <button
-                key={number}
-                onClick={() => handlePageChange(number)}
-                className={`px-4 py-2 mx-1 rounded-lg ${
-                  number === currentPage
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200"
-                }`}
-              >
-                {number}
-              </button>
-            ))}
-            <button
-              onClick={handleNextPage}
-              disabled={
-                currentPage === Math.ceil(filteredData.length / rowsPerPage)
-              }
-              className="px-4 py-2 mx-1 rounded-lg bg-gray-200 hover:bg-gray-300 disabled:bg-gray-300"
-            >
-              &gt;
-            </button>
           </div>
         </div>
 

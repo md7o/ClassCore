@@ -137,6 +137,9 @@ const AddStudents: React.FC<AddStudentsProps> = ({
     { name: "Year 4" },
     { name: "Year 5" },
     { name: "Graduate" },
+    { name: "Suspend" },
+    { name: "Remote" },
+    { name: "Deprived" },
   ];
 
   return (

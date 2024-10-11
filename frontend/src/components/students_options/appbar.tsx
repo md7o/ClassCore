@@ -25,12 +25,12 @@ const AppBar: React.FC<AppBarProps> = ({
       case "courses":
         return language === "en" ? "Courses" : "الدورات";
       default:
-        return language === "en" ? "Home" : "الصفحة الرئيسية"; // Default case
+        return language === "en" ? "Home" : "الصفحة الرئيسية";
     }
   };
 
   const handleLanguageChange = (lang: string) => {
-    onLanguageChange(lang); // Call the function passed from the parent
+    onLanguageChange(lang);
   };
 
   return (

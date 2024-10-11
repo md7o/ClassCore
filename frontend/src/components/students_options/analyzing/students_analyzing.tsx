@@ -2,6 +2,7 @@ import CollegeStudentsMajors from "./widget/college_students_majors";
 import StudentsCountries from "./widget/students_countries";
 import TotalStudents from "./widget/total_students";
 import GraduateStudents from "./widget/graduate_students";
+import SpecialCaseStudents from "./widget/sٍpecial_case_students";
 
 interface analyzingLanguage {
   lang: string;
@@ -15,7 +16,7 @@ const StudentsAnalyzing: React.FC<analyzingLanguage> = ({ lang }) => {
       </div>
       <div className="flex flex-col 2.5xl:flex 2.5xl:flex-row justify-center items-center gap-3 py-3 w-full lg:px-24">
         <GraduateStudents lang={lang} />
-        <StudentsCountries lang={lang} />
+        <SpecialCaseStudents lang={lang} />
         <TotalStudents lang={lang} />
       </div>
     </div>

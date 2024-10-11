@@ -120,19 +120,22 @@ const EditUserSetting: React.FC<StudentsTableDataProps> = ({ lang }) => {
         fieldsToShow={["name", "birth", "country", "phone"]}
       />
       {user ? (
-        <div className="text-white text-2xl  bg-darkColor rounded-lg p-5 h-smallHplus md:w-biggW w-large">
-          <div className="flex justify-between items-center">
+        <div className="text-white text-2xl  bg-darkColor rounded-lg p-5 h-smallH md:w-biggW w-large">
+          <div
+            style={{ direction: lang === "en" ? "ltr" : "rtl" }}
+            className="flex justify-between items-center"
+          >
             <h1 className="text-white text-3xl font-bold mb-5">
-              User Settings
+              {lang === "en" ? "User Data" : "بيانات المستخدم"}
             </h1>
             <button
               onClick={handleEditStudent}
               className="text-white text-3xl mb-4 hover:bg-primary duration-200 px-4 py-1 rounded-md"
             >
-              Edit
+              {lang === "en" ? "Edit" : "تعديل"}
             </button>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-2 ">
             <p>
               <strong>Name:</strong> {user.name}
             </p>

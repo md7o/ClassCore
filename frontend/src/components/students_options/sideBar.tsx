@@ -5,6 +5,7 @@ import event from "../../assets/images/event.png";
 import openBook from "../../assets/images/open-book.png";
 import metro from "../../assets/images/metro.jpg";
 import presentation from "../../assets/images/presentation.png";
+import cretidcard from "../../assets/images/credit-card.png";
 import logout from "../../assets/images/logout.png";
 import LogoutModal from "../modal/logout_modal";
 import "../../App.css";
@@ -53,23 +54,34 @@ const SideBar: React.FC<SideBarProps> = ({
       name: language === "en" ? "Students Analyzing" : "تحليل الطلاب",
       route: "/analyzing",
     },
+    {
+      icon: cretidcard,
+      name: language === "en" ? "Create Card" : "إنشاء بطاقة",
+      route: "/card",
+    },
   ];
 
   const handleNavigation = (route: string) => {
     navigate(route);
     if (!showSideBar) {
-      toggleSidebar(); // Close sidebar after navigating (optional)
+      toggleSidebar();
     }
   };
 
   return (
     <div>
       <div
-        className={`xl:relative fixed top-0 left-0 transform ${
-          showSideBar ? "translate-x-0" : "xl:translate-x-0 -translate-x-full"
+        className={`xl:relative fixed top-0 ${
+          language === "en" ? " left-0" : "right-0"
+        } transform ${
+          showSideBar
+            ? "translate-x-0"
+            : `xl:translate-x-0
+            ${language === "en" ? "-translate-x-full" : "translate-x-full"} `
         } transition-transform duration-300 ease-in-out z-50`}
+        style={{ direction: language === "en" ? "ltr" : "rtl" }}
       >
-        <div className="h-screen flex flex-col justify-between sm:m-3 m-0 bg-darkColor rounded-xl">
+        <div className="h-screen flex flex-col justify-between xl:m-3 m-0 bg-darkColor rounded-xl">
           <div className="mx-5">
             <div className="flex justify-between items-center">
               <p className="text-4xl text-white font-bold mb-10 mt-5">
@@ -88,7 +100,7 @@ const SideBar: React.FC<SideBarProps> = ({
                 <img
                   src={metro}
                   alt="metro"
-                  className="w-14 h-14 object-cover rounded-xl mr-3"
+                  className="w-14 h-14 object-cover rounded-xl mx-3"
                 />
                 <div className="flex flex-col items-start">
                   <p className="text-xl text-white ">Mohammed Ayman</p>

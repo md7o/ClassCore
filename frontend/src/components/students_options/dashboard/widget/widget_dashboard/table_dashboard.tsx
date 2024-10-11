@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import bin from "../../../../../assets/images/trash.png";
+import { useTranslation } from "react-i18next";
 import { FaList } from "react-icons/fa";
+import axios from "axios";
+import bin from "../../../../../assets/images/trash.png";
 import pencil from "../../../../../assets/images/pen.png";
-import "react-datepicker/dist/react-datepicker.css";
 import DeleteModal from "../../../../modal/delete_modal";
 import AddStudents from "./add_students";
-import { useTranslation } from "react-i18next";
-import axios from "axios";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 interface Student {
-  _id: string;
+  _id?: string;
   name: string;
   birth: string;
   country: string;
@@ -26,14 +27,15 @@ type TableHeader = {
 
 interface StudentsTableDataProps {
   lang: string;
+  filteredStudents: Student[];
 }
 
-const TableDashboard: React.FC<StudentsTableDataProps> = (
-  { lang },
-  { Student }
-) => {
+const TableDashboard: React.FC<StudentsTableDataProps> = ({
+  lang,
+  filteredStudents,
+}) => {
   const { t, i18n } = useTranslation();
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<Student[]>([]);
   const [studentIdToDelete, setStudentIdToDelete] = useState<string | null>(
     null
   );
@@ -167,6 +169,15 @@ const TableDashboard: React.FC<StudentsTableDataProps> = (
     fetchUsers();
   }, []);
 
+  const handleRowClick = (row: Student) => {
+    if (row._id) {
+      // Check if _id is defined
+      handleUserClick(row._id);
+    } else {
+      console.error("User ID is undefined");
+    }
+  };
+
   if (loading)
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
@@ -214,51 +225,61 @@ const TableDashboard: React.FC<StudentsTableDataProps> = (
           </thead>
 
           <tbody className="bg-white divide-y divide-gray-200 text-md">
-            {users.map((row, index) => (
-              <tr key={index}>
-                <td className="px-6 py-3 whitespace-nowrap text-gray-900">
-                  {row.name}
-                </td>
-                <td className="px-6 py-3 whitespace-nowrap text-gray-900">
-                  {row.birth}
-                </td>
-                <td className="px-6 py-3 whitespace-nowrap text-gray-900">
-                  {row.country}
-                </td>
-                <td className="px-6 py-3 whitespace-nowrap text-gray-900">
-                  {row.college}
-                </td>
-                <td className="px-6 py-3 whitespace-nowrap text-gray-900">
-                  {row.status}
-                </td>
-                <td className="px-6 py-3 whitespace-nowrap text-gray-900">
-                  {row.phone}
-                </td>
-                <td className="px-6 py-3 whitespace-nowrap text-gray-900">
-                  <div className="flex gap-3 ">
-                    <button
-                      className="text-white bg-green-500 w-6 h-6 p-1 flex justify-center items-center rounded-full hover:text-gray-300 hover:scale-95 hover:brightness-75 duration-300"
-                      onClick={() => handleUserClick(row._id)}
-                    >
-                      <FaList />
-                    </button>
-                    <button
-                      className="text-blue-500 hover:text-blue-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
-                      onClick={() => handleEditStudent(row._id)}
-                    >
-                      <img src={pencil} alt="edit" />
-                    </button>
-
-                    <button
-                      className="text-red-500 hover:text-red-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
-                      onClick={() => handleDeleteClick(row._id)}
-                    >
-                      <img src={bin} alt="delete" />
-                    </button>
-                  </div>
+            {filteredStudents.length > 0 ? (
+              filteredStudents.map((row, index) => (
+                <tr key={index}>
+                  <td className="px-6 py-3 whitespace-nowrap text-gray-900">
+                    {row.name}
+                  </td>
+                  <td className="px-6 py-3 whitespace-nowrap text-gray-900">
+                    {row.birth}
+                  </td>
+                  <td className="px-6 py-3 whitespace-nowrap text-gray-900">
+                    {row.country}
+                  </td>
+                  <td className="px-6 py-3 whitespace-nowrap text-gray-900">
+                    {row.college}
+                  </td>
+                  <td className="px-6 py-3 whitespace-nowrap text-gray-900">
+                    {row.status}
+                  </td>
+                  <td className="px-6 py-3 whitespace-nowrap text-gray-900">
+                    {row.phone}
+                  </td>
+                  <td className="px-6 py-3 whitespace-nowrap text-gray-900">
+                    <div className="flex gap-3">
+                      <button
+                        className="text-white bg-green-500 w-6 h-6 p-1 flex justify-center items-center rounded-full hover:text-gray-300 hover:scale-95 hover:brightness-75 duration-300"
+                        onClick={() => handleRowClick(row)}
+                      >
+                        <FaList />
+                      </button>
+                      <button
+                        className="text-blue-500 hover:text-blue-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
+                        onClick={() => handleEditStudent(row._id!)} // use edit handler here
+                      >
+                        <img src={pencil} alt="edit" />
+                      </button>
+                      <button
+                        className="text-red-500 hover:text-red-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
+                        onClick={() => handleDeleteClick(row._id!)} // use delete handler here
+                      >
+                        <img src={bin} alt="delete" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan={tableHeaders.length}
+                  className="text-center text-white"
+                >
+                  No students found.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
@@ -267,7 +288,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = (
       <div className="2.5xl:hidden block">
         {users.map((row, rowIndex) => (
           <div key={rowIndex}>
-            <div className=" rounded-lg shadow-md md:px-14 px-0">
+            <div className=" rounded-lg shadow-md  px-0">
               <div className="space-y-2">
                 {tableHeaders.map((header, headerIndex) => (
                   <div
@@ -282,21 +303,21 @@ const TableDashboard: React.FC<StudentsTableDataProps> = (
                       {header.key === "actions" ? (
                         <div className="flex gap-3 ">
                           <button
-                            onClick={() => handleUserClick(row._id)}
+                            onClick={() => handleRowClick(row)}
                             className="text-white bg-green-500 w-6 h-6 p-1 flex justify-center items-center rounded-full hover:text-gray-300 hover:scale-95 hover:brightness-75 duration-300"
                           >
                             <FaList />
                           </button>
                           <button
                             className="text-blue-500 hover:text-blue-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
-                            onClick={() => handleEditStudent(row._id)}
+                            onClick={() => handleRowClick(row)}
                           >
                             <img src={pencil} alt="edit" />
                           </button>
 
                           <button
                             className="text-red-500 hover:text-red-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
-                            onClick={() => handleDeleteClick(row._id)}
+                            onClick={() => handleRowClick(row)}
                           >
                             <img src={bin} alt="delete" />
                           </button>

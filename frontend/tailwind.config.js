@@ -23,6 +23,7 @@ module.exports = {
         large: "400px",
         biggW: "500px",
         hugeW: "600px",
+        megaW: "700px",
         superW: "800px",
       },
       height: {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import EditUserSetting from "./widget/user_setting_widget/edit_user_setting";
+import EditUserSetting from "./widget/user_setting_widget/edit_user_data";
 import EditCollegeMajor from "./widget/user_setting_widget/edit_college_major";
 import EditUserStatu from "./widget/user_setting_widget/edit_user_statu";
 import { MdArrowBackIos } from "react-icons/md";
@@ -59,7 +59,7 @@ const UserSetting: React.FC<StudentsTableDataProps> = ({ lang }) => {
   }
 
   return (
-    <div className="">
+    <div>
       {user ? (
         <div className=" flex 2xl:flex-row flex-col justify-center items-center gap-2">
           <EditUserSetting lang={lang} />
@@ -74,7 +74,7 @@ const UserSetting: React.FC<StudentsTableDataProps> = ({ lang }) => {
           onClick={handleBackHistoryButton}
           className="bg-primary rounded-lg px-16 py-2 text-white text-3xl flex justify-center items-center shadowing duration-200"
         >
-          Back
+          {lang === "en" ? "Back" : "العودة"}
         </button>
       </div>
     </div>

@@ -120,10 +120,13 @@ const EditUserStatu: React.FC<StudentsTableDataProps> = ({ lang }) => {
         fieldsToShow={["status"]}
       />
       {user ? (
-        <div className="text-white text-2xl  bg-darkColor rounded-lg p-5 h-smallHplus md:w-biggW w-large">
-          <div className="flex justify-between items-center">
+        <div className="text-white text-2xl  bg-darkColor rounded-lg p-5 h-smallH md:w-biggW w-large">
+          <div
+            style={{ direction: lang === "en" ? "ltr" : "rtl" }}
+            className="flex justify-between items-center"
+          >
             <h1 className="text-white text-3xl font-bold mb-5">
-              User Settings
+              {lang === "en" ? "User Statu" : "حالة المستخدم"}
             </h1>
           </div>
           <div className="">
@@ -136,7 +139,7 @@ const EditUserStatu: React.FC<StudentsTableDataProps> = ({ lang }) => {
               onClick={handleEditStudent}
               className="bg-blue-600 px-10 py-2 rounded-lg font-bold mx-auto flex"
             >
-              Change
+              {lang === "en" ? "Change" : "تغير"}
             </button>
           </div>
         </div>

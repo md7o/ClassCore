@@ -188,7 +188,7 @@ const GeneralCourses: React.FC<CoursesLanguage> = ({ lang }) => {
   const totalStudents = users.length;
 
   const handleNavigateClick = (major: Major) => {
-    navigate("/students/subjects_course", { state: { major } });
+    navigate("/courses/subjects_course", { state: { major } });
   };
 
   useEffect(() => {

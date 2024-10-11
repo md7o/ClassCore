@@ -1,12 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import AddStudents from "../widget_dashboard/add_students";
 import search from "../../../../../assets/images/search.png";
 import calendar from "../../../../../assets/images/calendar.png";
 import plus from "../../../../../assets/images/plus.png";
-import DeleteModal from "../../../../modal/delete_modal";
-import { useTranslation } from "react-i18next";
+import useSearch from "../../../../../hooks/useSearch";
 
 interface Student {
   id?: string;
@@ -20,20 +20,49 @@ interface Student {
 
 interface StudentsDataProps {
   lang: string;
+  onSetFilteredStudents: (students: Student[]) => void;
 }
 
-const UpperDashboard: React.FC<StudentsDataProps> = ({ lang }) => {
+const UpperDashboard: React.FC<StudentsDataProps> = ({
+  lang,
+  onSetFilteredStudents,
+}) => {
   const { t } = useTranslation();
-  const [data, setData] = useState<Student[]>([]);
+  const [users, setUsers] = useState<Student[]>([]);
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [showModal, setShowModal] = useState(false);
   const [studentDataToEdit, setStudentDataToEdit] = useState<Student | null>(
     null
   );
   const [birthDateFilter, setBirthDateFilter] = useState<Date | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [isSearch, setIsSearch] = useState<string>("");
 
   const datePickerRef = useRef<DatePicker | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/users");
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.log("Error Fetching Users:", error);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const filterFn = (student: Student, searchTerm: string) => {
+    return student.name.toLowerCase().includes(searchTerm.toLowerCase());
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const term = event.target.value;
+    setSearchTerm(term);
+    const filteredUsers = users.filter((user) => filterFn(user, term)); // Apply filtering
+    onSetFilteredStudents(filteredUsers); // Pass filtered users to parent
+  };
 
   const handleOpenModalForAdd = () => {
     setStudentDataToEdit(null);
@@ -62,7 +91,7 @@ const UpperDashboard: React.FC<StudentsDataProps> = ({ lang }) => {
       if (response.status === 201) {
         const addedStudent = response.data;
 
-        setData((prevData) => [...prevData, addedStudent]);
+        setUsers((prevData) => [...prevData, addedStudent]);
         setShowModal(false);
         setStudentDataToEdit(null);
         window.location.reload();
@@ -118,7 +147,6 @@ const UpperDashboard: React.FC<StudentsDataProps> = ({ lang }) => {
             className="border-transparent text-lg bg-transparent text-white focus:outline-none cursor-pointer w-28"
           />
         </div>
-        $
         <div className="relative">
           <img
             src={search}
@@ -126,12 +154,13 @@ const UpperDashboard: React.FC<StudentsDataProps> = ({ lang }) => {
             className={`absolute top-1/2 ${
               lang === "en" ? "right-3" : "left-3"
             } transform -translate-y-1/2 w-6`}
+            style={{ direction: lang === "en" ? "ltr" : "rtl" }}
           />
 
           <input
             type="text"
-            value={isSearch}
-            onChange={searchName}
+            value={searchTerm}
+            onChange={handleSearchChange}
             placeholder={t("search_place_holder")}
             className={`py-2 rounded-xl px-5 text-xl ${
               lang === "en" ? "text-left" : "text-right"

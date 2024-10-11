@@ -6,6 +6,7 @@ import UserSettingPage from "./pages/user_setting_page";
 import EventsPage from "./pages/events_page";
 import CoursesPage from "./pages/courses_page";
 import AnalyzingPage from "./pages/analyzing_page";
+import CreateCard from "./pages/create_card";
 import SubjectsCourse from "./components/students_options/courses/course_subjects";
 
 function App() {
@@ -17,11 +18,11 @@ function App() {
         <Route path="/events" element={<EventsPage />} />
         <Route path="/courses" element={<CoursesPage />} />
         <Route path="/analyzing" element={<AnalyzingPage />} />
+        <Route path="/card" element={<CreateCard />} />
         <Route
           path="/user_setting_page/:userId"
           element={<UserSettingPage />}
         />
-        <Route path="/students/subjects_course" element={<SubjectsCourse />} />
         {/* <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<Navigate to="/login" replace />} /> */}
       </Routes>
