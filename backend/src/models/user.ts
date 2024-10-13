@@ -7,7 +7,8 @@ interface IUser extends Document {
   college: string;
   country: string;
   status: string;
-  phone: string; // Change to string to handle phone numbers better
+  card: boolean;
+  phone: string;
 }
 
 // ====SCHEMA====
@@ -18,6 +19,7 @@ const userSchema = new Schema<IUser>(
     college: { type: String, required: true },
     country: { type: String, required: true },
     status: { type: String, required: true },
+    card: { type: Boolean, required: true, default: false },
     phone: { type: String, required: true },
   },
   { timestamps: true }

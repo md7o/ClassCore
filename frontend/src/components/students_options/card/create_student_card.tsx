@@ -9,6 +9,7 @@ interface Student {
   college: string;
   country: string;
   status: string;
+  card: boolean;
   phone: string;
 }
 

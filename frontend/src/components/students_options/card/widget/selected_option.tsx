@@ -10,6 +10,7 @@ interface Student {
   college: string;
   country: string;
   status: string;
+  card: boolean;
   phone: string;
 }
 
@@ -52,7 +53,7 @@ const SelecteOption: React.FC<SelecteOptionProps> = ({
 
   const handleStudentClick = (student: Student) => {
     setSelectedStudent(student);
-    onSelectStudent(student); // Notify parent component about the selected student
+    onSelectStudent(student);
   };
 
   return (
@@ -79,15 +80,19 @@ const SelecteOption: React.FC<SelecteOptionProps> = ({
       </div>
       <div className="bg-white space-y-2 rounded-lg divide-y divide-gray-200 cursor-pointer select-none m-10 px-5 py-2">
         {filteredUsers.slice(0).map((item, index) => (
-          <p
-            key={index}
-            className={`text-xl py-1 px-2 rounded-lg duration-400 hover:bg-gray-300 ${
+          <div
+            onClick={() => handleStudentClick(item)}
+            className={`flex justify-between text-xl py-1 px-2 rounded-lg duration-400 hover:bg-gray-300 ${
               selectedStudent?.name === item.name ? "bg-gray-300" : ""
             }`}
-            onClick={() => handleStudentClick(item)}
           >
-            {item.name}
-          </p>
+            <p key={index} className={`text-xl py-1 px-2 rounded-lg`}>
+              {item.name}
+            </p>
+            <p className={`text-xl py-1 px-2 text-amber-500 font-light`}>
+              {item.card === true ? "created" : ""}
+            </p>
+          </div>
         ))}
         <div />
       </div>

@@ -41,6 +41,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
   const [countries, setCountries] = useState<any[]>([]);
   const [formData, setFormData] = useState<Student>(initialFormData);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   // Fetch countries using REST Countries API
   useEffect(() => {
@@ -55,7 +56,6 @@ const AddStudents: React.FC<AddStudentsProps> = ({
           flag: country.flag,
         }));
         setCountries(countryData); // Set countries data
-        console.log("Fetched countries:", countryData); // Log the fetched countries
       } catch (error) {
         console.error("Error fetching countries:", error);
       }
@@ -77,14 +77,48 @@ const AddStudents: React.FC<AddStudentsProps> = ({
     }
   }, [isEditMode, studentDataToEdit]);
 
-  const handleChange = (
+  // Check if name is taken in the database (simulate backend check)
+  const checkNameInDatabase = async (name: string): Promise<boolean> => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/users?name=${name}`
+      );
+      return response.data.length > 0;
+    } catch (error) {
+      console.error("Error checking name:", error);
+      return false;
+    }
+  };
+
+  const handleChange = async (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+
+    if (name === "name") {
+      // Set form data and reset errors for name
+      setFormData((prev) => ({ ...prev, [name]: value }));
+      setErrors((prevErrors) => ({ ...prevErrors, name: "" }));
+
+      // Trigger validation after full name is written (simulate blur event)
+      if (value.trim().length > 0) {
+        const isNameTaken = await checkNameInDatabase(value);
+        if (isNameTaken) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            name: "The name has been taken",
+          }));
+          setIsButtonDisabled(true); // Disable button if name is taken
+        } else {
+          setIsButtonDisabled(false); // Enable button if name is valid
+        }
+      }
+    } else {
+      // For other fields
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const validateForm = () => {
@@ -108,7 +142,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
+    if (validateForm() && !isButtonDisabled) {
       if (isEditMode && onEditStudent) {
         onEditStudent(formData); // Pass the updated data
       } else if (onAddStudent) {
@@ -130,6 +164,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
     { name: "Environmental Science" },
     { name: "Fine Arts" },
   ];
+
   const studentStatus = [
     { name: "Year 1" },
     { name: "Year 2" },
@@ -160,7 +195,12 @@ const AddStudents: React.FC<AddStudentsProps> = ({
         <div className="col-span-2 flex justify-end">
           <button
             type="submit"
-            className="bg-gradient-to-r duration-500 from-primary to-purple-500 shadowing text-white w-full mx-14 py-4 my-10 rounded-xl"
+            className={`${
+              isButtonDisabled || Object.keys(errors).length > 0
+                ? "cursor-not-allowed"
+                : "cursor-pointer"
+            } bg-gradient-to-r duration-500 from-primary to-purple-500 shadowing text-white w-full mx-14 py-4 my-10 rounded-xl`}
+            disabled={isButtonDisabled || Object.keys(errors).length > 0}
           >
             {isEditMode ? "Update Student" : "Add Student"}
           </button>

@@ -255,10 +255,10 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({
             </tr>
           </thead>
 
-          <tbody className="bg-white divide-y divide-gray-200 text-md">
+          <tbody className="bg-white divide-y divide-gray-200 text-md ">
             {filteredUsers.length > 0 ? (
               filteredUsers.map((row, index) => (
-                <tr key={index}>
+                <tr key={index} className="hover:bg-gray-200 duration-200">
                   <td className="px-6 py-3 whitespace-nowrap text-gray-900">
                     {row.name}
                   </td>
