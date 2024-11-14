@@ -65,9 +65,13 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
     }
   };
 
+  const printAlert = () => {
+    alert("There is no printer detected");
+  };
+
   return (
     <div>
-      <div className="bg-gray-600 rounded-roundedButt py-8 w-megaW">
+      <div className="bg-gray-700 rounded-roundedButt py-8 w-megaW">
         <div className="flex justify-between items-center mx-10">
           <p className="text-4xl text-white">Student</p>
           <p className="text-2xl text-white">IDENTITY CARD</p>
@@ -128,6 +132,16 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
             <p>Create</p>
           </button>
         )}
+        {selectedStudent ? (
+          <button
+            className={` ${
+              selectedStudent.card ? "block" : "hidden"
+            } bg-green-700 text-white text-3xl w-48 px-10 py-2 rounded-lg hover:bg-green-500 hover:scale-95 duration-200`}
+            onClick={printAlert}
+          >
+            <p>Print</p>
+          </button>
+        ) : null}
         <button className=" bg-red-600 text-white text-3xl w-48 px-10 py-2 rounded-lg hover:bg-red-500 hover:scale-95 duration-200">
           Clear
         </button>

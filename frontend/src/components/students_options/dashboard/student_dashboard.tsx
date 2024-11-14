@@ -1,144 +1,160 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import UpperDashboard from "./widget/widget_dashboard/upper_dashboard";
-import TableDashboard from "./widget/widget_dashboard/table_dashboard";
-import "react-datepicker/dist/react-datepicker.css";
-import LogoutModal from "../../modal/logout_modal";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
-// interface Student {
-//   firstName: string;
-//   lastName: string;
-//   birthDate: string;
-//   [key: string]: any;
-// }
+import axios from "axios";
+import AddStudents from "./widget/widget_dashboard/add_students";
+import SearchBar from "./widget/widget_dashboard/upper_part";
+import StudentList from "./widget/widget_dashboard/table_title";
+import DeleteModal from "../../../components/modal/delete_modal";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface Student {
   _id?: string;
   name: string;
   birth: string;
-  college: string;
   country: string;
+  college: string;
   status: string;
   phone: string;
 }
 
-interface StudentsDataProps {
+interface StudentsTableDataProps {
   lang: string;
 }
 
-const StudentsData: React.FC<StudentsDataProps> = ({ lang }) => {
-  const { t, i18n } = useTranslation();
-  const [data, setData] = useState<Student[]>([]);
+const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
+  const { t } = useTranslation();
+  const [users, setUsers] = useState<Student[]>([]);
+  const [studentIdToDelete, setStudentIdToDelete] = useState<string | null>(
+    null
+  );
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(25);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
-
-  const handleLogout = () => {
-    console.log("User has logged out");
-    setShowLogoutModal(false);
-    localStorage.removeItem("authToken");
-    window.location.href = "/login";
-  };
-
-  const handleLogoutClick = () => {
-    setShowLogoutModal(true);
-  };
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [studentDataToEdit, setStudentDataToEdit] = useState<Student | null>(
+    null
+  );
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUsers = async () => {
       try {
-        const response = await axios.get(
-          "https://taxiapp.easybooks.me:8283/Student/GetAll",
-          {
-            headers: {
-              accept: "application/json",
-              Authorization: `Bearer`,
-            },
-          }
-        );
-        setData(response.data);
+        const response = await fetch("http://localhost:3000/users");
+        if (!response.ok) throw new Error("Network response was not ok");
+        const data = await response.json();
+        setUsers(data);
       } catch (error) {
-        console.error("Error fetching data:", error);
-        setError("Failed to fetch data");
+        setError("Error fetching users: " + (error as Error).message);
+      } finally {
+        setLoading(false);
       }
     };
+    fetchUsers();
+  }, []);
 
-    if (lang) {
-      i18n.changeLanguage(lang);
+  const handleUserClick = (userId: string) => {
+    navigate(`/user_setting_page/${userId}`);
+  };
+
+  const handleDeleteClick = (id: string) => {
+    setStudentIdToDelete(id);
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+    setShowModal(false);
+    setStudentDataToEdit(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/users/${studentIdToDelete}`
+      );
+      if (response.status === 200) {
+        setUsers((prevUsers) =>
+          prevUsers.filter((user) => user._id !== studentIdToDelete)
+        );
+        setIsModalVisible(false);
+        setStudentIdToDelete(null);
+      }
+    } catch (error) {
+      console.error("Error deleting the user:", error);
     }
-    fetchData();
-  }, [lang, i18n]);
-
-  const handleRowsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setRowsPerPage(Number(e.target.value));
-    setCurrentPage(1);
   };
 
-  const handleSetFilteredStudents = (students: Student[]) => {
-    setFilteredStudents(students);
+  const handleEditStudent = (id: string) => {
+    const studentToEdit = users.find((user) => user._id === id);
+    if (studentToEdit) {
+      setStudentDataToEdit(studentToEdit);
+      setIsEditMode(true);
+      setShowModal(true);
+    }
   };
+
+  const handleEditUser = async (updateData: Partial<Student>) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:3000/users/${studentDataToEdit!._id}`,
+        updateData
+      );
+      if (response.status === 200) {
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user._id === studentDataToEdit!._id
+              ? { ...user, ...updateData }
+              : user
+          )
+        );
+        setShowModal(false);
+        setStudentDataToEdit(null);
+      }
+    } catch (error) {
+      console.error("Error updating the user:", error);
+    }
+  };
+
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="w-full ">
-      <div className="bg-darkColor rounded-xl xl:mx-8 p-20 xl:px-32 px-5 ">
-        {/* UpperDashboard */}
-        <UpperDashboard
-          lang={lang}
-          data={data}
-          onSetFilteredStudents={handleSetFilteredStudents}
-        />
-        <div className="bg-gray-200 h-0.5 rounded-full mb-6" />
-        {/* TableDashboard */}
-        <TableDashboard lang={lang} />
-
-        <div
-          className={` ${
-            lang === "en"
-              ? "flex justify-between items-center"
-              : "flex flex-row-reverse justify-between items-center"
-          }`}
-        >
-          <div
-            className={` ${
-              lang === "en"
-                ? "flex items-center"
-                : "flex flex-row-reverse items-center"
-            }`}
-          >
-            <label
-              htmlFor="rowsPerPage"
-              className="text-lg text-gray-700 mr-2 font-medium opacity-60"
-            >
-              {t("Rows_Per_Page")}
-            </label>
-            <select
-              name="rowsPerPage"
-              value={rowsPerPage}
-              onChange={handleRowsPerPageChange}
-              className="ring-2 px-5 py-1 ring-gray-400 rounded-lg mx-2 text-lg text-gray-700"
-            >
-              <option value={25}>25</option>
-              <option value={15}>15</option>
-              <option value={10}>10</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Logout Modal */}
-        {showLogoutModal && (
-          <LogoutModal
-            show={showLogoutModal}
-            onClose={() => setShowLogoutModal(false)}
-            onConfirm={handleLogout}
-            message="Are you sure you want to log out of your account?"
-          />
-        )}
-      </div>
+    <div className="bg-darkColor rounded-xl xl:mx-8 p-20 xl:px-32 px-5">
+      <AddStudents
+        showModal={showModal}
+        handleCloseModal={handleCloseModal}
+        onEditStudent={handleEditUser}
+        isEditMode={isEditMode}
+        studentDataToEdit={studentDataToEdit}
+      />
+      <DeleteModal
+        show={isModalVisible}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        title="Delete Confirmation"
+        message="Are you sure you want to delete this item?"
+        warningMessage="This action is irreversible."
+      />
+      <SearchBar
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        lang={lang}
+      />
+      <StudentList
+        students={filteredUsers}
+        handleEditStudent={handleEditStudent}
+        handleDeleteClick={handleDeleteClick}
+        handleUserClick={handleUserClick}
+      />
     </div>
   );
 };
 
-export default StudentsData;
+export default TableDashboard;

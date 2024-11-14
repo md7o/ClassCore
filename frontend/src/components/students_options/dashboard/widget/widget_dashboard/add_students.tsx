@@ -103,18 +103,18 @@ const AddStudents: React.FC<AddStudentsProps> = ({
       setErrors((prevErrors) => ({ ...prevErrors, name: "" }));
 
       // Trigger validation after full name is written (simulate blur event)
-      if (value.trim().length > 0) {
-        const isNameTaken = await checkNameInDatabase(value);
-        if (isNameTaken) {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            name: "The name has been taken",
-          }));
-          setIsButtonDisabled(true); // Disable button if name is taken
-        } else {
-          setIsButtonDisabled(false); // Enable button if name is valid
-        }
-      }
+      // if (value.trim().length > 0) {
+      //   const isNameTaken = await checkNameInDatabase(value);
+      //   if (isNameTaken) {
+      //     setErrors((prevErrors) => ({
+      //       ...prevErrors,
+      //       name: "The name has been taken",
+      //     }));
+      //     setIsButtonDisabled(true); // Disable button if name is taken
+      //   } else {
+      //     setIsButtonDisabled(false); // Enable button if name is valid
+      //   }
+      // }
     } else {
       // For other fields
       setFormData((prev) => ({ ...prev, [name]: value }));
@@ -197,10 +197,10 @@ const AddStudents: React.FC<AddStudentsProps> = ({
             type="submit"
             className={`${
               isButtonDisabled || Object.keys(errors).length > 0
-                ? "cursor-not-allowed"
+                ? "cursor-pointer"
                 : "cursor-pointer"
             } bg-gradient-to-r duration-500 from-primary to-purple-500 shadowing text-white w-full mx-14 py-4 my-10 rounded-xl`}
-            disabled={isButtonDisabled || Object.keys(errors).length > 0}
+            // disabled={isButtonDisabled || Object.keys(errors).length > 0}
           >
             {isEditMode ? "Update Student" : "Add Student"}
           </button>

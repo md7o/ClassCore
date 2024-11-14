@@ -6,8 +6,8 @@ import profile from "../../assets/images/metro.jpg";
 interface AppBarProps {
   onLanguageChange: (language: string) => void;
   currentPage: string;
-  toggleSidebar: () => void; // Accept the toggle function
-  language: string; // Include language prop for accessing the current language
+  toggleSidebar: () => void;
+  language: string;
 }
 
 const AppBar: React.FC<AppBarProps> = ({
@@ -34,7 +34,7 @@ const AppBar: React.FC<AppBarProps> = ({
   };
 
   return (
-    <div className="mb-24 relative z-40">
+    <div className="mb-20 mt-4 relative z-40">
       <div
         className="flex justify-between items-center xl:static xl:bg-transparent bg-darkColor bg-opacity-55 fixed w-full"
         style={{ direction: language === "en" ? "ltr" : "rtl" }}

@@ -22,10 +22,8 @@ const CreateStudentCard: React.FC<StudentsTableDataProps> = ({ lang }) => {
 
   return (
     <div className="flex justify-center items-start gap-20">
-      {/* Pass the selectedStudent to IdentityCard */}
       <IdentityCard lang={lang} selectedStudent={selectedStudent} />
 
-      {/* Pass setSelectedStudent to SelecteOption */}
       <SelecteOption lang={lang} onSelectStudent={setSelectedStudent} />
     </div>
   );

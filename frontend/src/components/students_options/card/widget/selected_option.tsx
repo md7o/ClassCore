@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import search from "../../../../assets/images/search.png";
-import useSearch from "../../../../hooks/useSearch"; // Import the custom hook
+import useSearch from "../../../../hooks/useSearch";
 
 interface Student {
   _id?: string;
@@ -79,7 +79,7 @@ const SelecteOption: React.FC<SelecteOptionProps> = ({
         />
       </div>
       <div className="bg-white space-y-2 rounded-lg divide-y divide-gray-200 cursor-pointer select-none m-10 px-5 py-2">
-        {filteredUsers.slice(0).map((item, index) => (
+        {filteredUsers.slice(0, 8).map((item, index) => (
           <div
             onClick={() => handleStudentClick(item)}
             className={`flex justify-between text-xl py-1 px-2 rounded-lg duration-400 hover:bg-gray-300 ${
@@ -89,7 +89,7 @@ const SelecteOption: React.FC<SelecteOptionProps> = ({
             <p key={index} className={`text-xl py-1 px-2 rounded-lg`}>
               {item.name}
             </p>
-            <p className={`text-xl py-1 px-2 text-amber-500 font-light`}>
+            <p className={`text-xl py-1 px-2 text-gray-500`}>
               {item.card === true ? "created" : ""}
             </p>
           </div>
