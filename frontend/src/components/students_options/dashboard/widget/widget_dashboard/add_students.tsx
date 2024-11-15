@@ -243,12 +243,12 @@ const AddStudents: React.FC<AddStudentsProps> = ({
                 key={
                   name === "country"
                     ? ` ${option.flag} ${option.name}`
-                    : `${option.name}`
+                    : ` ${option.name}`
                 }
                 value={
                   name === "country"
                     ? ` ${option.flag} ${option.name}`
-                    : `${option.name}`
+                    : ` ${option.name}`
                 }
                 className="flex items-center"
               >

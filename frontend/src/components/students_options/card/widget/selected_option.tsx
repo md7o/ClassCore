@@ -81,6 +81,7 @@ const SelecteOption: React.FC<SelecteOptionProps> = ({
       <div className="bg-white space-y-2 rounded-lg divide-y divide-gray-200 cursor-pointer select-none m-10 px-5 py-2">
         {filteredUsers.slice(0, 8).map((item, index) => (
           <div
+            key={index}
             onClick={() => handleStudentClick(item)}
             className={`flex justify-between text-xl py-1 px-2 rounded-lg duration-400 hover:bg-gray-300 ${
               selectedStudent?.name === item.name ? "bg-gray-300" : ""

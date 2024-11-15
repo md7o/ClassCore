@@ -64,10 +64,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <div
-      className="flex flex-col-reverse lg:flex-row gap-5 justify-between items-center mb-5"
-      style={{ direction: lang === "en" ? "rtl" : "ltr" }}
-    >
+    <div className="flex flex-col-reverse lg:flex-row gap-5 justify-between items-center mb-5">
       <AddStudents
         showModal={showModal}
         handleCloseModal={handleCloseModal}
@@ -76,7 +73,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
         studentDataToEdit={studentDataToEdit}
       />
       {/* Search and Add Fields */}
-      <div className="flex flex-col sm:flex-row justify-center items-center gap-5">
+      <div
+        className="flex flex-col sm:flex-row justify-center items-center gap-5"
+        style={{ direction: lang === "en" ? "rtl" : "ltr" }}
+      >
         <div
           className={` ${
             lang === "en"
@@ -108,7 +108,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search..."
+            placeholder={lang === "en" ? "Search" : "بحث"}
             className={`w-full  py-1 rounded-xl px-5 text-xl ${
               lang === "en" ? "text-left" : "text-right"
             }`}

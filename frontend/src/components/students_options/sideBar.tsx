@@ -5,6 +5,7 @@ import event from "../../assets/images/event.png";
 import openBook from "../../assets/images/open-book.png";
 import userAva from "../../assets/images/user.png";
 import presentation from "../../assets/images/presentation.png";
+import Logo from "../../assets/images/ClassCoreLogo.png";
 import cretidcard from "../../assets/images/credit-card.png";
 import logout from "../../assets/images/logout.png";
 import LogoutModal from "../modal/logout_modal";
@@ -84,9 +85,12 @@ const SideBar: React.FC<SideBarProps> = ({
         <div className="h-screen flex flex-col justify-between xl:m-3 m-0 bg-darkColor rounded-xl">
           <div className="mx-5">
             <div className="flex justify-between items-center">
-              <p className="text-4xl text-white font-bold mb-10 mt-5">
-                App Logo
-              </p>
+              <img
+                src={Logo}
+                alt={Logo}
+                className="lg:w-72 w-64 mt-10 mb-5 lg:mx-auto"
+              />
+
               <button
                 onClick={toggleSidebar}
                 className="xl:hidden block text-2xl text-white font-bold mb-10 mt-5"
@@ -131,7 +135,7 @@ const SideBar: React.FC<SideBarProps> = ({
               </div>
             ))}
             {/* Other categories */}
-            <p className="text-2xl text-white font-bold my-5 pt-5">Others</p>
+            {/* <p className="text-2xl text-white font-bold my-5 pt-5">Others</p>
             <div className="my-5">
               <button
                 onClick={onLogoutClick}
@@ -147,7 +151,7 @@ const SideBar: React.FC<SideBarProps> = ({
                   {language === "en" ? " Logout" : "تسجيل الخروج"}
                 </p>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
