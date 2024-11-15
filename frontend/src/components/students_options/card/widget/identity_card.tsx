@@ -22,6 +22,7 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
   selectedStudent,
 }) => {
   const [users, setUsers] = useState<Student[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -31,6 +32,8 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
         setUsers(data);
       } catch (error) {
         console.log("Error Fetching Users:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchUser();
@@ -61,6 +64,33 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
         }
       } catch (error) {
         console.error("Error while confirming card:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleCleareCard = async () => {
+    if (selectedStudent && selectedStudent._id) {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/users/${selectedStudent._id}`,
+          { method: "DELETE" }
+        );
+        if (response.ok) {
+          // Remove the deleted user from the users list
+          const updatedUsers = users.filter(
+            (user) => user._id !== selectedStudent._id
+          );
+          setUsers(updatedUsers);
+          window.location.reload();
+        } else {
+          console.error("Failed to delete the card.");
+        }
+      } catch (error) {
+        console.error("Error while deleting card:", error);
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -68,6 +98,13 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
   const printAlert = () => {
     alert("There is no printer detected");
   };
+
+  if (loading)
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
+        <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin"></div>
+      </div>
+    );
 
   return (
     <div>
@@ -142,7 +179,10 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
             <p>Print</p>
           </button>
         ) : null}
-        <button className=" bg-red-600 text-white text-3xl w-48 px-10 py-2 rounded-lg hover:bg-red-500 hover:scale-95 duration-200">
+        <button
+          onClick={handleCleareCard}
+          className=" bg-red-600 text-white text-3xl w-48 px-10 py-2 rounded-lg hover:bg-red-500 hover:scale-95 duration-200"
+        >
           Clear
         </button>
       </div>
