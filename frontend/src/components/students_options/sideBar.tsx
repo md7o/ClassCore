@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import dashboardIcon from "../../assets/images/dashboard.png";
 import event from "../../assets/images/event.png";
 import openBook from "../../assets/images/open-book.png";
-import metro from "../../assets/images/metro.jpg";
+import userAva from "../../assets/images/user.png";
 import presentation from "../../assets/images/presentation.png";
 import cretidcard from "../../assets/images/credit-card.png";
 import logout from "../../assets/images/logout.png";
@@ -98,9 +98,9 @@ const SideBar: React.FC<SideBarProps> = ({
             <div className="my-5">
               <button className="group flex justify-start items-center w-72 shadow-md shadow-shadowBlock bg-background rounded-lg p-4 hover:scale-95 duration-500">
                 <img
-                  src={metro}
-                  alt="metro"
-                  className="w-14 h-14 object-cover rounded-xl mx-3"
+                  src={userAva}
+                  alt="userAva"
+                  className="w-12 h-12 object-cover rounded-xl mx-3"
                 />
                 <div className="flex flex-col items-start">
                   <p className="text-xl text-white ">Mohammed Ayman</p>

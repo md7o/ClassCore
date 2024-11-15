@@ -35,22 +35,22 @@ const EventAppointments: React.FC<eventsLanguage> = ({ lang }) => {
 
   const eventsSchedule = [
     {
-      eventName: lang === "en" ? "Graduation" : "التخرج",
+      eventName: lang === "en" ? " Research Exhibition" : "معرض البحوث",
       eventDate: getEventDate(3),
       participantsNum: 23,
     },
     {
-      eventName: "Graduation",
+      eventName: lang === "en" ? "Student Art Show" : "معرض فني للطلاب",
       eventDate: getEventDate(2),
       participantsNum: 15,
     },
     {
-      eventName: "Graduation",
+      eventName: lang === "en" ? "Developer Hackathons" : "هاكاثون المطورين",
       eventDate: getEventDate(1),
       participantsNum: 74,
     },
     {
-      eventName: "Graduation",
+      eventName: lang === "en" ? "Invention competition" : "مسابقة الاختراعات",
       eventDate: currentDate,
       participantsNum: 54,
     },

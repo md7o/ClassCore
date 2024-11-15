@@ -4,6 +4,7 @@ import LoginPage from "./pages/login_page";
 import DashboardPage from "./pages/dashboard_page";
 import EventsPage from "./pages/events_page";
 import CoursesPage from "./pages/courses_page";
+import CourseSubjects from "./components/students_options/courses/course_subjects";
 import AnalyzingPage from "./pages/analyzing_page";
 import CreateCard from "./pages/create_card";
 
@@ -15,6 +16,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/events" element={<EventsPage />} />
         <Route path="/courses" element={<CoursesPage />} />
+        <Route path="/courses/subjects_course" element={<CourseSubjects />} />
         <Route path="/analyzing" element={<AnalyzingPage />} />
         <Route path="/card" element={<CreateCard />} />
         {/* <Route path="/login" element={<LoginPage />} />

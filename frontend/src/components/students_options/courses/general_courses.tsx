@@ -35,7 +35,7 @@ const GeneralCourses: React.FC<CoursesLanguage> = ({ lang }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [majors, setMajors] = useState<Major[]>([
     {
-      name: lang === "ar" ? "Computer Science" : "علوم الحاسب",
+      name: lang === "en" ? "Computer Science" : "علوم الحاسب",
       imageUrl: desktop,
       subjects: [
         {
@@ -54,7 +54,7 @@ const GeneralCourses: React.FC<CoursesLanguage> = ({ lang }) => {
       studentsCount: 0,
     },
     {
-      name: lang === "ar" ? "Mechanical Engineering" : "هندسة ميكانيكية",
+      name: lang === "en" ? "Mechanical Engineering" : "هندسة ميكانيكية",
       imageUrl: engineering,
       subjects: [
         { name: "Thermodynamics", hours: 3, doctor: "Doctor A" },
@@ -69,7 +69,7 @@ const GeneralCourses: React.FC<CoursesLanguage> = ({ lang }) => {
       studentsCount: 0,
     },
     {
-      name: lang === "ar" ? "Business Administration" : "إدارة أعمال",
+      name: lang === "en" ? "Business Administration" : "إدارة أعمال",
       imageUrl: briefcase,
       subjects: [
         { name: "Principles of Management", hours: 4, doctor: "Doctor A" },
@@ -84,7 +84,7 @@ const GeneralCourses: React.FC<CoursesLanguage> = ({ lang }) => {
       studentsCount: 0,
     },
     {
-      name: lang === "ar" ? "Electrical Engineering" : "الهندسة الكهربائية",
+      name: lang === "en" ? "Electrical Engineering" : "الهندسة الكهربائية",
       imageUrl: gear,
       subjects: [
         { name: "Circuit Analysis", hours: 4, doctor: "Doctor A" },
@@ -99,7 +99,7 @@ const GeneralCourses: React.FC<CoursesLanguage> = ({ lang }) => {
       studentsCount: 0,
     },
     {
-      name: lang === "ar" ? "Psychology" : "علم النفس",
+      name: lang === "en" ? "Psychology" : "علم النفس",
       imageUrl: research,
       subjects: [
         { name: "Cognitive Psychology", hours: 3, doctor: "Doctor A" },
@@ -122,7 +122,7 @@ const GeneralCourses: React.FC<CoursesLanguage> = ({ lang }) => {
       studentsCount: 0,
     },
     {
-      name: lang === "ar" ? "English" : "لغة انجليزية",
+      name: lang === "en" ? "English" : "لغة انجليزية",
       imageUrl: end,
       subjects: [
         { name: "Introduction to Literature", hours: 4, doctor: "Doctor A" },
@@ -141,7 +141,7 @@ const GeneralCourses: React.FC<CoursesLanguage> = ({ lang }) => {
       studentsCount: 0,
     },
     {
-      name: lang === "ar" ? "Environmental Science" : "العلوم البيئية",
+      name: lang === "en" ? "Environmental Science" : "العلوم البيئية",
       imageUrl: science,
       subjects: [
         { name: "Environmental Chemistry", hours: 4, doctor: "Doctor A" },
@@ -164,7 +164,7 @@ const GeneralCourses: React.FC<CoursesLanguage> = ({ lang }) => {
       studentsCount: 0,
     },
     {
-      name: lang === "ar" ? "Fine Arts" : "الفنون الجميلة",
+      name: lang === "en" ? "Fine Arts" : "الفنون الجميلة",
       imageUrl: palette,
       subjects: [
         { name: "Drawing and Painting", hours: 3, doctor: "Doctor A" },
@@ -192,7 +192,6 @@ const GeneralCourses: React.FC<CoursesLanguage> = ({ lang }) => {
   };
 
   useEffect(() => {
-    // Fetch the users
     const fetchUsers = async () => {
       try {
         const response = await fetch("http://localhost:3000/users");
