@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import AddStudents from "./widget/widget_dashboard/add_students";
 import SearchBar from "./widget/widget_dashboard/upper_part";
@@ -22,6 +23,7 @@ interface StudentsTableDataProps {
 }
 
 const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
+  const { t } = useTranslation();
   const [users, setUsers] = useState<Student[]>([]);
   const [studentIdToDelete, setStudentIdToDelete] = useState<string | null>(
     null
@@ -80,7 +82,6 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
         setIsModalVisible(false);
         setStudentIdToDelete(null);
       }
-      window.location.reload();
     } catch (error) {
       console.error("Error deleting the user:", error);
     } finally {
@@ -98,7 +99,6 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
   };
 
   const handleEditUser = async (updateData: Partial<Student>) => {
-    setLoading(true);
     try {
       const response = await axios.patch(
         `https://classcore.onrender.com/users/${studentDataToEdit!._id}`,
