@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import axios from "axios";
 import AddStudents from "./widget/widget_dashboard/add_students";
 import SearchBar from "./widget/widget_dashboard/upper_part";
@@ -23,7 +22,6 @@ interface StudentsTableDataProps {
 }
 
 const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
-  const { t } = useTranslation();
   const [users, setUsers] = useState<Student[]>([]);
   const [studentIdToDelete, setStudentIdToDelete] = useState<string | null>(
     null
@@ -81,8 +79,8 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
         );
         setIsModalVisible(false);
         setStudentIdToDelete(null);
-        window.location.reload();
       }
+      window.location.reload();
     } catch (error) {
       console.error("Error deleting the user:", error);
     } finally {
@@ -128,12 +126,12 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // if (loading)
-  //   return (
-  //     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
-  //       <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin"></div>
-  //     </div>
-  //   );
+  if (loading)
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
+        <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin"></div>
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
 
   return (
