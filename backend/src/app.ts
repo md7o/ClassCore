@@ -8,7 +8,7 @@ const app = express();
 const cors = require("cors");
 app.use(
   cors({
-    origin: "`https://classcore.onrender.com`",
+    origin: "https://classcore.onrender.com",
   })
 );
 
