@@ -46,7 +46,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const addStudent = async (student: Student) => {
     try {
-      const response = await axios.post("http://localhost:3000/users", student);
+      const response = await axios.post(
+        "https://classcore.onrender.com/users",
+        student
+      );
 
       if (response.status === 201) {
         const addedStudent = response.data;

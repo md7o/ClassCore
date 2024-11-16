@@ -30,7 +30,7 @@ const CollegeStudentsMajors: React.FC<CoursesLanguage> = ({ lang }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("http://localhost:3000/users");
+        const response = await fetch("https://classcore.onrender.com/users");
         const data = await response.json();
         setUsers(data);
       } catch (error) {

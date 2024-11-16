@@ -81,7 +81,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
   const checkNameInDatabase = async (name: string): Promise<boolean> => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/users?name=${name}`
+        `https://classcore.onrender.com/users?name=${name}`
       );
       return response.data.length > 0;
     } catch (error) {

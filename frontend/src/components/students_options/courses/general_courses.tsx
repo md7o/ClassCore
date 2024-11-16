@@ -194,7 +194,7 @@ const GeneralCourses: React.FC<CoursesLanguage> = ({ lang }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://localhost:3000/users");
+        const response = await fetch("https://classcore.onrender.com/users");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

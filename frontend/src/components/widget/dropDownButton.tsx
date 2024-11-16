@@ -12,7 +12,6 @@ const DropDownButton: React.FC<DropDownButtonProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("English");
 
-  // Load the language from localStorage on component mount
   useEffect(() => {
     const savedLanguage = localStorage.getItem("selectedLanguage");
     if (savedLanguage) {
@@ -30,7 +29,6 @@ const DropDownButton: React.FC<DropDownButtonProps> = ({
     setIsOpen(false);
     setIsLoading(true);
 
-    // Save the selected language to localStorage
     localStorage.setItem("selectedLanguage", label);
 
     setTimeout(() => {

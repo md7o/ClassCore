@@ -42,7 +42,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://localhost:3000/users");
+        const response = await fetch("https://classcore.onrender.com/users");
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         setUsers(data);
@@ -73,7 +73,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
   const handleConfirmDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:3000/users/${studentIdToDelete}`
+        `https://classcore.onrender.com/users/${studentIdToDelete}`
       );
       if (response.status === 200) {
         setUsers((prevUsers) =>
@@ -81,9 +81,12 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
         );
         setIsModalVisible(false);
         setStudentIdToDelete(null);
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error deleting the user:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -97,9 +100,10 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
   };
 
   const handleEditUser = async (updateData: Partial<Student>) => {
+    setLoading(true);
     try {
       const response = await axios.patch(
-        `http://localhost:3000/users/${studentDataToEdit!._id}`,
+        `https://classcore.onrender.com/users/${studentDataToEdit!._id}`,
         updateData
       );
       if (response.status === 200) {
@@ -115,6 +119,8 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
       }
     } catch (error) {
       console.error("Error updating the user:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -122,7 +128,12 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
+        <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin"></div>
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
 
   return (

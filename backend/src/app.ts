@@ -5,7 +5,12 @@ import moment from "moment";
 import User from "./models/user";
 
 const app = express();
-app.use(cors()); // Enable CORS for all origins
+app.use(
+  cors({
+    origin: "https://classcore.onrender.com", // Update with the actual frontend URL
+  })
+);
+
 app.use(express.json());
 
 // ====CONNECT TO DATABASE====

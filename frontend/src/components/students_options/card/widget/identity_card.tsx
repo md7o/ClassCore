@@ -27,7 +27,7 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("http://localhost:3000/users");
+        const response = await fetch("https://classcore.onrender.com/users");
         const data = await response.json();
         setUsers(data);
       } catch (error) {
@@ -43,7 +43,7 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
     if (selectedStudent && selectedStudent._id) {
       try {
         const response = await fetch(
-          `http://localhost:3000/users/${selectedStudent._id}`,
+          `https://classcore.onrender.com/users/${selectedStudent._id}`,
           {
             method: "PATCH",
             headers: {
@@ -74,23 +74,27 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
     if (selectedStudent && selectedStudent._id) {
       try {
         const response = await fetch(
-          `http://localhost:3000/users/${selectedStudent._id}`,
-          { method: "DELETE" }
+          `https://classcore.onrender.com/users/${selectedStudent._id}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ card: false }),
+          }
         );
+
         if (response.ok) {
-          // Remove the deleted user from the users list
-          const updatedUsers = users.filter(
-            (user) => user._id !== selectedStudent._id
+          const updatedUsers = users.map((user) =>
+            user._id === selectedStudent._id ? { ...user, card: false } : user
           );
           setUsers(updatedUsers);
           window.location.reload();
         } else {
-          console.error("Failed to delete the card.");
+          console.error("Failed to update the card status.");
         }
       } catch (error) {
-        console.error("Error while deleting card:", error);
-      } finally {
-        setLoading(false);
+        console.error("Error while updating card status:", error);
       }
     }
   };
@@ -183,7 +187,7 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
           onClick={handleCleareCard}
           className=" bg-red-600 text-white text-3xl w-48 px-10 py-2 rounded-lg hover:bg-red-500 hover:scale-95 duration-200"
         >
-          Clear
+          {loading === false ? "Clear" : "Lodaing..."}
         </button>
       </div>
     </div>
