@@ -7,7 +7,7 @@ import User from "./models/user";
 const app = express();
 app.use(
   cors({
-    origin: "https://classcore.onrender.com",
+    origin: "https://classcore.onrender.com", // Update with the actual frontend URL
   })
 );
 
@@ -21,12 +21,14 @@ mongoose
   .then(() => {
     console.log("Connected successfully :)");
 
+    // Check and insert static users
     checkAndInsertStaticUsers();
   })
   .catch((error) => {
     console.log("Error connecting to the database", error);
   });
 
+// Static users data
 const staticUsers = [
   {
     name: "John Doe",
@@ -62,6 +64,7 @@ const staticUsers = [
   },
 ];
 
+// Function to check if the static users exist and insert them if they don't
 const checkAndInsertStaticUsers = async () => {
   const existingUsers = await User.find({});
 
@@ -93,10 +96,9 @@ app.get("/users", async (req: Request, res: Response) => {
     const users = await User.find();
 
     const formattedUsers = users.map((user) => ({
-      ...user.toObject(), // Convert mongoose document to plain object
-      birth: moment(user.birth).format("MM/DD/YYYY"), // Format birth date
+      ...user.toObject(),
+      birth: moment(user.birth).format("MM/DD/YYYY"),
     }));
-    console.log("Fetched Users:", users); // Log the users retrieved from DB
     res.status(200).json(formattedUsers);
   } catch (error) {
     res.status(500).json({ message: "Error retrieving users", error });
@@ -114,8 +116,8 @@ app.get("/users/:id", async (req: Request, res: Response) => {
     }
 
     const formattedUser = {
-      ...user.toObject(), // Convert mongoose document to plain object
-      birth: moment(user.birth).format("MM/DD/YYYY"), // Format birth date
+      ...user.toObject(),
+      birth: moment(user.birth).format("MM/DD/YYYY"),
     };
 
     res.status(200).json(formattedUser);
@@ -128,7 +130,6 @@ app.get("/users/:id", async (req: Request, res: Response) => {
 app.post("/users", async (req: Request, res: Response) => {
   try {
     const { name, birth, college, country, status, phone } = req.body;
-
     const formattedBirth = moment(birth).format("MM/DD/YYYY");
 
     const newUser = new User({
