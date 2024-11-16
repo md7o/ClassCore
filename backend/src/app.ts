@@ -7,7 +7,7 @@ import User from "./models/user";
 const app = express();
 app.use(
   cors({
-    origin: "https://classcore.onrender.com", // Update with the actual frontend URL
+    origin: "https://classcore.onrender.com", // Allow all origins
   })
 );
 
