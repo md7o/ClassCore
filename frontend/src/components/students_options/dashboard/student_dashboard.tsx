@@ -43,15 +43,21 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
     const fetchUsers = async () => {
       try {
         const response = await fetch("https://classcore.onrender.com/users");
-        if (!response.ok) throw new Error("Network response was not ok");
+        if (!response.ok) {
+          throw new Error(
+            `Network response was not ok: ${response.statusText}`
+          );
+        }
         const data = await response.json();
         setUsers(data);
       } catch (error) {
+        console.error("Error fetching users:", error); // Log the error for debugging
         setError("Error fetching users: " + (error as Error).message);
       } finally {
         setLoading(false);
       }
     };
+
     fetchUsers();
   }, []);
 

@@ -7,7 +7,9 @@ import User from "./models/user";
 const app = express();
 app.use(
   cors({
-    origin: ["https://classcore.onrender.com", "http://localhost:3000"],
+    origin: "https://classcore.onrender.com", // or "*" for all domains (not recommended in production)
+    methods: ["GET", "POST", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
