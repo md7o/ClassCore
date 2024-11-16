@@ -64,16 +64,21 @@ const staticUsers = [
 ];
 
 const seedDatabase = async () => {
-  const userCount = await User.countDocuments();
-  if (userCount === 0) {
-    for (const userData of staticUsers) {
-      const formattedBirth = moment(userData.birth, "MM/DD/YYYY").toDate();
-      const newUser = new User({ ...userData, birth: formattedBirth });
-      await newUser.save();
+  try {
+    const userCount = await User.countDocuments();
+    if (userCount === 0) {
+      for (const userData of staticUsers) {
+        // Convert birth date string to a Date object
+        const formattedBirth = moment(userData.birth, "MM/DD/YYYY").toDate();
+        const newUser = new User({ ...userData, birth: formattedBirth });
+        await newUser.save();
+      }
+      console.log("Database seeded with static users.");
+    } else {
+      console.log("Database already contains users, skipping seeding.");
     }
-    console.log("Database seeded with static users.");
-  } else {
-    console.log("Database already contains users, skipping seeding.");
+  } catch (error) {
+    console.log("Error seeding the database", error);
   }
 };
 
