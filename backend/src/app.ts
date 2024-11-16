@@ -5,10 +5,10 @@ import moment from "moment";
 import User from "./models/user";
 
 const app = express();
-const cors = require("cors");
+
 app.use(
   cors({
-    origin: "https://classcore.onrender.com",
+    origin: "https://classcorewebsite.web.app", // Replace with your actual Firebase domain
   })
 );
 
