@@ -42,22 +42,18 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("https://classcore.onrender.com/users");
-        if (!response.ok) {
-          throw new Error(
-            `Network response was not ok: ${response.statusText}`
-          );
-        }
+        const response = await fetch(
+          "https://classcorewebsite.firebaseapp.com/users"
+        );
+        if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         setUsers(data);
       } catch (error) {
-        console.error("Error fetching users:", error); // Log the error for debugging
         setError("Error fetching users: " + (error as Error).message);
       } finally {
         setLoading(false);
       }
     };
-
     fetchUsers();
   }, []);
 
@@ -87,6 +83,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
         );
         setIsModalVisible(false);
         setStudentIdToDelete(null);
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error deleting the user:", error);
@@ -105,6 +102,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
   };
 
   const handleEditUser = async (updateData: Partial<Student>) => {
+    setLoading(true);
     try {
       const response = await axios.patch(
         `https://classcore.onrender.com/users/${studentDataToEdit!._id}`,
@@ -132,12 +130,12 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading)
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
-        <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin"></div>
-      </div>
-    );
+  // if (loading)
+  //   return (
+  //     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
+  //       <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin"></div>
+  //     </div>
+  //   );
   if (error) return <div>Error: {error}</div>;
 
   return (
