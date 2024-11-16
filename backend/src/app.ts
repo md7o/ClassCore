@@ -7,7 +7,7 @@ import User from "./models/user";
 const app = express();
 app.use(
   cors({
-    origin: "https://classcore.onrender.com", // Update with the actual frontend URL
+    origin: "https://classcore.onrender.com",
   })
 );
 
@@ -20,10 +20,72 @@ mongoose
   )
   .then(() => {
     console.log("Connected successfully :)");
+
+    checkAndInsertStaticUsers();
   })
   .catch((error) => {
     console.log("Error connecting to the database", error);
   });
+
+const staticUsers = [
+  {
+    name: "John Doe",
+    birth: "01/01/2000",
+    college: "College A",
+    country: "USA",
+    status: "Active",
+    phone: "1234567890",
+  },
+  {
+    name: "Jane Smith",
+    birth: "02/02/1995",
+    college: "College B",
+    country: "Canada",
+    status: "Active",
+    phone: "9876543210",
+  },
+  {
+    name: "Jim Brown",
+    birth: "03/03/1990",
+    college: "College C",
+    country: "UK",
+    status: "Active",
+    phone: "5551234567",
+  },
+  {
+    name: "Jill White",
+    birth: "04/04/1992",
+    college: "College D",
+    country: "Australia",
+    status: "Active",
+    phone: "5559876543",
+  },
+];
+
+const checkAndInsertStaticUsers = async () => {
+  const existingUsers = await User.find({});
+
+  // Insert static users if the database is empty or if the users don't exist
+  for (const staticUser of staticUsers) {
+    const userExists = existingUsers.some(
+      (user) => user.name === staticUser.name
+    );
+    if (!userExists) {
+      const formattedBirth = moment(staticUser.birth).format("MM/DD/YYYY");
+      const newUser = new User({
+        name: staticUser.name,
+        birth: formattedBirth,
+        college: staticUser.college,
+        country: staticUser.country,
+        status: staticUser.status,
+        phone: staticUser.phone,
+      });
+
+      await newUser.save();
+      console.log(`Inserted static user: ${staticUser.name}`);
+    }
+  }
+};
 
 // ====GET ALL USERS ENDPOINT====
 app.get("/users", async (req: Request, res: Response) => {
@@ -65,7 +127,7 @@ app.get("/users/:id", async (req: Request, res: Response) => {
 // ====POST USER ENDPOINT====
 app.post("/users", async (req: Request, res: Response) => {
   try {
-    const { name, birth, college, country, status, phone } = req.body; // Get data from request body
+    const { name, birth, college, country, status, phone } = req.body;
 
     const formattedBirth = moment(birth).format("MM/DD/YYYY");
 
@@ -88,10 +150,21 @@ app.post("/users", async (req: Request, res: Response) => {
 // ====DELETE USER ENDPOINT====
 app.delete("/users/:id", async (req: Request, res: Response) => {
   try {
-    const deletedUser = await User.findByIdAndDelete(req.params.id);
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    // Prevent deleting static users
+    if (
+      user &&
+      staticUsers.some((staticUser) => staticUser.name === user.name)
+    ) {
+      return;
+    }
+
+    await User.findByIdAndDelete(id);
     res
       .status(200)
-      .json({ message: `User with ID ${req.params.id} deleted successfully.` });
+      .json({ message: `User with ID ${id} deleted successfully.` });
   } catch (error) {
     res.status(500).json({ message: "Error deleting the user", error });
   }
@@ -100,15 +173,22 @@ app.delete("/users/:id", async (req: Request, res: Response) => {
 // ====UPDATE USER ENDPOINT====
 app.patch("/users/:id", async (req: Request, res: Response) => {
   try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    // Prevent updating static users
+    if (
+      user &&
+      staticUsers.some((staticUser) => staticUser.name === user.name)
+    ) {
+      return;
+    }
+
     const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
+      id,
       { $set: req.body },
       { new: true }
     );
-
-    // if (!updatedUser) {
-    //   return res.status(404).json({ message: "User not found" });
-    // }
 
     res.status(200).json({ message: "User updated successfully", updatedUser });
   } catch (error) {
