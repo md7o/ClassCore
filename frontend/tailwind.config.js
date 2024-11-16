@@ -14,7 +14,7 @@ module.exports = {
         1.5: "1.2 1 0%",
       },
       borderRadius: {
-        roundedButt: "20px",
+        roundedButt: "8px",
         defaultRounded: "40px",
       },
       width: {

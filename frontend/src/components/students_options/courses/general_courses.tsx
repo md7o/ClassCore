@@ -201,7 +201,6 @@ const GeneralCourses: React.FC<CoursesLanguage> = ({ lang }) => {
         const data: User[] = await response.json();
         setUsers(data);
 
-        // Calculate students per specialty
         const updatedMajors = majors.map((major) => ({
           ...major,
           studentsCount: data.filter((user) => user.college === major.name)
@@ -218,7 +217,7 @@ const GeneralCourses: React.FC<CoursesLanguage> = ({ lang }) => {
     };
 
     fetchUsers();
-  }, [majors]); // Re-run when `lang` changes to update `majors` accordingly
+  }, [majors]);
 
   if (loading)
     return (

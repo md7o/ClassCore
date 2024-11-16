@@ -28,7 +28,7 @@ const StudentList: React.FC<StudentListProps> = ({
 }) => {
   return (
     <div>
-      <div className="2.5xl:block hidden">
+      <div className="2xl:block hidden">
         <table className="w-full rounded-lg overflow-hidden ">
           <thead>
             <tr className="bg-background text-white py-5 mb-5 rounded-lg uppercase text-xs">
@@ -69,7 +69,7 @@ const StudentList: React.FC<StudentListProps> = ({
         </table>
       </div>
 
-      <div className="2.5xl:hidden block">
+      <div className="2xl:hidden block">
         {students.length > 0 ? (
           students.map((student, rowIndex) => (
             <div key={rowIndex}>
@@ -77,56 +77,68 @@ const StudentList: React.FC<StudentListProps> = ({
                 <div className="space-y-2 font-bold">
                   <div className="flex justify-between py-2 rounded-lg px-5 ">
                     <p className=" md:text-lg">Name:</p>
-                    <p className=" font-light md:text-lg">{student.name}</p>
+                    <p className=" font-light md:text-lg text-md">
+                      {student.name}
+                    </p>
                   </div>
                   {/* =========Line======= */}
                   <div className="w-full h-hightLine bg-white" />
                   <div className="flex justify-between py-2 rounded-lg px-5">
                     <p className="  md:text-lg">Birth:</p>
-                    <p className=" font-light md:text-lg">{student.birth}</p>
+                    <p className=" font-light md:text-lg text-md">
+                      {student.birth}
+                    </p>
                   </div>
                   {/* =========Line======= */}
                   <div className="w-full h-hightLine bg-white" />
                   <div className="flex justify-between py-2 rounded-lg px-5">
                     <p className="  md:text-lg">Country:</p>
-                    <p className=" font-light md:text-lg">{student.country}</p>
+                    <p className=" font-light md:text-lg text-md">
+                      {student.country}
+                    </p>
                   </div>
                   {/* =========Line======= */}
                   <div className="w-full h-hightLine bg-white" />
                   <div className="flex justify-between py-2 rounded-lg px-5">
                     <p className="  md:text-lg">College:</p>
-                    <p className=" font-light md:text-lg">{student.college}</p>
+                    <p className=" font-light md:text-lg text-md">
+                      {student.college}
+                    </p>
                   </div>
                   {/* =========Line======= */}
                   <div className="w-full h-hightLine bg-white" />
                   <div className="flex justify-between py-2 rounded-lg px-5">
                     <p className="  md:text-lg">Status:</p>
-                    <p className=" font-light md:text-lg">{student.status}</p>
+                    <p className=" font-light md:text-lg text-md">
+                      {student.status}
+                    </p>
                   </div>
                   {/* =========Line======= */}
                   <div className="w-full h-hightLine bg-white" />
                   <div className="flex justify-between py-2 rounded-lg px-5">
                     <p className="  md:text-lg">Phone:</p>
-                    <p className=" font-light md:text-lg">{student.phone}</p>
+                    <p className=" font-light md:text-lg text-md">
+                      {student.phone}
+                    </p>
                   </div>
                   {/* =========Line======= */}
                   <div className="w-full h-hightLine bg-white" />
                   <div className="flex justify-between py-2 rounded-lg px-5">
-                    <p className=" md:text-lg">Actions:</p>
+                    <p className=" md:text-lg ">Actions:</p>
                     <div className="flex gap-3">
                       <button
                         className="text-blue-500 hover:text-blue-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
                         onClick={() => handleEditStudent(student._id!)}
                         title={"Edit"}
                       >
-                        <img src={pencil} alt="edit" />
+                        <img className="w-7 h-7" src={pencil} alt="edit" />
                       </button>
                       <button
                         className="text-red-500 hover:text-red-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
                         onClick={() => handleDeleteClick(student._id!)}
                         title={"Delete"}
                       >
-                        <img src={bin} alt="delete" />
+                        <img className="w-7 h-7" src={bin} alt="delete" />
                       </button>
                     </div>
                   </div>

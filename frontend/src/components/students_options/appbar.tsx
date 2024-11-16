@@ -14,7 +14,7 @@ const AppBar: React.FC<AppBarProps> = ({
   onLanguageChange,
   currentPage,
   toggleSidebar,
-  language, // Use the language prop directly
+  language,
 }) => {
   const getPageTitle = () => {
     switch (currentPage) {
@@ -34,7 +34,7 @@ const AppBar: React.FC<AppBarProps> = ({
   };
 
   return (
-    <div className="mb-20 mt-4 relative z-40">
+    <div className="mb-20 xl:mt-4 mt-0 relative z-40">
       <div
         className="flex justify-between items-center xl:static xl:bg-transparent bg-darkColor bg-opacity-55 fixed w-full"
         style={{ direction: language === "en" ? "ltr" : "rtl" }}

@@ -8,8 +8,7 @@ import "./utils/i18n";
 const rootElement = document.getElementById("root");
 
 if (rootElement) {
-  // Ensure rootElement is not null before calling createRoot
-  const root = ReactDOM.createRoot(rootElement);
+  const root = ReactDOM.createRoot(rootElement!);
 
   root.render(
     <React.StrictMode>

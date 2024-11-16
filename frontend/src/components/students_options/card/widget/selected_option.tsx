@@ -57,7 +57,7 @@ const SelecteOption: React.FC<SelecteOptionProps> = ({
   };
 
   return (
-    <div className="bg-darkColor w-1/3 rounded-roundedButt">
+    <div className="bg-darkColor 2xl:w-1/3 md:w-3/4 w-full rounded-roundedButt">
       <div className="relative m-10">
         <img
           src={search}
@@ -97,10 +97,10 @@ const SelecteOption: React.FC<SelecteOptionProps> = ({
         ))}
         <div />
       </div>
-      <p className="text-white text-3xl px-10">Selected Student</p>
+      <p className="text-white md:text-3xl text-2xl px-10">Selected Student</p>
       <div className="mx-10 h-hightLine bg-white my-2" />
       {selectedStudent ? (
-        <div className="grid grid-cols-2 justify-center items-center text-2xl text-white space-y-2 font-light px-10 py-5 pb-10">
+        <div className="grid grid-cols-2 justify-center items-center md:text-2xl text-xl text-white space-y-2 font-light px-10 py-5 pb-10">
           <div>
             <p className="font-bold">Name:</p>
             <p>{selectedStudent.name}</p>

@@ -128,12 +128,12 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading)
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
-        <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin"></div>
-      </div>
-    );
+  // if (loading)
+  //   return (
+  //     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
+  //       <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin"></div>
+  //     </div>
+  //   );
   if (error) return <div>Error: {error}</div>;
 
   return (

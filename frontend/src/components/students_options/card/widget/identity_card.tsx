@@ -112,28 +112,41 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
 
   return (
     <div>
-      <div className="bg-gray-700 rounded-roundedButt py-8 w-megaW">
+      <div className="bg-gray-700 rounded-roundedButt md:py-8 py-4 md:w-megaW w-large">
         <div className="flex justify-between items-center mx-10">
-          <p className="text-4xl text-white">Student</p>
-          <p className="text-2xl text-white">IDENTITY CARD</p>
+          <p className="md:text-4xl text-2xl text-white">
+            {lang === "en" ? "Student" : "طالب"}
+          </p>
+          <p className="md:text-2xl text-lg text-white">
+            {lang === "en" ? "University card" : "بطاقة جامعية"}
+          </p>
         </div>
 
         <div className="mx-10 h-hightLine bg-white my-2" />
 
-        <div className="flex justify-between items-center mx-10">
+        <div
+          className="flex justify-between items-center mx-10"
+          style={{ direction: lang === "en" ? "ltr" : "rtl" }}
+        >
           <div>
             {selectedStudent ? (
-              <div className=" text-2xl text-white space-y-3 font-light py-5">
+              <div className="md:text-2xl text-white space-y-3 font-light py-5">
                 <div>
-                  <p className="font-medium">Name:</p>
+                  <p className="font-medium">
+                    {lang === "en" ? "Name:" : "الإسم :"}
+                  </p>
                   <p>{selectedStudent.name}</p>
                 </div>
                 <div>
-                  <p className="font-medium">College Major:</p>
+                  <p className="font-medium">
+                    {lang === "en" ? "College Major:" : "التخصص الجامعي :"}
+                  </p>
                   <p>{selectedStudent.college}</p>
                 </div>
                 <div>
-                  <p className="font-medium">Born:</p>
+                  <p className="font-medium">
+                    {lang === "en" ? "birth day:" : "تاريخ الولادة :"}
+                  </p>
                   <p>{selectedStudent.birth}</p>
                 </div>
               </div>
@@ -145,49 +158,57 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
           </div>
 
           <div
-            className={`bg-gray-400 rounded-lg px-8 pt-20 mr-5 ${
+            className={`bg-gray-400 rounded-roundedButt md:px-8 px-6 md:pt-20 pt-16 mr-5 ${
               selectedStudent ? "my-0" : "my-5"
             }`}
           >
-            <img src={user} alt={user} />
+            <img className="md:w-32 w-16 md:h-32 h-16" src={user} alt={user} />
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center gap-10 my-14">
+      <div className="flex flex-col md:flex-row justify-center items-center md:gap-10 gap-3 md:my-14 my-8">
         {selectedStudent ? (
           <button
             className={` ${
               selectedStudent.card
                 ? "bg-gray-700 text-white cursor-not-allowed opacity-50"
                 : "bg-blue-600 text-white hover:bg-blue-500 hover:scale-95 duration-200"
-            }  text-3xl w-48 px-10 py-2 rounded-lg `}
+            }  text-3xl md:w-48 px-10 py-2 rounded-roundedButt`}
             onClick={handleConfirmCreated}
           >
-            <p>{selectedStudent.card === true ? "Created" : "Create"}</p>
+            <p>
+              {selectedStudent.card === true
+                ? lang === "en"
+                  ? "Created"
+                  : "تم الإنشاء"
+                : lang === "en"
+                ? "Created"
+                : "إنشاء"}
+            </p>
           </button>
         ) : (
           <button
-            className={` bg-gray-700 cursor-not-allowed text-white  text-3xl w-48 px-10 py-2 rounded-lg`}
+            className={` bg-gray-700 cursor-not-allowed text-white  text-3xl w-48 px-10 py-2 rounded-roundedButt`}
             onClick={handleConfirmCreated}
           >
-            <p>Create</p>
+            <p>{lang === "en" ? "Create" : "إنشاء"}</p>
           </button>
         )}
         {selectedStudent ? (
           <button
             className={` ${
               selectedStudent.card ? "block" : "hidden"
-            } bg-green-700 text-white text-3xl w-48 px-10 py-2 rounded-lg hover:bg-green-500 hover:scale-95 duration-200`}
+            } bg-green-700 text-white text-3xl w-48 px-10 py-2 rounded-roundedButt hover:bg-green-500 hover:scale-95 duration-200`}
             onClick={printAlert}
           >
-            <p>Print</p>
+            <p>{lang === "en" ? "Print" : "طباعة"}</p>
           </button>
         ) : null}
         <button
           onClick={handleCleareCard}
-          className=" bg-red-600 text-white text-3xl w-48 px-10 py-2 rounded-lg hover:bg-red-500 hover:scale-95 duration-200"
+          className=" bg-red-600 text-white text-3xl md:w-48 px-10 py-2 rounded-roundedButt hover:bg-red-500 hover:scale-95 duration-200"
         >
-          {loading === false ? "Clear" : "Lodaing..."}
+          {lang === "en" ? "Clear" : "إزالة"}
         </button>
       </div>
     </div>

@@ -95,7 +95,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             <img
               src={plus}
               alt="plus"
-              className={`${lang === "en" ? "mx-2" : "ml-3"} w-4`}
+              className={`${lang === "en" ? "mx-2" : "ml-3"} w-4 h-4`}
             />
           </button>
         </div>
@@ -118,7 +118,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           />
         </div>
       </div>
-      <p className="text-white text-4xl">
+      <p className="text-white md:text-4xl text-2xl">
         {lang === "en" ? "Students List" : "قائمة الطلاب"}
       </p>
     </div>

@@ -5,7 +5,7 @@ import event from "../../assets/images/event.png";
 import openBook from "../../assets/images/open-book.png";
 import userAva from "../../assets/images/user.png";
 import presentation from "../../assets/images/presentation.png";
-import Logo from "../../assets/images/ClassCoreLogo.png";
+import Logo from "../../assets/images/class_core_logo.png";
 import cretidcard from "../../assets/images/credit-card.png";
 import logout from "../../assets/images/logout.png";
 import LogoutModal from "../modal/logout_modal";
@@ -38,7 +38,7 @@ const SideBar: React.FC<SideBarProps> = ({
     {
       icon: dashboardIcon,
       name: language === "en" ? "Dashboard" : "لوحة تحكم الطلاب",
-      route: "/dashboard",
+      route: "/",
     },
     {
       icon: event,
@@ -87,8 +87,11 @@ const SideBar: React.FC<SideBarProps> = ({
             <div className="flex justify-between items-center">
               <img
                 src={Logo}
-                alt={Logo}
-                className="lg:w-72 w-64 mt-10 mb-5 lg:mx-auto"
+                alt="Logo"
+                className="mt-10 mb-5 mx-auto"
+                width="250"
+                height="100"
+                loading="lazy"
               />
 
               <button
@@ -126,7 +129,7 @@ const SideBar: React.FC<SideBarProps> = ({
                   <img
                     src={items.icon}
                     alt="Logout"
-                    className="w-6 opacity-60 group-hover:opacity-100"
+                    className="w-6 h-6 opacity-60 group-hover:opacity-100"
                   />
                   <p className="text-xl text-white opacity-60 group-hover:opacity-100 px-6">
                     {items.name}

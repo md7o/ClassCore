@@ -47,13 +47,13 @@ const StudentRow: React.FC<StudentRowProps> = ({
       </td>
       <td className="px-6 py-4 whitespace-nowrap  font-medium flex justify-end">
         <img
-          className="w-7 mx-2"
+          className="w-7 h-7 mx-2"
           src={pencilIcon}
           alt="Edit"
           onClick={() => handleEditStudent(student._id!)}
         />
         <img
-          className="w-7 mx-2"
+          className="w-7 h-7 mx-2"
           src={binIcon}
           alt="Delete"
           onClick={() => handleDeleteClick(student._id!)}
