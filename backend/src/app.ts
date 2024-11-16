@@ -5,6 +5,7 @@ import moment from "moment";
 import User from "./models/user";
 
 const app = express();
+const cors = require("cors");
 app.use(
   cors({
     origin: "`https://classcore.onrender.com`",
