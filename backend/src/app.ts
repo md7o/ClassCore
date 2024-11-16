@@ -19,12 +19,63 @@ mongoose
   .connect(
     "mongodb+srv://md7ohe:%23Mdho123%23@classcore.mqjmg.mongodb.net/?retryWrites=true&w=majority&appName=ClassCore"
   )
-  .then(() => {
+  .then(async () => {
     console.log("Connected successfully :)");
+
+    await seedDatabase();
   })
   .catch((error) => {
     console.log("Error connecting to the database", error);
   });
+
+const staticUsers = [
+  {
+    name: "John Doe",
+    birth: "01/15/1990",
+    college: "Harvard University",
+    country: "USA",
+    status: "active",
+    phone: "123-456-7890",
+  },
+  {
+    name: "Jane Smith",
+    birth: "03/22/1985",
+    college: "Stanford University",
+    country: "USA",
+    status: "inactive",
+    phone: "987-654-3210",
+  },
+  {
+    name: "Carlos Ruiz",
+    birth: "07/10/1992",
+    college: "University of Madrid",
+    country: "Spain",
+    status: "active",
+    phone: "555-666-7777",
+  },
+  {
+    name: "Amira Khalid",
+    birth: "09/05/1988",
+    college: "Cairo University",
+    country: "Egypt",
+    status: "active",
+    phone: "444-333-2222",
+  },
+];
+
+const seedDatabase = async () => {
+  const userCount = await User.countDocuments();
+  if (userCount === 0) {
+    for (const userData of staticUsers) {
+      const formattedBirth = moment(userData.birth, "MM/DD/YYYY").toDate();
+      const newUser = new User({ ...userData, birth: formattedBirth });
+      await newUser.save();
+    }
+    console.log("Database seeded with static users.");
+  } else {
+    console.log("Database already contains users, skipping seeding.");
+  }
+};
 
 // ====GET ALL USERS ENDPOINT====
 app.get("/users", async (req: Request, res: Response) => {
