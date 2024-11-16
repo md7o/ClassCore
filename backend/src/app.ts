@@ -7,9 +7,7 @@ import User from "./models/user";
 const app = express();
 app.use(
   cors({
-    origin: "https://classcorewebsite.firebaseapp.com/", // or "*" for all domains (not recommended in production)
-    methods: ["GET", "POST", "DELETE", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: "`https://classcore.onrender.com`",
   })
 );
 
