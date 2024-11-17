@@ -38,11 +38,11 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
     null
   );
   const navigate = useNavigate();
-
+  // https://classcore.onrender.com
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("https://classcore.onrender.com/users");
+        const response = await fetch("http://localhost:3000/users");
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         setUsers(data);
@@ -72,8 +72,14 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
 
   const handleConfirmDelete = async () => {
     try {
+      if (users.findIndex((user) => user._id === studentIdToDelete) < 3) {
+        setIsModalVisible(false);
+        setStudentIdToDelete(null);
+        return;
+      }
+
       const response = await axios.delete(
-        `https://classcore.onrender.com/users/${studentIdToDelete}`
+        `http://localhost:3000/users/${studentIdToDelete}`
       );
       if (response.status === 200) {
         setUsers((prevUsers) =>
@@ -102,8 +108,14 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
   const handleEditUser = async (updateData: Partial<Student>) => {
     setLoading(true);
     try {
+      if (users.findIndex((user) => user._id === studentDataToEdit!._id) < 3) {
+        setShowModal(false);
+        setStudentDataToEdit(null);
+        return;
+      }
+
       const response = await axios.patch(
-        `https://classcore.onrender.com/users/${studentDataToEdit!._id}`,
+        `http://localhost:3000/users/${studentDataToEdit!._id}`,
         updateData
       );
       if (response.status === 200) {

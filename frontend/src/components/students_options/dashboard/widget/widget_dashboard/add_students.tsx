@@ -263,7 +263,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
             name={name}
             value={formData[name]}
             onChange={handleChange}
-            className={`w-full px-3 md:h-12 h-8 my-2 rounded-md text-md tracking-[1.5px] text-white font-medium ${
+            className={`w-[100%] px-3 md:h-12 h-8 my-2 rounded-md text-md tracking-[1.5px] text-white font-medium ${
               errors[name] ? "ring-[#F34235]" : "ring-gray-300"
             } bg-background focus:ring-2 focus:ring-primary focus:outline-none`}
           />
