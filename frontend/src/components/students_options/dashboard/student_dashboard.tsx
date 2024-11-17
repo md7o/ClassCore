@@ -38,11 +38,11 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
     null
   );
   const navigate = useNavigate();
-  // https://classcore.onrender.com
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://localhost:3000/users");
+        const response = await fetch("https://classcore.onrender.com/users");
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         setUsers(data);
@@ -79,7 +79,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
       }
 
       const response = await axios.delete(
-        `http://localhost:3000/users/${studentIdToDelete}`
+        `https://classcore.onrender.com/users/${studentIdToDelete}`
       );
       if (response.status === 200) {
         setUsers((prevUsers) =>
@@ -115,7 +115,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
       }
 
       const response = await axios.patch(
-        `http://localhost:3000/users/${studentDataToEdit!._id}`,
+        `https://classcore.onrender.com/users/${studentDataToEdit!._id}`,
         updateData
       );
       if (response.status === 200) {
