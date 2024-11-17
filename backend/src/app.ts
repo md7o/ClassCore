@@ -8,6 +8,7 @@ const app = express();
 
 app.use(
   cors({
+    // origin: "http://localhost:3000",
     origin: "https://classcorewebsite.web.app", // Replace with your actual Firebase domain
   })
 );

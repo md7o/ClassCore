@@ -199,7 +199,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
               isButtonDisabled || Object.keys(errors).length > 0
                 ? "cursor-pointer"
                 : "cursor-pointer"
-            } bg-gradient-to-r duration-500 from-primary to-purple-500 shadowing text-white w-full mx-14 py-4 my-10 rounded-xl`}
+            } bg-gradient-to-r duration-500 from-primary to-purple-500 shadowing text-white w-full md:mx-14 py-3 md:my-10 my-5 rounded-roundedButt`}
             // disabled={isButtonDisabled || Object.keys(errors).length > 0}
           >
             {isEditMode ? "Update Student" : "Add Student"}
@@ -233,7 +233,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
             name={name}
             value={formData[name]}
             onChange={handleChange}
-            className={`w-full px-3 py-5 my-2 rounded-md text-sm tracking-[1.5px] text-white font-light ${
+            className={`w-full h-12 px-3  my-2 rounded-md text-sm tracking-[1.5px] text-white font-light ${
               errors[name] ? "ring-[#F34235]" : "ring-gray-300"
             } bg-background`}
           >
@@ -263,7 +263,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
             name={name}
             value={formData[name]}
             onChange={handleChange}
-            className={`w-full px-3 py-4 my-2 rounded-md text-md tracking-[1.5px] text-white font-medium ${
+            className={`w-full px-3 h-12 my-2 rounded-md text-md tracking-[1.5px] text-white font-medium ${
               errors[name] ? "ring-[#F34235]" : "ring-gray-300"
             } bg-background focus:ring-2 focus:ring-primary focus:outline-none`}
           />

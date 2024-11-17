@@ -11,7 +11,7 @@ const AddModal: React.FC<AddModalProps> = ({ show, onClose, children }) => {
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center pt-20 bg-black w-full bg-opacity-70 z-50">
+    <div className="fixed inset-0 flex justify-center items-center md:pt-20 bg-black w-full bg-opacity-70 z-50">
       <div className="bg-darkColor rounded-lg shadow-xl max-w-3xl w-full relative">
         <div className="w-full h-2 bg-primary rounded-t-lg" />
         <button
