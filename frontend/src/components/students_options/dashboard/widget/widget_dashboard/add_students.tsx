@@ -179,7 +179,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
 
   return (
     <AddModal show={showModal} onClose={handleCloseModal}>
-      <h2 className="text-3xl text-center my-10 text-white">
+      <h2 className="text-3xl text-center md:my-10 my-5 text-white">
         {isEditMode ? "Edit Student" : "Add Student"}
       </h2>
       <form
@@ -224,7 +224,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
 
     return (
       <div onClick={handleWrapperClick}>
-        <label className="block text-gray-400 font-medium text-sm py-2 tracking-[1.5px]">
+        <label className="block text-gray-400 font-medium text-sm md:py-2 py-1 tracking-[1.5px]">
           {label}
         </label>
 
@@ -233,7 +233,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
             name={name}
             value={formData[name]}
             onChange={handleChange}
-            className={`w-full h-12 px-3  my-2 rounded-md text-sm tracking-[1.5px] text-white font-light ${
+            className={`w-full md:h-12 h-7 px-3 my-2 rounded-roundedButt text-sm tracking-[1.5px] text-white font-light ${
               errors[name] ? "ring-[#F34235]" : "ring-gray-300"
             } bg-background`}
           >
@@ -263,7 +263,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
             name={name}
             value={formData[name]}
             onChange={handleChange}
-            className={`w-full px-3 h-12 my-2 rounded-md text-md tracking-[1.5px] text-white font-medium ${
+            className={`w-full px-3 md:h-12 h-8 my-2 rounded-md text-md tracking-[1.5px] text-white font-medium ${
               errors[name] ? "ring-[#F34235]" : "ring-gray-300"
             } bg-background focus:ring-2 focus:ring-primary focus:outline-none`}
           />
