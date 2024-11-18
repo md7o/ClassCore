@@ -151,7 +151,7 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
                 </div>
               </div>
             ) : (
-              <p className="text-3xl px-10 text-white opacity-40 font-medium">
+              <p className="md:text-3xl text-xl px-10 text-white opacity-40 font-medium">
                 No student selected
               </p>
             )}
@@ -162,7 +162,7 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
               selectedStudent ? "my-0" : "my-5"
             }`}
           >
-            <img className="md:w-32 w-16 md:h-32 h-16" src={user} alt={user} />
+            <img className="md:w-32 w-16" src={user} alt={user} />
           </div>
         </div>
       </div>
@@ -173,7 +173,7 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
               selectedStudent.card
                 ? "bg-gray-700 text-white cursor-not-allowed opacity-50"
                 : "bg-blue-600 text-white hover:bg-blue-500 hover:scale-95 duration-200"
-            }  text-3xl md:w-48 px-10 py-2 rounded-roundedButt`}
+            }  md:text-3xl text-2xl md:w-48 px-10 py-2 rounded-roundedButt`}
             onClick={handleConfirmCreated}
           >
             <p>
@@ -188,7 +188,7 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
           </button>
         ) : (
           <button
-            className={` bg-gray-700 cursor-not-allowed text-white  text-3xl w-48 px-10 py-2 rounded-roundedButt`}
+            className={` bg-gray-700 cursor-not-allowed text-white md:text-3xl text-2xl md:w-48 px-10 py-2 rounded-roundedButt`}
             onClick={handleConfirmCreated}
           >
             <p>{lang === "en" ? "Create" : "إنشاء"}</p>
@@ -198,7 +198,7 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
           <button
             className={` ${
               selectedStudent.card ? "block" : "hidden"
-            } bg-green-700 text-white text-3xl w-48 px-10 py-2 rounded-roundedButt hover:bg-green-500 hover:scale-95 duration-200`}
+            } bg-green-700 text-white md:text-3xl text-2xl md:w-48 px-10 py-2 rounded-roundedButt hover:bg-green-500 hover:scale-95 duration-200`}
             onClick={printAlert}
           >
             <p>{lang === "en" ? "Print" : "طباعة"}</p>
@@ -206,7 +206,7 @@ const IdentityCard: React.FC<IdentityCardProps> = ({
         ) : null}
         <button
           onClick={handleCleareCard}
-          className=" bg-red-600 text-white text-3xl md:w-48 px-10 py-2 rounded-roundedButt hover:bg-red-500 hover:scale-95 duration-200"
+          className=" bg-red-600 text-white md:text-3xl text-2xl md:w-48 px-10 py-2 rounded-roundedButt hover:bg-red-500 hover:scale-95 duration-200"
         >
           {lang === "en" ? "Clear" : "إزالة"}
         </button>

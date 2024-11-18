@@ -21,29 +21,33 @@ const CourseSubjects: React.FC = () => {
 
   return (
     <div>
-      <h1 className="text-white font-light text-4xl w-2/3 mx-auto  my-5">
+      <h1 className="text-white font-light text-4xl w-2/3 mx-auto my-5">
         Courses
       </h1>
-      <div className="bg-darkColor rounded-roundedButt w-2/3 mx-auto mt-14">
-        <div className="flex justify-between items-center mb-10 pt-16 mx-16">
-          <button
-            onClick={handleBackHistoryButton}
-            className="text-white text-xl opacity-55 hover:opacity-100 duration-200 py-1 rounded-lg flex items-center gap-2"
-          >
-            <IoIosArrowBack /> Back
-          </button>
-          <div className="flex justify-center items-center gap-5 mx-auto">
-            <img src={major.imageUrl} alt={major.imageUrl} className="w-10" />
-            <h1 className="text-white font-light text-4xl">{major.name}</h1>
-          </div>
-          <div className="text-transparent">
-            <IoIosArrowBack /> Back
-          </div>
-        </div>
-
-        <table className="min-w-full bg-darkColor  rounded-roundedButt ">
+      <div className="bg-darkColor rounded-roundedButt  max-w-96 md:max-w-6xl mx-auto mt-14 ">
+        <table className="min-w-full bg-darkColor rounded-roundedButt ">
           <thead>
-            <tr className="bg-darkColor text-white  uppercase text-lg ">
+            <tr>
+              <div className="mb-10">
+                <button
+                  onClick={handleBackHistoryButton}
+                  className="text-white text-xl opacity-55 hover:opacity-100 duration-200 py-1 rounded-full flex items-center gap-2 p-3 m-5 bg-red-400 "
+                >
+                  X
+                </button>
+                <div className="flex justify-center items-center gap-5 mx-auto  ">
+                  <img
+                    src={major.imageUrl}
+                    alt={major.imageUrl}
+                    className="w-10"
+                  />
+                  <h1 className="text-white font-light md:text-4xl ">
+                    {major.name}
+                  </h1>
+                </div>
+              </div>
+            </tr>
+            <tr className="bg-darkColor text-white uppercase text-md ">
               <th className="px-20 py-3 text-left font-light tracking-wider">
                 Subject
               </th>

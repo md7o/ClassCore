@@ -26,7 +26,7 @@ const RegisterModal: React.FC<showRegisterModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-start pt-96 bg-black bg-opacity-50 z-50">
+    <div className="fixed inset-0 flex justify-center items-center md:pt-20 bg-black w-full bg-opacity-70 z-50">
       <div className="bg-darkColor rounded-lg overflow-hidden w-full max-w-2xl min-h-1/4">
         <div className="flex justify-between items-center m-5">
           <h1 className="text-4xl text-white">Register</h1>
