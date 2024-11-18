@@ -88,7 +88,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           }`}
         >
           <button
-            className="w-full flex justify-start items-center text-white text-lg bg-background rounded-xl px-4 py-3 hover:bg-primary shadowing duration-200"
+            className="w-full flex justify-start items-center text-white text-lg  bg-background rounded-xl px-4 py-3 hover:bg-primary shadowing duration-200"
             onClick={handleOpenModalForAdd}
           >
             {lang === "en" ? "Add Student" : "إضافة طالب"}
@@ -118,7 +118,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           />
         </div>
       </div>
-      <p className="text-white md:text-4xl text-2xl">
+      <p className="text-white 2xl:text-4xl xl:text-xl text-3xl">
         {lang === "en" ? "Students List" : "قائمة الطلاب"}
       </p>
     </div>

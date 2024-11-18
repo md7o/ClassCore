@@ -131,14 +131,14 @@ const StudentList: React.FC<StudentListProps> = ({
                         onClick={() => handleEditStudent(student._id!)}
                         title={"Edit"}
                       >
-                        <img className="w-7 h-7" src={pencil} alt="edit" />
+                        <img className="w-7 h-6" src={pencil} alt="edit" />
                       </button>
                       <button
                         className="text-red-500 hover:text-red-700 hover:scale-95 hover:brightness-75 duration-300 w-6"
                         onClick={() => handleDeleteClick(student._id!)}
                         title={"Delete"}
                       >
-                        <img className="w-7 h-7" src={bin} alt="delete" />
+                        <img className="w-7 h-6" src={bin} alt="delete" />
                       </button>
                     </div>
                   </div>
@@ -150,7 +150,10 @@ const StudentList: React.FC<StudentListProps> = ({
             </div>
           ))
         ) : (
-          <div className="text-center text-white">No students found.</div>
+          <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-80 z-50 ">
+            <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin" />
+            <p className="text-white text-xl py-5">Lodaing Data...</p>
+          </div>
         )}
       </div>
     </div>

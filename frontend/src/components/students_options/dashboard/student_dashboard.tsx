@@ -149,7 +149,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="bg-darkColor rounded-xl xl:mx-8 p-20 xl:px-32 px-5">
+    <div className="bg-darkColor rounded-xl xl:mx-8 md:p-20 p-10 xl:px-32 px-5">
       <AddStudents
         showModal={showModal}
         handleCloseModal={handleCloseModal}
