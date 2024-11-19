@@ -42,7 +42,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("https://classcore.onrender.com/users");
+        const response = await fetch("http://localhost:3000/users");
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         setUsers(data);
@@ -140,13 +140,8 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // if (loading)
-  //   return (
-  //     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
-  //       <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin"></div>
-  //     </div>
-  //   );
-  if (error) return <div>Error: {error}</div>;
+  if (error)
+    return <div className=" text-white text-3xl text-center">{error}</div>;
 
   return (
     <div className="bg-darkColor rounded-xl xl:mx-8 md:p-20 p-10 xl:px-32 px-5">
@@ -170,6 +165,9 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
         setSearchTerm={setSearchTerm}
         lang={lang}
       />
+      <p className="lg:text-left text-center text-red-300 text-lg opacity-40 mb-2">
+        First 3 Studen't Cannot control of theme
+      </p>
       <StudentList
         students={filteredUsers}
         handleEditStudent={handleEditStudent}

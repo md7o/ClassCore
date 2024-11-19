@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import StudentRow from "./student_row";
 import bin from "../../../../../assets/images/trash.png";
 import pencil from "../../../../../assets/images/pen.png";
@@ -26,6 +26,33 @@ const StudentList: React.FC<StudentListProps> = ({
   handleDeleteClick,
   handleUserClick,
 }) => {
+  const [texts, setTexts] = useState<string>("");
+
+  useEffect(() => {
+    const loadingTimeouts: NodeJS.Timeout[] = [];
+
+    [
+      "Lodaing Data...",
+      "Warming up the engines...",
+      "That may take some time...",
+      "Fetching information, please wait...",
+      "Hold on, we're getting things ready...",
+      "Almost ready, please stand by..",
+      "Loading... Almost there!",
+      "Don’t go anywhere, we’re almost done...",
+    ].forEach((text, i) => {
+      const loadingTimeout = setTimeout(() => {
+        setTexts(text);
+      }, 4000 * i);
+
+      loadingTimeouts.push(loadingTimeout);
+    });
+
+    return () => {
+      loadingTimeouts.forEach((id) => clearTimeout(id));
+    };
+  }, []);
+
   return (
     <div>
       <div className="2xl:block hidden">
@@ -152,7 +179,11 @@ const StudentList: React.FC<StudentListProps> = ({
         ) : (
           <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-80 z-50 ">
             <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin" />
-            <p className="text-white text-xl py-5">Lodaing Data...</p>
+
+            <p className="text-white text-xl py-5">
+              {texts}
+              {/* Lodaing Data... */}
+            </p>
           </div>
         )}
       </div>

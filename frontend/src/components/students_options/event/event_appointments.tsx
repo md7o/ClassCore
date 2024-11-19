@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RegisterModal from "../../modal/register_modal";
 import NoteBook from "../../../assets/images/notebook.png";
 import university from "../../../assets/images/school.png";
