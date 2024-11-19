@@ -2,7 +2,7 @@ import CollegeStudentsMajors from "./widget/college_students_majors";
 import StudentsCountries from "./widget/students_countries";
 import TotalStudents from "./widget/total_students";
 import GraduateStudents from "./widget/graduate_students";
-import SpecialCaseStudents from "./widget/sٍpecial_case_students";
+import SpecialCaseStudents from "./widget/special_case_students";
 
 interface analyzingLanguage {
   lang: string;

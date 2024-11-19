@@ -77,19 +77,6 @@ const AddStudents: React.FC<AddStudentsProps> = ({
     }
   }, [isEditMode, studentDataToEdit]);
 
-  // Check if name is taken in the database (simulate backend check)
-  const checkNameInDatabase = async (name: string): Promise<boolean> => {
-    try {
-      const response = await axios.get(
-        `https://classcore.onrender.com/users?name=${name}`
-      );
-      return response.data.length > 0;
-    } catch (error) {
-      console.error("Error checking name:", error);
-      return false;
-    }
-  };
-
   const handleChange = async (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -200,7 +187,6 @@ const AddStudents: React.FC<AddStudentsProps> = ({
                 ? "cursor-pointer"
                 : "cursor-pointer"
             } bg-gradient-to-r duration-500 from-primary to-purple-500 shadowing text-white w-full md:mx-14 py-3 md:my-10 my-5 rounded-roundedButt`}
-            // disabled={isButtonDisabled || Object.keys(errors).length > 0}
           >
             {isEditMode ? "Update Student" : "Add Student"}
           </button>
@@ -219,6 +205,15 @@ const AddStudents: React.FC<AddStudentsProps> = ({
       const input = e.currentTarget.querySelector("input") as HTMLInputElement;
       if (input && type === "date") {
         input.showPicker();
+      }
+    };
+
+    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      // Allow only digits and limit the length to 10 characters
+      const phoneRegex = /^\d{0,10}$/;
+      if (phoneRegex.test(value)) {
+        handleChange(e); // Proceed with the normal change handler
       }
     };
 
@@ -262,7 +257,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
             type={type}
             name={name}
             value={formData[name]}
-            onChange={handleChange}
+            onChange={name === "phone" ? handlePhoneChange : handleChange}
             className={`w-[100%] px-3 md:h-12 h-8 my-2 rounded-md text-md tracking-[1.5px] text-white font-medium ${
               errors[name] ? "ring-[#F34235]" : "ring-gray-300"
             } bg-background focus:ring-2 focus:ring-primary focus:outline-none`}

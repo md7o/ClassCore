@@ -34,9 +34,9 @@ const SpecialCaseStudents: React.FC<CoursesLanguage> = ({ lang }) => {
 
   const graduateStudents = users.filter(
     (user) =>
-      user.status === "Suspend" ||
-      user.status === "Remote" ||
-      user.status === "Deprived"
+      user.status.trim().toLowerCase() === "suspend" ||
+      user.status.trim().toLowerCase() === "remote" ||
+      user.status.trim().toLowerCase() === "deprived"
   );
 
   return (
@@ -49,7 +49,7 @@ const SpecialCaseStudents: React.FC<CoursesLanguage> = ({ lang }) => {
         } items-center gap-2`}
       >
         <FaUserGraduate />
-        {lang === "en" ? "List of Graduates" : "قائمة الخريجين"}
+        {lang === "en" ? "List of special cases" : "قائمة الحالات الخاصة"}
       </p>
       {/* Scrollable section */}
       <div className="max-h-96 overflow-y-auto ">
@@ -77,7 +77,7 @@ const SpecialCaseStudents: React.FC<CoursesLanguage> = ({ lang }) => {
           ))
         ) : (
           <p className="text-white text-2xl px-5">
-            There is no graduate student
+            There is no special cases student
           </p>
         )}
       </div>

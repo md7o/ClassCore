@@ -23,21 +23,28 @@ const GraduateStudents: React.FC<CoursesLanguage> = ({ lang }) => {
     const fetchUser = async () => {
       try {
         const response = await fetch("https://classcore.onrender.com/users");
+        if (!response.ok) {
+          console.error("Error fetching users:", response.statusText);
+          return;
+        }
         const data = await response.json();
+        console.log("Fetched Data:", data); // Log the full fetched data
         setUsers(data);
       } catch (error) {
-        console.log("Error Fetching Users:", error);
+        console.error("Error fetching users:", error);
       }
     };
     fetchUser();
-  });
+  }, []);
 
-  const graduateStudents = users.filter((user) => user.status === "Graduate");
+  const graduateStudents = users.filter(
+    (user) => user.status.trim().toLowerCase() === "graduate"
+  );
 
   return (
     <div className="bg-darkColor rounded-lg lg:w-2/3 w-full h-smallHplus p-5">
       <p
-        className={`text-white text-2xl pb-10 pt-2  ${
+        className={`text-white text-2xl pb-10 pt-2 ${
           lang === "en"
             ? "flex flex-row justify-start"
             : "flex flex-row-reverse justify-start"
@@ -54,7 +61,7 @@ const GraduateStudents: React.FC<CoursesLanguage> = ({ lang }) => {
               className={`flex ${
                 lang === "en" ? "flex-row" : "flex-row-reverse"
               } justify-between items-center py-3 border-b border-white border-opacity-15`}
-              key={index}
+              key={student._id || index}
             >
               {lang === "en" ? (
                 <p className="flex text-white lg:text-2xl text-lg px-5">

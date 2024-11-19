@@ -165,7 +165,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
         setSearchTerm={setSearchTerm}
         lang={lang}
       />
-      <p className="lg:text-left text-center text-red-300 text-lg opacity-40 mb-2">
+      <p className="lg:text-left text-center text-gray-300 text-lg opacity-40 mb-2">
         First 3 Studen't Cannot control of theme
       </p>
       <StudentList
