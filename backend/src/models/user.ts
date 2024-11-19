@@ -20,7 +20,17 @@ const userSchema = new Schema<IUser>(
     country: { type: String, required: true },
     status: { type: String, required: true },
     card: { type: Boolean, required: true, default: false },
-    phone: { type: String, required: true },
+    phone: {
+      type: String,
+      required: true,
+      validate: {
+        validator: function (v: string) {
+          // Example regex for an international format (adjust as needed)
+          return /^(\+\d{1,3}[- ]?)?\d{10,15}$/.test(v);
+        },
+        message: (props) => `${props.value} is not a valid phone number!`,
+      },
+    },
   },
   { timestamps: true }
 );
