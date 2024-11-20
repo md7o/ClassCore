@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import { IoIosArrowBack } from "react-icons/io";
 
 type Subject = {
   name: string;

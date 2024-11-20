@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import AppBar from "../components/students_options/appbar";
 import SideBar from "../components/students_options/sideBar";
 import EventAppointments from "../components/students_options/event/event_appointments";

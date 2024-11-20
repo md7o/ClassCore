@@ -1,7 +1,5 @@
-import { useState } from "react";
 import MenuButton from "../widget/menu_button";
 import DropDownButton from "../widget/dropDownButton";
-import profile from "../../assets/images/metro.jpg";
 
 interface AppBarProps {
   onLanguageChange: (language: string) => void;

@@ -1,5 +1,3 @@
-import React, { ReactNode } from "react";
-
 import warning from "../../assets/images/warning.png";
 
 interface AddDeleteModalProps {

@@ -41,7 +41,7 @@ const AddStudents: React.FC<AddStudentsProps> = ({
   const [countries, setCountries] = useState<any[]>([]);
   const [formData, setFormData] = useState<Student>(initialFormData);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [isButtonDisabled] = useState(false);
 
   // Fetch countries using REST Countries API
   useEffect(() => {
@@ -130,10 +130,14 @@ const AddStudents: React.FC<AddStudentsProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm() && !isButtonDisabled) {
+      const trimmedData = {
+        ...formData,
+        country: formData.country.trim(),
+      };
       if (isEditMode && onEditStudent) {
-        onEditStudent(formData); // Pass the updated data
+        onEditStudent(trimmedData);
       } else if (onAddStudent) {
-        onAddStudent(formData); // Pass the new student data
+        onAddStudent(trimmedData);
       }
       handleCloseModal();
     }
@@ -237,13 +241,13 @@ const AddStudents: React.FC<AddStudentsProps> = ({
               <option
                 key={
                   name === "country"
-                    ? ` ${option.flag} ${option.name}`
-                    : ` ${option.name}`
+                    ? `${option.flag} ${" "} ${option.name}`
+                    : `${option.name}`
                 }
                 value={
                   name === "country"
-                    ? ` ${option.flag} ${option.name}`
-                    : ` ${option.name}`
+                    ? `${option.flag} ${option.name}`
+                    : `${option.name}`
                 }
                 className="flex items-center"
               >

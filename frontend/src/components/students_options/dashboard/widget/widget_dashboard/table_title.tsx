@@ -55,7 +55,7 @@ const StudentList: React.FC<StudentListProps> = ({
 
   return (
     <div>
-      <div className="2xl:block hidden">
+      <div className="xl:block hidden">
         <table className="w-full rounded-lg overflow-hidden ">
           <thead>
             <tr className="bg-background text-white py-5 mb-5 rounded-lg uppercase text-xs">
@@ -96,7 +96,7 @@ const StudentList: React.FC<StudentListProps> = ({
         </table>
       </div>
 
-      <div className="2xl:hidden block">
+      <div className="xl:hidden block">
         {students.length > 0 ? (
           students.map((student, rowIndex) => (
             <div key={rowIndex}>
@@ -180,10 +180,7 @@ const StudentList: React.FC<StudentListProps> = ({
           <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-80 z-50 ">
             <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin" />
 
-            <p className="text-white text-xl py-5">
-              {texts}
-              {/* Lodaing Data... */}
-            </p>
+            <p className="text-white text-xl py-5">{texts}</p>
           </div>
         )}
       </div>

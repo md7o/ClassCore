@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dashboardIcon from "../../assets/images/dashboard.png";
 import event from "../../assets/images/event.png";
@@ -7,8 +6,7 @@ import userAva from "../../assets/images/user.png";
 import presentation from "../../assets/images/presentation.png";
 import Logo from "../../assets/images/class_core_logo.png";
 import cretidcard from "../../assets/images/credit-card.png";
-import logout from "../../assets/images/logout.png";
-import LogoutModal from "../modal/logout_modal";
+
 import "../../App.css";
 
 interface SideBarProps {
@@ -20,17 +18,11 @@ interface SideBarProps {
   onLanguageChange: (language: string) => void;
 }
 
-// interface StudentsDataProps {
-//   lang: string;
-// }
-
 const SideBar: React.FC<SideBarProps> = ({
-  setActiveComponent,
   showSideBar,
   toggleSidebar,
-  onLogoutClick,
+
   language,
-  onLanguageChange,
 }) => {
   const navigate = useNavigate();
 
@@ -72,7 +64,7 @@ const SideBar: React.FC<SideBarProps> = ({
   return (
     <div>
       <div
-        className={`xl:relative fixed top-0 ${
+        className={`2xl:relative fixed top-0 ${
           language === "en" ? " left-0" : "right-0"
         } transform ${
           showSideBar
@@ -91,7 +83,7 @@ const SideBar: React.FC<SideBarProps> = ({
                 className="mt-10 mb-5 mx-auto"
                 width="250"
                 height="100"
-                loading="lazy"
+                loading="eager"
               />
 
               <button
@@ -110,7 +102,7 @@ const SideBar: React.FC<SideBarProps> = ({
                   className="w-12 h-12 object-cover rounded-xl mx-3"
                 />
                 <div className="flex flex-col items-start">
-                  <p className="text-xl text-white ">Mohammed Ayman</p>
+                  <p className="text-xl text-white ">Admin person</p>
                   <p className="text-md text-white opacity-40">
                     {language === "en" ? "admin" : "sdasd"}
                   </p>
@@ -137,24 +129,6 @@ const SideBar: React.FC<SideBarProps> = ({
                 </button>
               </div>
             ))}
-            {/* Other categories */}
-            {/* <p className="text-2xl text-white font-bold my-5 pt-5">Others</p>
-            <div className="my-5">
-              <button
-                onClick={onLogoutClick}
-                className="group flex justify-start items-center  w-72 bg-background rounded-lg p-4 hover:bg-primary shadowing duration-200"
-                style={{ direction: language === "en" ? "ltr" : "rtl" }}
-              >
-                <img
-                  src={logout}
-                  alt="Logout"
-                  className="w-6 opacity-60 group-hover:opacity-100"
-                />
-                <p className="text-xl text-white opacity-60 group-hover:opacity-100 px-6">
-                  {language === "en" ? " Logout" : "تسجيل الخروج"}
-                </p>
-              </button>
-            </div> */}
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import searchIcon from "../../../../../assets/images/search.png";
 import AddStudents from "./add_students";
 import axios from "axios";
@@ -26,10 +26,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
   setSearchTerm,
   lang,
 }) => {
-  const [users, setUsers] = useState<Student[]>([]);
+  const [, setUsers] = useState<Student[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isEditMode] = useState(false);
+  const [, setIsModalVisible] = useState(false);
   const [studentDataToEdit, setStudentDataToEdit] = useState<Student | null>(
     null
   );
@@ -47,7 +47,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const addStudent = async (student: Student) => {
     try {
       const response = await axios.post(
-        "https://classcore.onrender.com/users",
+        "https://https://classcore.onrender.com/users",
         student
       );
 

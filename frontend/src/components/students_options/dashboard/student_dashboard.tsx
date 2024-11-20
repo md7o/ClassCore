@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import axios from "axios";
 import AddStudents from "./widget/widget_dashboard/add_students";
 import SearchBar from "./widget/widget_dashboard/upper_part";
@@ -23,22 +22,46 @@ interface StudentsTableDataProps {
 }
 
 const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
-  const { t } = useTranslation();
   const [users, setUsers] = useState<Student[]>([]);
   const [studentIdToDelete, setStudentIdToDelete] = useState<string | null>(
     null
   );
-  const [loading, setLoading] = useState<boolean>(true);
+  const [lodaing, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [texts, setTexts] = useState<string>("");
   const [studentDataToEdit, setStudentDataToEdit] = useState<Student | null>(
     null
   );
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const loadingTimeouts: NodeJS.Timeout[] = [];
+
+    [
+      "Lodaing Data...",
+      "Warming up the engines...",
+      "That may take some time...",
+      "Fetching information, please wait...",
+      "Hold on, we're getting things ready...",
+      "Almost ready, please stand by..",
+      "Loading... Almost there!",
+      "Don’t go anywhere, we’re almost done...",
+    ].forEach((text, i) => {
+      const loadingTimeout = setTimeout(() => {
+        setTexts(text);
+      }, 4000 * i);
+
+      loadingTimeouts.push(loadingTimeout);
+    });
+
+    return () => {
+      loadingTimeouts.forEach((id) => clearTimeout(id));
+    };
+  }, []);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -105,6 +128,10 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
     }
   };
 
+  const printAlert = () => {
+    alert("The data has been updated successfully");
+  };
+
   const handleEditUser = async (updateData: Partial<Student>) => {
     setLoading(true);
     try {
@@ -128,6 +155,7 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
         );
         setShowModal(false);
         setStudentDataToEdit(null);
+        printAlert();
       }
     } catch (error) {
       console.error("Error updating the user:", error);
@@ -139,6 +167,14 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (lodaing)
+    return (
+      <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-80 z-50 ">
+        <div className="w-14 h-14 border-8 border-t-primary border-gray-300 rounded-full animate-spin" />
+        <p className="text-white text-xl py-5">{texts}</p>
+      </div>
+    );
 
   if (error)
     return <div className=" text-white text-3xl text-center">{error}</div>;
@@ -165,8 +201,8 @@ const TableDashboard: React.FC<StudentsTableDataProps> = ({ lang }) => {
         setSearchTerm={setSearchTerm}
         lang={lang}
       />
-      <p className="lg:text-left text-center text-gray-300 text-lg opacity-40 mb-2">
-        First 3 Studen't Cannot control of theme
+      <p className="lg:text-left text-center text-gray-300 text-md opacity-40 pb-2">
+        The first 3 students cannot be edited or deleted
       </p>
       <StudentList
         students={filteredUsers}
