@@ -55,7 +55,7 @@ const StudentList: React.FC<StudentListProps> = ({
 
   return (
     <div>
-      <div className="xl:block hidden">
+      <div className="2.5xl:block hidden">
         <table className="w-full rounded-lg overflow-hidden ">
           <thead>
             <tr className="bg-background text-white py-5 mb-5 rounded-lg uppercase text-xs">
@@ -96,7 +96,7 @@ const StudentList: React.FC<StudentListProps> = ({
         </table>
       </div>
 
-      <div className="xl:hidden block">
+      <div className="2.5xl:hidden block">
         {students.length > 0 ? (
           students.map((student, rowIndex) => (
             <div key={rowIndex}>

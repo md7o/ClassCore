@@ -32,9 +32,9 @@ const AppBar: React.FC<AppBarProps> = ({
   };
 
   return (
-    <div className="mb-20 xl:mt-4 mt-0 relative z-40">
+    <div className="mb-20 2.5:mt-4 mt-0 relative z-40">
       <div
-        className="flex justify-between items-center xl:static xl:bg-transparent bg-darkColor bg-opacity-55 fixed w-full"
+        className="flex justify-between items-center 2.5xl:static 2.5xl:bg-transparent bg-darkColor bg-opacity-55 fixed w-full"
         style={{ direction: language === "en" ? "ltr" : "rtl" }}
       >
         <div className="flex justify-center items-center">
@@ -42,8 +42,8 @@ const AppBar: React.FC<AppBarProps> = ({
           <p
             className={`p-4 sm:mx-2 mx-0 font-bold flex justify-between items-center ${
               language === "ar"
-                ? "xl:text-4xl  text-white text-2xl"
-                : "xl:text-4xl text-white text-2xl"
+                ? "2.5xl:text-4xl  text-white text-2xl"
+                : "2.5xl:text-4xl text-white text-2xl"
             }`}
           >
             {getPageTitle()}

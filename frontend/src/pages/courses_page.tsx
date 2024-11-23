@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AppBar from "../components/students_options/appbar";
+import AppBar from "../components/students_options/navbar";
 import SideBar from "../components/students_options/sideBar";
 import GeneralCourses from "../components/students_options/courses/general_courses";
 import LogoutModal from "../components/modal/logout_modal";

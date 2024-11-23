@@ -64,18 +64,19 @@ const SideBar: React.FC<SideBarProps> = ({
   return (
     <div>
       <div
-        className={`2xl:relative fixed top-0 ${
+        className={`2.5xl:relative fixed top-0 ${
           language === "en" ? " left-0" : "right-0"
         } transform ${
           showSideBar
             ? "translate-x-0"
-            : `xl:translate-x-0
-            ${language === "en" ? "-translate-x-full" : "translate-x-full"} `
+            : `2.5xl:translate-x-0
+        ${language === "en" ? "-translate-x-full" : "translate-x-full"} `
         } transition-transform duration-300 ease-in-out z-50`}
         style={{ direction: language === "en" ? "ltr" : "rtl" }}
       >
-        <div className="h-screen flex flex-col justify-between xl:m-3 m-0 bg-darkColor rounded-xl">
-          <div className="mx-5">
+        <div className="h-screen flex flex-col justify-between 2.5xl:m-3 m-0 bg-darkColor rounded-xl">
+          {/* Add a wrapper with overflow-y-auto for scrollable content */}
+          <div className="mx-5 overflow-y-auto h-full">
             <div className="flex justify-between items-center">
               <img
                 src={Logo}
@@ -88,7 +89,7 @@ const SideBar: React.FC<SideBarProps> = ({
 
               <button
                 onClick={toggleSidebar}
-                className="xl:hidden block text-2xl text-white font-bold mb-10 mt-5"
+                className="2.5xl:hidden block text-2xl text-white font-bold mb-10 mt-5"
               >
                 X
               </button>
@@ -102,7 +103,7 @@ const SideBar: React.FC<SideBarProps> = ({
                   className="w-12 h-12 object-cover rounded-xl mx-3"
                 />
                 <div className="flex flex-col items-start">
-                  <p className="text-xl text-white ">Admin person</p>
+                  <p className="text-xl text-white">Admin person</p>
                   <p className="text-md text-white opacity-40">
                     {language === "en" ? "admin" : "sdasd"}
                   </p>
@@ -115,7 +116,7 @@ const SideBar: React.FC<SideBarProps> = ({
               <div key={index} className="my-5">
                 <button
                   onClick={() => handleNavigation(items.route)}
-                  className="group flex justify-start items-center  w-72 bg-background rounded-lg p-4 hover:bg-primary shadowing duration-200"
+                  className="group flex justify-start items-center w-72 bg-background rounded-lg p-4 hover:bg-primary shadowing duration-200"
                   style={{ direction: language === "en" ? "ltr" : "rtl" }}
                 >
                   <img
