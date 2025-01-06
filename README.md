@@ -10,8 +10,8 @@ This is a web-based dashboard application designed for university administrators
 <img  width="200"/>
   
 https://github.com/md7o/BookLibrary/assets/102732045/76518d30-db06-49b1-b003-87fa8b534da2
-https://github.com/user-attachments/assets/f95ff231-2d1f-4078-841a-0c9c92e607d2
-https://github.com/user-attachments/assets/f4558429-2fe0-4aef-8b93-5c4fa4c30abd
+
+![clascore](https://github.com/user-attachments/assets/8381be88-364b-4d35-a40d-37b51566eb5a)
 
 </p>
 
