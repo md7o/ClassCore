@@ -5,7 +5,7 @@
 This is a web-based dashboard application designed for university administrators, faculty, and students to manage and view essential academic and administrative data.
 
 ## 🌐 Visit the Website  
-👉 **[Class Core]([https://yourwebsite.com](https://classcorewebsite.web.app/))**  
+👉 **[Class Core]((https://classcorewebsite.web.app/))**  
 
 ## Excerpt from the app
 
