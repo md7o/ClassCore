@@ -10,7 +10,7 @@ This is a web-based dashboard application designed for university administrators
 ## Excerpt from the app
 
 <p >
-  <img src="https://github.com/user-attachments/assets/8381be88-364b-4d35-a40d-37b51566eb5a" alt="clascore" width="300">
+  <img src="https://github.com/user-attachments/assets/8381be88-364b-4d35-a40d-37b51566eb5a" alt="clascore" width="600">
 </p>
 
 ## For help and proposals
