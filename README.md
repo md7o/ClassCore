@@ -4,21 +4,23 @@
 
 This is a web-based dashboard application designed for university administrators, faculty, and students to manage and view essential academic and administrative data.
 
+## 🌐 Visit the Website  
+👉 **[Class Core]([https://yourwebsite.com](https://classcorewebsite.web.app/))**  
+
 ## Excerpt from the app
 
 <p>
-<img  width="200"/>
+<img  width="100"/>
   
-https://github.com/md7o/BookLibrary/assets/102732045/76518d30-db06-49b1-b003-87fa8b534da2
-
 ![clascore](https://github.com/user-attachments/assets/8381be88-364b-4d35-a40d-37b51566eb5a)
+![responsiveclasscore](https://github.com/user-attachments/assets/acdba657-b67c-4f34-9df3-840abe9d429e)
 
 </p>
 
 
 ## For help and proposals
 
-if you encounter any bug while using the apps or want say suggestions please connect with us on twitter or leave your message on google play comment, for any suggestions
+if you encounter any bug while using the apps or want say suggestions please connect with us on twitter for any suggestions
 
 ## 🔗 Find me on
 [!["Follow me on Twitter"](https://img.shields.io/twitter/follow/pr_Mais?label=Follow%20me)](https://twitter.com/Md7oHe)
