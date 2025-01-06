@@ -11,7 +11,6 @@ This is a web-based dashboard application designed for university administrators
 
 <p >
   <img src="https://github.com/user-attachments/assets/8381be88-364b-4d35-a40d-37b51566eb5a" alt="clascore" width="300">
-  <img src="https://github.com/user-attachments/assets/acdba657-b67c-4f34-9df3-840abe9d429e" alt="responsiveclasscore" width="300">
 </p>
 
 ## For help and proposals
